@@ -14,13 +14,13 @@ Introduction to the workshop and what you can expect to take away
 
 ------------------------------------------------------------------------
 
-## **Create a Research Compendium**
+## Create a Research Compendium
 
 Create a template Research Compendium from **`rrtools`**
 
 ------------------------------------------------------------------------
 
-## **Manage functionality as a package**
+## Manage functionality as a package
 
 Make your Compendium an R Package to ensure reproducibility
 
