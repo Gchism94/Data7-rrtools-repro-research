@@ -1,10 +1,10 @@
 [
   {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
+    "objectID": "index.html#introduction",
+    "href": "index.html#introduction",
     "title": "Reproducible Research with GitHub and rrtools",
-    "section": "Welcome",
-    "text": "Welcome\nIntroduction to the workshop and what you can expect to take away"
+    "section": "Introduction",
+    "text": "Introduction\nIntroduction to the workshop and what you can expect to take away"
   },
   {
     "objectID": "index.html#create-a-research-compendium",
@@ -21,11 +21,11 @@
     "text": "Manage functionality as a package\nMake your Compendium an R Package to ensure reproducibility"
   },
   {
-    "objectID": "index.html#reproduce-a-paper-in-rmd",
-    "href": "index.html#reproduce-a-paper-in-rmd",
+    "objectID": "index.html#reproduce-a-paper-with-distill",
+    "href": "index.html#reproduce-a-paper-with-distill",
     "title": "Reproducible Research with GitHub and rrtools",
-    "section": "Reproduce a paper in Rmd",
-    "text": "Reproduce a paper in Rmd\nProduce a Distill R Markdown version of a paper\n\n\nLevel\nIntermediate\n\n\nPrerequisites:\nFamiliarity with Version Control through RStudio and R Markdown.\n\n\nSystem Requirements:\n\nPandoc (>= 1.17.2)\n\n\nLaTeX\nIf you don’t have LaTeX installed, consider installing TinyTeX, a custom LaTeX distribution based on TeX Live that is small in size but functions well in most cases, especially for R users.\n\ninstall.packages('tinytex')\ntinytex::install_tinytex()\n\nCheck docs before before installing.\n\n\ndevtools requirements\nYou might also need a set of development tools to install and run devtools. On Windows, download and install Rtools, and devtools takes care of the rest. On Mac, install the Xcode command line tools. On Linux, install the R development package, usually called r-devel or r-base-dev.\n\n\n\n\nDisclaimer\nThese workshop materials are derived from materials authored by Anna Krystalli, and (Marwick 2019). The materials here have been updated to current best practices and for a condensed length. Additionally, the gillespie.csv dataset was replaced with the open source diabetes.csv Pima County Native American Diabetes dataset.\nThe original materials are licensed under a Creative Commons Attribution 4.0 International License.\n CC BY\n\n\n\nOriginal workshop based on:\n\nResearch compendium cboettig/noise-phenomena: Supplement to: “From noise to knowledge: how randomness generates novel phenomena and reveals information” by Carl Boettiger licensed under CC BY 4.0. \nMarwick, B., Boettiger, C. & L. Mullen (2017). Packaging data analytical work reproducibly using R (and friends). PeerJ Preprints 5:e3192v1 https://doi.org/10.7287/peerj.preprints.3192v1\n\n\n\n\n\nMarwick, Ben. 2019. “Rrtools: Creates a Reproducible Research Compendium.” https://github.com/benmarwick/rrtools."
+    "section": "Reproduce a paper with Distill",
+    "text": "Reproduce a paper with Distill\nProduce a Distill R Markdown version of a paper\n\n\nLevel\nIntermediate\n\n\nPrerequisites:\nFamiliarity with Version Control through RStudio and R Markdown.\n\n\nSystem Requirements:\n\nPandoc (>= 1.17.2)\n\n\nLaTeX\nIf you don’t have LaTeX installed, consider installing TinyTeX, a custom LaTeX distribution based on TeX Live that is small in size but functions well in most cases, especially for R users.\n\ninstall.packages('tinytex')\ntinytex::install_tinytex()\n\nCheck docs before before installing.\n\n\ndevtools requirements\nYou might also need a set of development tools to install and run devtools. On Windows, download and install Rtools, and devtools takes care of the rest. On Mac, install the Xcode command line tools. On Linux, install the R development package, usually called r-devel or r-base-dev.\n\n\n\n\nDisclaimer\nThese workshop materials are derived from materials authored by Anna Krystalli, and (Marwick 2019). The materials here have been updated to current best practices and for a condensed length. Additionally, the gillespie.csv dataset was replaced with the open source diabetes.csv Pima County Native American Diabetes dataset.\nThe original materials are licensed under a Creative Commons Attribution 4.0 International License.\n CC BY\n\n\n\nOriginal workshop based on:\n\nResearch compendium cboettig/noise-phenomena: Supplement to: “From noise to knowledge: how randomness generates novel phenomena and reveals information” by Carl Boettiger licensed under CC BY 4.0. \nMarwick, B., Boettiger, C. & L. Mullen (2017). Packaging data analytical work reproducibly using R (and friends). PeerJ Preprints 5:e3192v1 https://doi.org/10.7287/peerj.preprints.3192v1\n\n\n\n\n\nMarwick, Ben. 2019. “Rrtools: Creates a Reproducible Research Compendium.” https://github.com/benmarwick/rrtools."
   },
   {
     "objectID": "intro.html#research-is-increasingly-computational",
