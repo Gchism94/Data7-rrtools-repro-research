@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Reproducible Research with GitHub and rrtools - Manage functionality as a package</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./reproduce-distill-paper.html" rel="next">
+<link href="./create-compendium.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Manage functionality as a package</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reproducible Research with GitHub and rrtools</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Reproducible Research in R with <code>rrtools</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./create-compendium.html" class="sidebar-item-text sidebar-link">Create a Research Compendium</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manage-as-package.html" class="sidebar-item-text sidebar-link active">Manage functionality as a package</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reproduce-distill-paper.html" class="sidebar-item-text sidebar-link">Reproduce a paper with Distill</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#setup-data" id="toc-setup-data" class="nav-link active" data-scroll-target="#setup-data">Setup data</a>
+  <ul class="collapse">
+  <li><a href="#copy-data-to-data" id="toc-copy-data-to-data" class="nav-link" data-scroll-target="#copy-data-to-data">Copy data to <code>data/</code></a></li>
+  <li><a href="#inspect-analysis.r-file" id="toc-inspect-analysis.r-file" class="nav-link" data-scroll-target="#inspect-analysis.r-file">Inspect analysis.R file</a></li>
+  </ul></li>
+  <li><a href="#create-a-package-function" id="toc-create-a-package-function" class="nav-link" data-scroll-target="#create-a-package-function">Create a package function</a>
+  <ul class="collapse">
+  <li><a href="#create-.r-function-script" id="toc-create-.r-function-script" class="nav-link" data-scroll-target="#create-.r-function-script">Create <code>.R</code> function script</a></li>
+  </ul></li>
+  <li><a href="#write-function" id="toc-write-function" class="nav-link" data-scroll-target="#write-function">Write function</a></li>
+  <li><a href="#document-function" id="toc-document-function" class="nav-link" data-scroll-target="#document-function">Document function</a>
+  <ul class="collapse">
+  <li><a href="#roxygen2-documentation" id="toc-roxygen2-documentation" class="nav-link" data-scroll-target="#roxygen2-documentation"><code>Roxygen2</code> documentation</a></li>
+  <li><a href="#insert-roxygen-skeleton" id="toc-insert-roxygen-skeleton" class="nav-link" data-scroll-target="#insert-roxygen-skeleton">Insert Roxygen skeleton</a></li>
+  <li><a href="#complete-roxygen-documentation" id="toc-complete-roxygen-documentation" class="nav-link" data-scroll-target="#complete-roxygen-documentation">Complete Roxygen documentation</a></li>
+  <li><a href="#lets-take-a-renvsnapshot" id="toc-lets-take-a-renvsnapshot" class="nav-link" data-scroll-target="#lets-take-a-renvsnapshot">Let’s take a <code>renv::snapshot()</code>!</a></li>
+  </ul></li>
+  <li><a href="#build-and-install-package" id="toc-build-and-install-package" class="nav-link" data-scroll-target="#build-and-install-package">Build and install package</a>
+  <ul class="collapse">
+  <li><a href="#build-roxygen-documentation" id="toc-build-roxygen-documentation" class="nav-link" data-scroll-target="#build-roxygen-documentation">Build Roxygen documentation</a></li>
+  <li><a href="#install-package" id="toc-install-package" class="nav-link" data-scroll-target="#install-package">Install package</a></li>
+  <li><a href="#another-renvsnapshot" id="toc-another-renvsnapshot" class="nav-link" data-scroll-target="#another-renvsnapshot">Another <code>renv::snapshot()</code>!</a></li>
+  </ul></li>
+  <li><a href="#check-package" id="toc-check-package" class="nav-link" data-scroll-target="#check-package">Check package</a>
+  <ul class="collapse">
+  <li><a href="#automated-checking" id="toc-automated-checking" class="nav-link" data-scroll-target="#automated-checking">Automated checking</a></li>
+  <li><a href="#add-namespace-to-function-notation" id="toc-add-namespace-to-function-notation" class="nav-link" data-scroll-target="#add-namespace-to-function-notation">Add namespace to function notation</a></li>
+  <li><a href="#add-dependency" id="toc-add-dependency" class="nav-link" data-scroll-target="#add-dependency">Add dependency</a></li>
+  <li><a href="#test-out-function" id="toc-test-out-function" class="nav-link" data-scroll-target="#test-out-function">Test out function</a></li>
+  <li><a href="#time-for-another-renvsnapshot" id="toc-time-for-another-renvsnapshot" class="nav-link" data-scroll-target="#time-for-another-renvsnapshot">Time for another <code>renv::snapshot()</code>!</a></li>
+  </ul></li>
+  <li><a href="#test-function" id="toc-test-function" class="nav-link" data-scroll-target="#test-function">Test function</a>
+  <ul class="collapse">
+  <li><a href="#create-a-test-file" id="toc-create-a-test-file" class="nav-link" data-scroll-target="#create-a-test-file">Create a test file</a></li>
+  <li><a href="#create-test-data" id="toc-create-test-data" class="nav-link" data-scroll-target="#create-test-data">Create test data</a></li>
+  <li><a href="#write-test" id="toc-write-test" class="nav-link" data-scroll-target="#write-test">Write test</a></li>
+  <li><a href="#test-package" id="toc-test-package" class="nav-link" data-scroll-target="#test-package">Test package</a></li>
+  <li><a href="#a-final-renvsnapshot" id="toc-a-final-renvsnapshot" class="nav-link" data-scroll-target="#a-final-renvsnapshot">A final <code>renv::snapshot()</code>!</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Manage functionality as a package</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong><code>rrtools</code></strong> <strong>research compendium structure is based on R packages</strong>.</p>
+<p>The <strong>R package structure</strong> can help with providing a logical organisation of files, by <strong>providing a set of standard locations for certain types of files</strong>.</p>
+<p>In RStudio we use the <strong>Build pane</strong> when working with packages, which includes a variety of tools for <strong>building, documenting, and testing packages</strong>. This will appear if Rstudio recognizes the project as an R package.</p>
+<hr>
+<section id="setup-data" class="level2">
+<h2 class="anchored" data-anchor-id="setup-data">Setup data</h2>
+<section id="copy-data-to-data" class="level3">
+<h3 class="anchored" data-anchor-id="copy-data-to-data">Copy data to <code>data/</code></h3>
+<p>To begin, we will <strong>copy</strong> <strong><code>diabetes.csv</code></strong> from the workshop materials you downloaded in <code>rrtools-wkshp-materials-master/</code> <strong>to the sub-folder</strong> <strong><code>analysis/data/raw_data/</code></strong> in <code>rrcompendium</code></p>
+<p>Your data folder should now look like this:</p>
+<pre><code>analysis/data
+├── DO-NOT-EDIT-ANY-FILES-IN-HERE-BY-HAND
+├── derived_data
+└── raw_data
+    └── diabetes.csv</code></pre>
+<hr>
+</section>
+<section id="inspect-analysis.r-file" class="level3">
+<h3 class="anchored" data-anchor-id="inspect-analysis.r-file">Inspect analysis.R file</h3>
+<p>Next we will <strong>open</strong> <strong><code>analysis.R</code></strong> in the workshop materials and run the code. The script has some <strong>initial setup</strong> (mainly installations), then <strong>loads the data, groups one of the columns</strong> for plotting and then <strong>plots the results</strong>, which <strong>generates a novel figure</strong>.</p>
+<section id="analysis.r" class="level4">
+<h4 class="anchored" data-anchor-id="analysis.r"><code>analysis.R</code></h4>
+<p>First, its best to <strong>make sure there’s a CRAN mirror that will be used to install packages</strong>. If you don’t, you could get an error basically saying that CRAN isn’t set…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">list</span>(<span class="at">CRAN =</span> <span class="st">"http://cran.rstudio.com/"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install pacman</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install and/or load necessary packages</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggthemes,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>               here,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>               tidyverse)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Making some global ggplot() theme additions</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set global ggplot() theme</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_pubclean</span>(<span class="at">base_size =</span> <span class="dv">16</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove legend</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift axes title to their relative right</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove axes ticks</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">axis.ticks =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Colorblind friendly palette</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>cbp1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>          <span class="st">"#F0E442"</span>, <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#CC79A7"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load-data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"analysis"</span>, <span class="st">"data"</span>, <span class="st">"raw_data"</span>, <span class="st">"diabetes.csv"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a categorical group</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"Young"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(Age <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">50</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Middle"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Elderly"</span>)),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">Age =</span> <span class="fu">as.character</span>(Age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Glucose vs. Age group</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Glucose, <span class="at">y =</span> <span class="fu">fct_rev</span>(Age), <span class="at">fill =</span> Age)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Glucose (mg/dl)"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cbp1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="images/Age_group_glucose.png" class="img-fluid"></p>
+<p>Now we will <strong>create a function to replace the grouping step in the analysis</strong>, document it, check it, test and make it available as a package!</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="create-a-package-function" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-package-function">Create a package function</h2>
+<section id="create-.r-function-script" class="level3">
+<h3 class="anchored" data-anchor-id="create-.r-function-script">Create <code>.R</code> function script</h3>
+<p>First we <strong>need an <code>.R</code> file to write our function in</strong>.</p>
+<p>To create or edit <code>.R</code> files in the <code>R/</code> directory, we can use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_r</span>(<span class="st">"process-data"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>● Modify 'R/process-data.R'
+• Call `use_test()` to create a matching test file</code></pre>
+<p>This <strong>creates a file called <code>process-data.R</code> in the <code>R/</code> directory and opens for editing</strong>.</p>
+<hr>
+</section>
+</section>
+<section id="write-function" class="level2">
+<h2 class="anchored" data-anchor-id="write-function">Write function</h2>
+<p>In this file, let’s now create the function to group <code>Age</code>.</p>
+<p>In particular, we can modify the following code from <code>analysis.R</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"analysis"</span>, <span class="st">"data"</span>, <span class="st">"raw_data"</span>, <span class="st">"diabetes.csv"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"Young"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(Age <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">50</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Middle"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Elderly"</span>)),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Age =</span> <span class="fu">as.character</span>(Age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>into a function like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>group_age <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(data,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"Young"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">ifelse</span>(Age <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="dv">50</span>, <span class="st">"Middle"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"Elderly"</span>)),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">Age =</span> <span class="fu">as.character</span>(Age))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This takes a <code>dataframe</code> of the <strong>data as input</strong> and <strong>outputs a <code>dataframe</code> with the values of <code>Age</code></strong> <strong>grouped for plotting</strong>.</p>
+<p>Now, to <strong>have our function exported</strong> as part of the <code>rrcompendium</code> package, we need to document it using <code>Roxygen2</code>.</p>
+<hr>
+</section>
+<section id="document-function" class="level2">
+<h2 class="anchored" data-anchor-id="document-function">Document function</h2>
+<p>Documentation is <strong>one of the most important aspects of good, reproducible code</strong>. <code>Roxygen2</code> provides a documentation framework in R.</p>
+<hr>
+<section id="roxygen2-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="roxygen2-documentation"><code>Roxygen2</code> documentation</h3>
+<p><strong><code>Roxygen2</code></strong> allows us to <strong>write specially-structured comments</strong> preceding each function definition. These are processed automatically to produce <strong><code>.Rd</code></strong> <strong>help files</strong> for our functions and control which are <strong>exported to the package</strong> <strong><code>NAMESPACE</code></strong>.</p>
+<p>See the <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html">Generating Rd files</a> <code>roxygen2</code> vignette or Karl Broman’s blog post on <a href="https://kbroman.org/pkg_primer/pages/docs.html">writing Roxygen2 documentation</a> for further details.</p>
+<hr>
+</section>
+<section id="insert-roxygen-skeleton" class="level3">
+<h3 class="anchored" data-anchor-id="insert-roxygen-skeleton">Insert Roxygen skeleton</h3>
+<p>In Rstudio, you can <strong>insert a Roxygen skeleton by placing the cursor anywhere in the definition of a function</strong>, then clicking:</p>
+<pre><code>Code &gt; Insert Roxygen Skeleton</code></pre>
+<p>Applying this to our function results in this Roxygen skeleton:</p>
+<pre><code>#' Title
+#'
+#' @param data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+group_age &lt;- function(data){
+  dplyr::mutate(data,
+                Age = ifelse(Age &gt;= 21 &amp; Age &lt;= 30, "Young",
+                                   ifelse(Age &gt; 30 &amp; Age &lt;=
+                                   50, "Middle",
+                                   "Elderly")),
+                Age = as.character(Age))</code></pre>
+<hr>
+</section>
+<section id="complete-roxygen-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="complete-roxygen-documentation">Complete Roxygen documentation</h3>
+<p><strong>Roxygen comments start with</strong> <strong><code>#'</code></strong> so we can use regular comments for other purposes.</p>
+<section id="title-and-description" class="level4">
+<h4 class="anchored" data-anchor-id="title-and-description">Title and description</h4>
+<p>The <strong>first line</strong> is the title of the function.</p>
+<p>The title is followed by a <strong>blank</strong> <strong><code>#'</code></strong> <strong>line</strong> and then a <strong>longer description summarizing</strong> what the function does, which must be <u>single paragraph</u>.</p>
+<p>So for our function we could write something like this:</p>
+<pre><code>#' Group age variable
+#'
+#' Group age variable in dataframe containing data from file
+#' `diabetes.csv`</code></pre>
+<p>Further <strong>function details are documented in Roxygen using tags</strong> like <code>@tag</code>.</p>
+<hr>
+</section>
+<section id="function-parameters-arguments" class="level4">
+<h4 class="anchored" data-anchor-id="function-parameters-arguments">Function parameters (arguments)</h4>
+<p><strong><code>@param</code></strong> <strong>tags</strong> names are automatically extracted from the function for <strong>each function argument</strong> and document argument descriptions. We can document our single argument by editing the skeleton:</p>
+<pre><code>#' @param data dataframe containing data from file
+#' `diabetes.csv`</code></pre>
+<hr>
+</section>
+<section id="function-output" class="level4">
+<h4 class="anchored" data-anchor-id="function-output">Function output</h4>
+<p>We use <strong>tag</strong> <code>@return</code> to describe what the function returns:</p>
+<pre><code>#' @return `data` with variable `Age` grouped for
+#' plotting</code></pre>
+<hr>
+</section>
+<section id="export-function" class="level4">
+<h4 class="anchored" data-anchor-id="export-function">Export function</h4>
+<p><strong><code>@export</code></strong> tells <code>Roxygen2</code> to <strong>add this function as an export in the</strong> <strong><code>NAMESPACE</code></strong> <strong>file</strong>, so that it will be <strong>accessible available for use</strong> after package installation.</p>
+<p>The Roxygen skeleton includes the <code>@export</code> tag by default. You can remove it for internal functions that will only be available within the <code>NAMESPACE</code>. You can access internal functions of a package using <code>&lt;package_name&gt;:::</code></p>
+<hr>
+</section>
+<section id="provide-examples" class="level4">
+<h4 class="anchored" data-anchor-id="provide-examples">Provide examples</h4>
+<p>The <strong><code>@examples</code></strong> <strong>tag</strong> provides <strong>executable R code showing how to use the function in practice</strong>. This is a very important part of the documentation because many people look at the examples before reading anything else.</p>
+<p>We’ll skip this for now but come back to it a bit later. <strong>Remove the <code>@examples</code> tag for now</strong>.</p>
+<p>The <strong>completed function documentation should look something like this</strong>:</p>
+<pre><code>#' Group age variable
+#'
+#' Group age variable in dataframe containing data from file
+#' `diabetes.csv`
+#' @param data dataframe containing data from file
+#' `diabetes.csv`
+#' @return `data` with variable `Age` grouped for
+#' plotting
+#' @export
+group_age &lt;- function(data){
+        mutate(data,
+                Age = ifelse(Age &gt;= 21 &amp; Age &lt;= 30, "Young",
+                                   ifelse(Age &gt; 30 &amp; Age &lt;= 50, "Middle",
+                                          "Elderly")),
+                Age = as.character(Age))
+}</code></pre>
+<hr>
+</section>
+</section>
+<section id="lets-take-a-renvsnapshot" class="level3">
+<h3 class="anchored" data-anchor-id="lets-take-a-renvsnapshot">Let’s take a <code>renv::snapshot()</code>!</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="build-and-install-package" class="level2">
+<h2 class="anchored" data-anchor-id="build-and-install-package">Build and install package</h2>
+<section id="build-roxygen-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="build-roxygen-documentation">Build Roxygen documentation</h3>
+<p>Now that we’ve annotated our source code we can <strong>build the documentation</strong> either by clicking on <strong>More &gt; Document</strong> in the RStudio Build panel or from the <strong>console</strong> using:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">document</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is a wrapper for the <code>roxygenize()</code> function from the <code>roxygen2</code> package. This builds the <code>.Rd</code> help files and populates the <code>NAMESPACE</code></p>
+<p>The <strong><code>man/</code></strong> directory will appear and contain an <strong><code>.Rd</code></strong> <strong>file for</strong> <strong><code>recode_system</code></strong>.</p>
+<pre><code>man
+└── group_age.Rd</code></pre>
+<p>and the <strong><code>NAMESPACE</code></strong> now contains an <strong><code>export()</code></strong> <strong>entry for</strong> <strong><code>recode_system</code></strong>:</p>
+<pre><code># Generated by roxygen2: do not edit by hand
+
+export(group_age)</code></pre>
+<hr>
+</section>
+<section id="install-package" class="level3">
+<h3 class="anchored" data-anchor-id="install-package">Install package</h3>
+<p>The usual workflow for package development is to:</p>
+<ul>
+<li><p>Make some changes</p></li>
+<li><p>Build and install the package</p></li>
+<li><p>Unload and reload the package (often in a new R session)</p></li>
+</ul>
+<p>The best way to install and reload a package in a fresh R session is to use the 🔨 <strong>Install</strong> command tab in the <strong>Build</strong> panel which performs several steps in sequence to ensure a clean and correct result:</p>
+<ul>
+<li><p><strong>Unloads any existing version</strong> of the package (including shared libraries if necessary).</p></li>
+<li><p><strong>Builds and installs</strong> the package using R CMD INSTALL.</p></li>
+<li><p><strong>Restarts the underlying R session</strong> to ensure a clean environment for re-loading the package.</p></li>
+<li><p><strong>Reloads the package</strong> in the new R session by executing the library function.</p></li>
+</ul>
+<p>Running the 🔨 <strong>Install</strong> command on our package results in this output in the <strong>Build</strong> panel output:</p>
+<pre><code>* installing to library ‘/Users/gregchism/Library/R/x86_64/4.1/library’
+* installing *source* package ‘rrcompendium’ ...
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+Installing package into ‘/Users/gregchism/Library/R/x86_64/4.1/library/00LOCK-rrcompendium/00new’
+(as ‘lib’ is unspecified)
+trying URL 'http://cran.rstudio.com/bin/macosx/contrib/4.1/pacman_0.5.1.tgz'
+Content type 'application/x-gzip' length 380131 bytes (371 KB)
+==================================================
+downloaded 371 KB
+
+
+The downloaded binary packages are in
+    /var/folders/c0/w15tbmpn36d7jj_tpjm_sz9c0000gn/T//RtmpB7b61P/downloaded_packages
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (rrcompendium)
+
+install.packages("pacman")</code></pre>
+<p>and</p>
+<pre><code>Restarting R session…</code></pre>
+<p>in the console.</p>
+<p>We can inspect the resulting documentation for our function using <strong><code>?group_age</code></strong></p>
+<hr>
+</section>
+<section id="another-renvsnapshot" class="level3">
+<h3 class="anchored" data-anchor-id="another-renvsnapshot">Another <code>renv::snapshot()</code>!</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="check-package" class="level2">
+<h2 class="anchored" data-anchor-id="check-package">Check package</h2>
+<section id="automated-checking" class="level3">
+<h3 class="anchored" data-anchor-id="automated-checking">Automated checking</h3>
+<p>An <strong>important part of the package development process is</strong> <strong><code>R CMD check</code></strong>. <code>R CMD check</code> <strong>automatically checks and detects many common problems</strong> that can be difficult to find ourselves.</p>
+<p>To check our package, we can use one of three methods:</p>
+<ul>
+<li><p>Use <code>devtools::check()</code> (<em>my recommended way</em>)</p></li>
+<li><p>Press Ctrl/Cmd + Shift + E</p></li>
+<li><p>Click on the ✅<strong>Check</strong> tab in the <strong>Build</strong> panel.</p></li>
+</ul>
+<p>This:</p>
+<ul>
+<li><p><strong>Ensures that the documentation is up-to-date</strong> by running <code>devtools::document()</code>.</p></li>
+<li><p><strong>Bundles the package</strong> before checking it.</p></li>
+</ul>
+<p>More info on <a href="https://r-pkgs.org/check.html">checks</a> here.</p>
+<p>Both these run <code>R CMD check</code> which <strong>return three types of messages</strong>:</p>
+<ul>
+<li><p><strong>ERRORs</strong>: Severe problems that you should fix regardless of whether or not you’re submitting to CRAN.</p></li>
+<li><p><strong>WARNINGs</strong>: Likely problems that you must fix if you’re planning to submit to CRAN (and a good idea to look into even if you’re not).</p></li>
+<li><p><strong>NOTEs</strong>: Mild problems. If you are submitting to CRAN, you should strive to eliminate all NOTEs, even if they are false positives.</p></li>
+</ul>
+<p>Let’s <strong>Check</strong> our package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">check</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>N  checking R code for possible problems (2.4s)
+   group_age: no visible global function definition for ‘mutate’
+   group_age: no visible binding for global variable ‘Age’
+   Undefined global functions or variables:
+     mutate Age
+✔  checking Rd files ...
+✔  checking Rd metadata ...
+✔  checking Rd line widths ...
+✔  checking Rd cross-references ...
+✔  checking for missing documentation entries ...
+✔  checking for code/documentation mismatches (426ms)
+✔  checking Rd \usage sections (563ms)
+✔  checking Rd contents ...
+✔  checking for unstated dependencies in examples ...
+─  checking examples ... NONE
+✔  checking for non-standard things in the check directory
+✔  checking for detritus in the temp directory
+   
+   See
+     ‘/private/var/folders/c0/w15tbmpn36d7jj_tpjm_sz9c0000gn/T/RtmplWzWzK/rrcompendium.Rcheck/00check.log’
+   for details.
+   
+   
+── R CMD check results ─────────────────────────────────────────── rrcompendium 0.0.0.9000 ────
+Duration: 10.3s
+
+❯ checking R code for possible problems ... NOTE
+  group_age: no visible global function definition for ‘mutate’
+  group_age: no visible binding for global variable ‘Age’
+  Undefined global functions or variables:
+    mutate Age
+
+0 errors ✔ | 0 warnings ✔ | 1 note ✖</code></pre>
+<p>There are a <code>analysis.R</code>. Let’s start troubleshooting with:</p>
+<pre><code>group_age: no visible global function definition for ‘mutate’</code></pre>
+<p>We are <strong>using a <code>dplyr</code> functions</strong> in our function, <code>mutate()</code>. However, we have <strong>not specified that they are imported from the <code>dplyrNAMESPACE</code></strong> so the checks look for functions with those names in our package (<code>rrcompendium</code>) and can’t find anything.</p>
+<hr>
+</section>
+<section id="add-namespace-to-function-notation" class="level3">
+<h3 class="anchored" data-anchor-id="add-namespace-to-function-notation">Add namespace to function notation</h3>
+<p>To <strong>specify the namespace of a function</strong> we use the notation <strong><code>&lt;package_name&gt;::&lt;function_name&gt;</code></strong>, so we need to update this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>group_age <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(data,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"Young"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">ifelse</span>(Age <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="dv">50</span>, <span class="st">"Middle"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"Elderly"</span>)),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">Age =</span> <span class="fu">as.character</span>(Age))</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s run <strong>Check</strong> again:</p>
+<pre><code>W  checking dependencies in R code ...
+   '::' or ':::' import not declared from: ‘dplyr’
+✔  checking S3 generic/method consistency (421ms)
+✔  checking replacement functions ...
+✔  checking foreign function calls ...
+N  checking R code for possible problems (2.5s)
+   group_age: no visible binding for global variable ‘Age’
+   Undefined global functions or variables:
+     Age
+✔  checking Rd files ...
+✔  checking Rd metadata ...
+✔  checking Rd line widths ...
+✔  checking Rd cross-references ...
+✔  checking for missing documentation entries ...
+✔  checking for code/documentation mismatches (446ms)
+✔  checking Rd \usage sections (567ms)
+✔  checking Rd contents ...
+✔  checking for unstated dependencies in examples ...
+─  checking examples ... NONE
+✔  checking for non-standard things in the check directory
+✔  checking for detritus in the temp directory
+   
+   See
+     ‘/Users/gregchism/Library/Mobile Documents/com~apple~CloudDocs/Desktop/rrcompendium.Rcheck/00check.log’
+   for details.
+   
+   
+── R CMD check results ──────────────────────────── rrcompendium 0.0.0.9000 ────
+Duration: 10.6s
+
+❯ checking dependencies in R code ... WARNING
+  '::' or ':::' import not declared from: ‘dplyr’
+
+❯ checking R code for possible problems ... NOTE
+  group_age: no visible binding for global variable ‘Age’
+  Undefined global functions or variables:
+    Age
+
+0 errors ✔ | 1 warning ✖ | 1 note ✖</code></pre>
+<hr>
+</section>
+<section id="add-dependency" class="level3">
+<h3 class="anchored" data-anchor-id="add-dependency">Add dependency</h3>
+<p>In this next round of <code>checks</code>, the note about undefined global functions <code>mutate</code> and <code>recode</code> is gone, but now there’s a <strong>warning</strong> regarding <code>'::' or ':::' import not declared from: 'dplyr'</code>. It’s because we want to import functions from <code>dplyr</code> but the package <strong>needs to be a dependency</strong> in the <code>Imports</code> field of the <code>DESCRIPTION</code> file.</p>
+<p>We can add <code>dplyr</code> to <code>Imports</code> with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_package</span>(<span class="st">"dplyr"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>✔ Setting active project to '/Users/gregchism/Library/Mobile Documents/com~apple~CloudDocs/Desktop/rrcompendium'
+✔ Adding 'dplyr' to Imports field in DESCRIPTION
+• Refer to functions with `dplyr::fun()`</code></pre>
+<p>and the <code>DESCRIPTION</code> file now includes</p>
+<pre><code>Imports: 
+    bookdown,
+    dplyr,
+    here</code></pre>
+<p>Running <strong>Check</strong> again, the warning is now gone and we are left with the minor note:</p>
+<pre><code>❯ checking R code for possible problems ... NOTE
+  group_age: no visible binding for global variable ‘Age’
+  Undefined global functions or variables:
+    Age
+
+0 errors ✔ | 0 warnings ✔ | 1 note ✖</code></pre>
+<p>We’ll ignore this note for now. It results from the non-standard evaluation used in dplyr functions. See the <a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with <code>dplyr</code></a> vignette for more.</p>
+<hr>
+</section>
+<section id="test-out-function" class="level3">
+<h3 class="anchored" data-anchor-id="test-out-function">Test out function</h3>
+<p>Run 🔨 <strong>Install</strong> to ensure the installed package is up to date.</p>
+<p>Then let’s <strong>read in some data and test out our function</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rrcompendium) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"analysis"</span>, <span class="st">"data"</span>, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"raw_data"</span>, <span class="st">"gillespie.csv"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>Rows: 768 Columns: 9                                                                 
+── Column specification ───────────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (9): Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, Diabetes...</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code># A tibble: 768 × 9
+   Pregnancies Glucose BloodPressure SkinThickness Insulin   BMI Diabet…¹   Age Outcome
+         &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+ 1           6     148            72            35       0  33.6    0.627    50       1
+ 2           1      85            66            29       0  26.6    0.351    31       0
+ 3           8     183            64             0       0  23.3    0.672    32       1
+ 4           1      89            66            23      94  28.1    0.167    21       0
+ 5           0     137            40            35     168  43.1    2.29     33       1
+ 6           5     116            74             0       0  25.6    0.201    30       0
+ 7           3      78            50            32      88  31      0.248    26       1
+ 8          10     115             0             0       0  35.3    0.134    29       0
+ 9           2     197            70            45     543  30.5    0.158    53       1
+10           8     125            96             0       0   0      0.232    54       1
+# … with 758 more rows, and abbreviated variable name ¹​DiabetesPedigreeFunction</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">group_age</span>(data) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code># A tibble: 768 × 9
+   Pregnancies Glucose BloodPressure SkinThickness Insulin   BMI Diabet…¹ Age   Outcome
+         &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+ 1           6     148            72            35       0  33.6    0.627 Elde…       1
+ 2           1      85            66            29       0  26.6    0.351 Elde…       0
+ 3           8     183            64             0       0  23.3    0.672 Elde…       1
+ 4           1      89            66            23      94  28.1    0.167 Elde…       0
+ 5           0     137            40            35     168  43.1    2.29  Elde…       1
+ 6           5     116            74             0       0  25.6    0.201 Elde…       0
+ 7           3      78            50            32      88  31      0.248 Elde…       1
+ 8          10     115             0             0       0  35.3    0.134 Elde…       0
+ 9           2     197            70            45     543  30.5    0.158 Elde…       1
+10           8     125            96             0       0   0      0.232 Elde…       1
+# … with 758 more rows, and abbreviated variable name ¹DiabetesPedigreeFunction</code></pre>
+<p><strong>It works!</strong> 🎉</p>
+</section>
+<section id="time-for-another-renvsnapshot" class="level3">
+<h3 class="anchored" data-anchor-id="time-for-another-renvsnapshot">Time for another <code>renv::snapshot()</code>!</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="test-function" class="level2">
+<h2 class="anchored" data-anchor-id="test-function">Test function</h2>
+<p><strong>Testing is a vital part of package development</strong>. It ensures that our code does what you want it to do.</p>
+<p>Once we have testing framework, the workflow is straightforward:</p>
+<ol type="1">
+<li>Modify your code or tests.</li>
+<li>Test your package with Ctrl/Cmd + Shift + T or <code>devtools::test()</code>.</li>
+<li>Repeat until all tests pass.</li>
+</ol>
+<hr>
+<section id="create-a-test-file" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-test-file">Create a test file</h3>
+<p>Similar to <code>usethis::use_r()</code> for package source code files, we can use <code>usethis::use_test()</code> to create the framework for our tests.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_test</span>(<span class="at">name =</span> <span class="st">"process-data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>✔ Adding 'testthat' to Suggests field in DESCRIPTION
+✔ Setting Config/testthat/edition field in DESCRIPTION to '3'
+✔ Creating 'tests/testthat/'
+✔ Writing 'tests/testthat.R'
+✔ Writing 'tests/testthat/test-process-data.R'
+• Modify 'tests/testthat/test-process-data.R'</code></pre>
+<p>This will:</p>
+<ol type="1">
+<li>Create a <code>tests/testthat</code> directory.</li>
+<li>Add testthat to the <code>Suggests</code> field in the <code>DESCRIPTION</code>.</li>
+<li>Create a file <code>tests/testthat.R</code> that runs tests when <code>R CMD check</code> runs.</li>
+<li>Create a test file in <code>tests/testthat/</code> appending <code>test-</code> to the <code>name</code> argument.</li>
+</ol>
+<hr>
+<section id="testthat.r" class="level4">
+<h4 class="anchored" data-anchor-id="testthat.r"><code>testthat.R</code></h4>
+<p>The <strong><code>testthat.R</code> file runs all the tests</strong>.</p>
+<p>You can use this file to load any additional packages required for testing (although explicit <code>NAMESPACE</code> notation <code>::</code> as in package source code is still preferable to ensure accuracy of tests)</p>
+<pre><code>library(testthat)
+library(rrcompendium)
+
+test_check("rrcompendium")</code></pre>
+<hr>
+</section>
+<section id="test-process-data" class="level4">
+<h4 class="anchored" data-anchor-id="test-process-data">test-process-data</h4>
+<p><code>usethis::use_test()</code> also <strong>creates and opens test file test-process-data</strong> and pre-populates it with an example test.</p>
+<pre><code>test_that("multiplication works", {
+  expect_equal(2 * 2, 4)
+})</code></pre>
+<p>There are <strong>two elements to any test</strong>:</p>
+<ul>
+<li><p><code>desc</code>: test name. Names should be kept as brief as possible, as they are often used as line prefixes.</p></li>
+<li><p><code>code</code>: test code containing expectations</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="create-test-data" class="level3">
+<h3 class="anchored" data-anchor-id="create-test-data">Create test data</h3>
+<p>To test our function <strong>we’ll need some data</strong>. The best way is to include an example dataset, in this case we’ll just use <code>diabetes.csv</code>. However we need to <strong>store the data in a directory that is still accessible when the package is built</strong>.</p>
+<p>Anything in the <code>.Rbuildignore</code> file will be ignored during building and installation, which <strong>currently ignores the entire <code>analysis/</code> directory</strong>, including our data. <em>Note that the order might be different for you, but it shouldn’t matter.</em></p>
+<pre><code>^rrcompendium\.Rproj$
+^\.Rproj\.user$
+analysis
+^LICENSE\.md$
+^README\.Rmd$
+^README-.*\.png$
+^CONDUCT\.md$
+^CONTRIBUTING\.md$
+^runtime\.txt$</code></pre>
+<p>We can <strong>make files available after install by including them in an <code>inst/</code> directory</strong>.</p>
+<p>When a package is installed, everything in <code>inst/</code> is copied into the top-level package directory. You are free to put anything you like in <code>inst/</code> with one caution: <strong>because <code>inst/</code> is copied into the top-level directory, you should never use a sub-directory with the same name as an existing directory</strong>.</p>
+<p>This means that you should generally avoid <code>inst/build</code>, <code>inst/data</code>, <code>inst/demo</code>, <code>inst/exec</code>, <code>inst/help</code>, <code>inst/html</code>, <code>inst/inst</code>, <code>inst/libs</code>, <code>inst/Meta</code>, <code>inst/man</code>, <code>inst/po</code>, <code>inst/R</code>, <code>inst/src</code>, <code>inst/tests</code>, <code>inst/tools</code>, and <code>inst/vignettes</code>.</p>
+<hr>
+<section id="create-insttestdata-directory" class="level4">
+<h4 class="anchored" data-anchor-id="create-insttestdata-directory">Create <code>inst/testdata/</code> directory</h4>
+<p>Let’s create <strong>an <code>inst/</code> directory and within it a <code>testdata/</code> sub-directory</strong> to save our example data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"inst"</span>, <span class="st">"testdata"</span>), <span class="at">recursive =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="copy-example-data" class="level4">
+<h4 class="anchored" data-anchor-id="copy-example-data">Copy example data</h4>
+<p>Now let’s <strong>make a copy of <code>diabetes.csv</code> into the <code>inst/testdata/</code> directory</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.copy</span>(<span class="at">from =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"analysis"</span>, <span class="st">"data"</span>,</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"raw_data"</span>, <span class="st">"diabetes.csv"</span>), </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">to =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"inst"</span>, <span class="st">"testdata"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You should now have an inst folder containing the following files</p>
+<pre><code>inst
+└── testdata
+    └── diabetes.csv</code></pre>
+<hr>
+</section>
+<section id="install" class="level4">
+<h4 class="anchored" data-anchor-id="install">Install</h4>
+<p>Run 🔨 <strong>Install</strong> so that <code>testdata/</code> is <strong>included in the build</strong>.</p>
+<p>We can now <strong>use <code>system.file()</code>, which finds the full names of files in packages</strong>, in our test script to load our test data set.</p>
+<pre><code>system.file(…, package = "my_package") </code></pre>
+<p>It uses anything supplied to <code>…</code> to build the path to the file, much like <code>here::here()</code>.</p>
+<p>So in <code>test-process-data.R</code>, we can now write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">context</span>(<span class="st">"test-process-data"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">system.file</span>(<span class="st">"testdata"</span>,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"gillespie.csv"</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">package =</span> <span class="st">"rrcompendium"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a step back and make sure <strong>all of these package dependencies are in out <code>DESCRIPTION</code></strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>rrtools<span class="sc">::</span><span class="fu">add_dependencies_to_description</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our <code>Imports</code> should look like this:</p>
+<pre><code>Imports: 
+    bookdown,
+    dplyr,
+    here,
+    knitr (&gt;= 1.39),
+    pacman (&gt;= 0.5.1),
+    readr (&gt;= 2.1.2),
+    rmarkdown (&gt;= 2.14)</code></pre>
+<p>We can <strong>also use this dataset to provide a working example of <code>recode_system(data)</code></strong> in the function documentation. So let’s go back to <code>R/process-data.R</code> and add an example to our documentation</p>
+<pre><code>#' @examples {
+#' data &lt;- readr::read_csv(system.file("testdata", "diabetes.csv",
+#' package = "rrcompendium"))
+#' recode_system_size(data)
+#' }</code></pre>
+<p><strong>Document</strong> and the <strong>Install</strong> to update package.</p>
+<hr>
+</section>
+</section>
+<section id="write-test" class="level3">
+<h3 class="anchored" data-anchor-id="write-test">Write test</h3>
+<p>Let’s now <strong>write a couple of tests</strong>.</p>
+<hr>
+<section id="test-grouping" class="level4">
+<h4 class="anchored" data-anchor-id="test-grouping">Test <strong>grouping</strong></h4>
+<p>First let’s <strong>test that grouping works</strong>, by checking the unique values of <code>Age</code> after running <code>group_age</code>. Add the following to <code>test-process-data.R</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"grouping works"</span>, {</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(<span class="fu">unique</span>(<span class="fu">group_age</span>(data)<span class="sc">$</span>Age),</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">"Young"</span>, <span class="st">"Middle"</span>, <span class="st">"Elderly"</span>))</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="test-dimensions" class="level4">
+<h4 class="anchored" data-anchor-id="test-dimensions">Test dimensions</h4>
+<p>Let’s also test that the <strong>original dimensions of <code>data</code> are preserved</strong> after running our function. Add the following to <code>test-process-data.R</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"data dims preserved"</span>, {</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_equal</span>(<span class="fu">dim</span>(<span class="fu">group_age</span>(data)),</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">dim</span>(data))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The complete <code>test-process-data.R</code> file should look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">system.file</span>(<span class="st">"testdata"</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"diabetes.csv"</span>,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">package =</span> <span class="st">"rrcompendium"</span>))</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"grouping works"</span>, {</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(<span class="fu">unique</span>(<span class="fu">group_age</span>(data)<span class="sc">$</span>Age),</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">"Middle"</span>, <span class="st">"Young"</span>, <span class="st">"Elderly"</span>))</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"data dims preserved"</span>, {</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(<span class="fu">dim</span>(<span class="fu">group_age</span>(data)),</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>               <span class="fu">dim</span>(data))</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since we are using <code>read_csv</code> from the <code>readr</code> package, if you didn’t use <code>rrtools::add_dependencies_to_description()</code> above, you will need to add <code>readr</code> to the dependencies.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>rrtools<span class="sc">::</span><span class="fu">add_dependencies_to_description</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Check that your <code>Imports</code> and <code>Suggests</code> in the <code>DESCRIPTION</code> looks like this:</p>
+<pre><code>Imports: 
+    bookdown,
+    dplyr,
+    here,
+    knitr (&gt;= 1.39),
+    pacman (&gt;= 0.5.1),
+    readr (&gt;= 2.1.2),
+    rmarkdown (&gt;= 2.14)
+Suggests: 
+    devtools,
+    git2r,
+    testthat (&gt;= 3.0.0)</code></pre>
+<p>Once our tests are saved, we’re ready to test our package! 😃</p>
+<hr>
+</section>
+</section>
+<section id="test-package" class="level3">
+<h3 class="anchored" data-anchor-id="test-package">Test package</h3>
+<p>We can test our package through:</p>
+<ul>
+<li><p><code>More &gt; Test Package</code> in the <strong>Build</strong> panel</p></li>
+<li><p><code>Ctrl/Cmd + Shift + T</code></p></li>
+<li><p><code>devtools::test()</code></p></li>
+</ul>
+<!-- -->
+<pre><code>Failure (test-process-data.R:8:3): grouping works
+unique(group_age(data)$Age) (`actual`) not equal to c("Young", "Middle", "Elderly") (`expected`).
+
+`actual`:   "Middle" "Young"  "Elderly"
+`expected`: "Young"  "Middle" "Elderly"
+───────────────────────────────────────────────────────────────────────
+
+══ Results ════════════════════════════════════════════════════════════
+Duration: 0.2 s
+
+[ FAIL 1 | WARN 0 | SKIP 0 | PASS 1 ]</code></pre>
+<p>Interesting… There’s a weird character order <code>Failure</code>. In this case, let’s just mirror what the <code>actual</code> is as in the <code>expected</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="fu">system.file</span>(<span class="st">"testdata"</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"diabetes.csv"</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">package =</span> <span class="st">"rrcompendium"</span>))</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"grouping works"</span>, {</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(<span class="fu">unique</span>(<span class="fu">group_age</span>(data)<span class="sc">$</span>Age),</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>               <span class="fu">c</span>(<span class="st">"Middle"</span>, <span class="st">"Young"</span>, <span class="st">"Elderly"</span>))</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"data dims preserved"</span>, {</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expect_equal</span>(<span class="fu">dim</span>(<span class="fu">group_age</span>(data)),</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>               <span class="fu">dim</span>(data))</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>══ Results ════════════════════════════════════════════════════════════
+Duration: 0.1 s
+
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 2 ]</code></pre>
+<section id="our-tests-pass" class="level4">
+<h4 class="anchored" data-anchor-id="our-tests-pass"><strong>Our tests pass!!</strong></h4>
+<p>🎉 Now <strong>every time you check your package, the test will also be run automatically</strong>.</p>
+</section>
+</section>
+<section id="a-final-renvsnapshot" class="level3">
+<h3 class="anchored" data-anchor-id="a-final-renvsnapshot">A final <code>renv::snapshot()</code>!</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s <strong>commit our work to GitHub</strong> and move on.</p>
+<hr>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./create-compendium.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Create a Research Compendium</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./reproduce-distill-paper.html" class="pagination-link">
+        <span class="nav-page-text">Reproduce a paper with Distill</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

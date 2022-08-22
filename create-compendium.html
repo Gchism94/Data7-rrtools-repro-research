@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Reproducible Research with GitHub and rrtools - Create a Research Compendium</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./manage-as-package.html" rel="next">
+<link href="./intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Create a Research Compendium</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reproducible Research with GitHub and rrtools</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Reproducible Research in R with <code>rrtools</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./create-compendium.html" class="sidebar-item-text sidebar-link active">Create a Research Compendium</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manage-as-package.html" class="sidebar-item-text sidebar-link">Manage functionality as a package</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reproduce-distill-paper.html" class="sidebar-item-text sidebar-link">Reproduce a paper with Distill</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#workshop-setup" id="toc-workshop-setup" class="nav-link active" data-scroll-target="#workshop-setup">Workshop setup</a>
+  <ul class="collapse">
+  <li><a href="#create-new-github-repository" id="toc-create-new-github-repository" class="nav-link" data-scroll-target="#create-new-github-repository">Create new GitHub Repository</a></li>
+  <li><a href="#launch-rstudio" id="toc-launch-rstudio" class="nav-link" data-scroll-target="#launch-rstudio">Launch RStudio</a></li>
+  <li><a href="#install-packages" id="toc-install-packages" class="nav-link" data-scroll-target="#install-packages">Install packages</a></li>
+  </ul></li>
+  <li><a href="#configure-git" id="toc-configure-git" class="nav-link" data-scroll-target="#configure-git">Configure <code>git</code></a>
+  <ul class="collapse">
+  <li><a href="#set-git-token" id="toc-set-git-token" class="nav-link" data-scroll-target="#set-git-token"><strong>Set git token</strong></a></li>
+  <li><a href="#register-git-token" id="toc-register-git-token" class="nav-link" data-scroll-target="#register-git-token"><strong>Register git token</strong></a></li>
+  </ul></li>
+  <li><a href="#create-compendium" id="toc-create-compendium" class="nav-link" data-scroll-target="#create-compendium">Create compendium</a>
+  <ul class="collapse">
+  <li><a href="#load-library" id="toc-load-library" class="nav-link" data-scroll-target="#load-library">Load library</a></li>
+  <li><a href="#create-compendium-1" id="toc-create-compendium-1" class="nav-link" data-scroll-target="#create-compendium-1">Create Compendium</a></li>
+  <li><a href="#inspect-templates" id="toc-inspect-templates" class="nav-link" data-scroll-target="#inspect-templates">Inspect templates</a></li>
+  </ul></li>
+  <li><a href="#update-description-file" id="toc-update-description-file" class="nav-link" data-scroll-target="#update-description-file">Update description file</a>
+  <ul class="collapse">
+  <li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title">Title</a></li>
+  <li><a href="#version" id="toc-version" class="nav-link" data-scroll-target="#version">Version</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors">Authors</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
+  <li><a href="#recap" id="toc-recap" class="nav-link" data-scroll-target="#recap">Recap</a></li>
+  </ul></li>
+  <li><a href="#create-readme" id="toc-create-readme" class="nav-link" data-scroll-target="#create-readme">Create README</a>
+  <ul class="collapse">
+  <li><a href="#render-readme.md-commit-and-push-to-github" id="toc-render-readme.md-commit-and-push-to-github" class="nav-link" data-scroll-target="#render-readme.md-commit-and-push-to-github">Render README.md, commit and push to GitHub</a></li>
+  </ul></li>
+  <li><a href="#setting-up-the-analysis-folder" id="toc-setting-up-the-analysis-folder" class="nav-link" data-scroll-target="#setting-up-the-analysis-folder">Setting up the analysis folder</a>
+  <ul class="collapse">
+  <li><a href="#create-analysis" id="toc-create-analysis" class="nav-link" data-scroll-target="#create-analysis">Create <code>analysis</code></a></li>
+  </ul></li>
+  <li><a href="#commit-and-push-to-github" id="toc-commit-and-push-to-github" class="nav-link" data-scroll-target="#commit-and-push-to-github">Commit and push to GitHub</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Create a Research Compendium</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="workshop-setup" class="level2">
+<h2 class="anchored" data-anchor-id="workshop-setup">Workshop setup</h2>
+<section id="create-new-github-repository" class="level3">
+<h3 class="anchored" data-anchor-id="create-new-github-repository">Create new GitHub Repository</h3>
+<ul>
+<li><p>Git into <strong>GitHub</strong></p></li>
+<li><p>Go you your <strong>Repositories</strong></p></li>
+<li><p>Click on <strong>New</strong> Repository</p></li>
+<li><p>Name the repository <strong>rrcompendium</strong></p></li>
+<li><p>Add a <strong>README</strong></p></li>
+<li><p>Create your <strong>Repository</strong></p></li>
+<li><p>Click on <strong>Code</strong></p></li>
+<li><p>Copy the <strong>HTTPS URL</strong></p></li>
+</ul>
+<hr>
+</section>
+<section id="launch-rstudio" class="level3">
+<h3 class="anchored" data-anchor-id="launch-rstudio">Launch RStudio</h3>
+<ul>
+<li><p>Click on new <strong>RStudio Project</strong></p></li>
+<li><p>Select <strong>Version Control</strong></p></li>
+<li><p>Select <strong>Git</strong></p></li>
+<li><p>Paste your <strong>URL from above</strong></p></li>
+<li><p>Start <strong>Project</strong></p></li>
+</ul>
+<hr>
+</section>
+<section id="install-packages" class="level3">
+<h3 class="anchored" data-anchor-id="install-packages">Install packages</h3>
+<p>Next, let’s <strong>install the packages we’ll need, starting with <code>rrtools</code></strong> (if you haven’t got devtools installed, you’ll need to before you can install <code>rrtools</code> from GitHub).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"devtools"</span>)) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"benmarwick/rrtools"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Installing <code>rrtools</code> <strong>imports many of the packages we’ll need today</strong> (e.g., the imports section of the <a href="https://github.com/benmarwick/rrtools/blob/master/DESCRIPTION"><code>DESCRIPTION</code></a> file).</p>
+<pre><code>Imports: devtools, git2r, whisker, rstudioapi, rmarkdown, curl, RCurl,
+    jsonlite, methods, httr, usethis, clisymbols,
+    crayon, glue, bookdown, here</code></pre>
+<hr>
+</section>
+</section>
+<section id="configure-git" class="level2">
+<h2 class="anchored" data-anchor-id="configure-git">Configure <code>git</code></h2>
+<p>If your git configuration hasn’t been set yet, we need to make sure we do so.</p>
+<section id="set-git-token" class="level3">
+<h3 class="anchored" data-anchor-id="set-git-token"><strong>Set git token</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_github_token</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Name your new <strong>personal access token (PAT)</strong></p></li>
+<li><p>Set <strong>expiration</strong> to whenever (default is 30 days)</p></li>
+<li><p>Click <strong>Generate token</strong></p></li>
+<li><p>Save your <strong>Token</strong> in a safe place; you will not be able to see it again</p></li>
+<li><p>Copy your <strong>Token</strong> and close the window</p></li>
+</ul>
+<hr>
+</section>
+<section id="register-git-token" class="level3">
+<h3 class="anchored" data-anchor-id="register-git-token"><strong>Register git token</strong></h3>
+<p>Paste the following code from the output above and paste your <strong>Token</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gitcreds<span class="sc">::</span><span class="fu">gitcreds_set</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>? Enter password or token: ghp_##################
+-&gt; Adding new credentials...
+-&gt; Removing credetials from cache...
+-&gt; Done.</code></pre>
+<p><strong>Copy the generated PAT</strong> to <strong>paste into your <code>.Renviron</code></strong> file as system variable <strong><code>GITHUB_PAT</code></strong>.</p>
+<p>You can <strong>open your <code>.Renviron</code> file for editing</strong> with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">edit_r_environ</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Paste your copied PAT into your <code>.Renviron</code></strong> file as system variable <code>GITHUB_PAT</code>, save and close. Now every time R is reloaded, your PAT will be stored in system variable <code>GITHUB_PAT</code>.</p>
+<hr>
+</section>
+</section>
+<section id="create-compendium" class="level2">
+<h2 class="anchored" data-anchor-id="create-compendium">Create compendium</h2>
+<p>Let’s start by <strong>creating a blank research compendium</strong> for us to work in.</p>
+<section id="load-library" class="level3">
+<h3 class="anchored" data-anchor-id="load-library">Load library</h3>
+<p>First we need to load <code>rrtools</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rrtools) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This performs a quick check to <strong>confirm you have Git installed and configured</strong></p>
+<p>If you do, you should see the following output in the console.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>✔ Git is installed on this computer, your username is Greg T. Chism</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="create-compendium-1" class="level3">
+<h3 class="anchored" data-anchor-id="create-compendium-1">Create Compendium</h3>
+<p>Now we’re ready to <strong>create our compendium</strong>. We use <strong><code>rrtools::use_compendium()</code></strong> and supply it with a path for our new compendium. The final part of our path becomes the compendium name. Because the function effectively creates a package, only a <strong>single string of lowercase alpha characters is accepted as a name</strong>. Let’s use <code>rrcompendium</code> as the final part of our path.</p>
+<p><strong>Quick tip</strong>: If you don’t know what path you’re currently in, you can check with the <strong><code>here</code></strong> package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>[1] "/Users/gregchism/Library/Documents/Desktop/rrtools-repro-research"</code></pre>
+<p>A way to short-hand this path is to say <code>"~/Desktop/rrtools-repro-research"</code>, in which the <code>~</code> (tilde) is a shortcut for your home directory.</p>
+<p>To <strong>create <code>rrcompendium</code> with a directory into your Desktop you can use:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rrtools<span class="sc">::</span><span class="fu">use_compendium</span>(<span class="st">"~/Desktop/rrcompendium"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Go ahead and <strong>create a compendium at a location of your choice</strong>. Use the compendium name <code>rrcompendium</code> for ease of following the materials. If the call was successful you should see the following console output:</p>
+<pre><code>✔ Setting active project to '~/Desktop/rrcompendium'
+✔ Creating 'R/'
+✔ Creating 'man/'
+✔ Writing 'DESCRIPTION'
+✔ Writing 'NAMESPACE'
+✔ Writing 'rrcompendium.Rproj'
+✔ Adding '.Rproj.user' to '.gitignore'
+✔ Adding '^rrcompendium\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+✔ Opening new project 'rrcompendium' in RStudio
+✔ The package rrcompendium has been created
+✔ Opening the new compendium in a new RStudio session...
+
+Next, you need to:  ↓ ↓ ↓ 
+● Edit the DESCRIPTION file
+● Use other 'rrtools' functions to add components to the compendium</code></pre>
+<p>and a <strong>new Rstudio session</strong> launched for the <strong>compendium</strong>.</p>
+<p>Periodically update <code>Imports:</code> in the <code>DESCRIPTION</code> with packages your compendium needs using <code>rrtools::add_dependencies_to_description()</code></p>
+<hr>
+</section>
+<section id="inspect-templates" class="level3">
+<h3 class="anchored" data-anchor-id="inspect-templates">Inspect templates</h3>
+<pre><code>.
+├── DESCRIPTION &lt;- .............................package metadata
+|                                               dependency management
+├── NAMESPACE &lt;- ...............................AUTO-GENERATED on build
+├── R &lt;- .......................................folder for functions
+├── man &lt;- .....................................AUTO-GENERATED on build
+└── rrcompendium.Rproj &lt;- ......................rstudio project file</code></pre>
+<p><code>rrtools::use_compendium()</code> creates the <strong>bare backbone of infrastructure required for a research compendium</strong>. At this point it provides facilities to store general metadata about our compendium (e.g., bibliographic details to create a citation) and manage dependencies in the <code>DESCRIPTION</code> file and store and document functions in the <code>R/</code> folder (<em>note that you will have to create this now</em>). Together these allow us to <strong>manage, install and share functionality associated with our project</strong>.</p>
+<hr>
+</section>
+</section>
+<section id="update-description-file" class="level2">
+<h2 class="anchored" data-anchor-id="update-description-file">Update description file</h2>
+<p>Let’s <strong>update some details in the <code>DESCRIPTION</code> file</strong>:</p>
+<pre><code>Package: rrcompendium
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com")
+Description: What the package does (one paragraph)
+License: What license it uses
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true</code></pre>
+<hr>
+<section id="title" class="level3">
+<h3 class="anchored" data-anchor-id="title">Title</h3>
+<p>Let’s <strong>give our compendium a descriptive title</strong>:</p>
+<pre><code>Title: Reproducible Research Compendium using GitHub and RStudio</code></pre>
+<hr>
+</section>
+<section id="version" class="level3">
+<h3 class="anchored" data-anchor-id="version">Version</h3>
+<p>We don’t need to change the version now but using <a href="https://semver.org/">semantic versioning</a> for our compendium is essential to track versions, and can save us a lot of pain from accidental changes. In general, <strong>versions below <code>0.0.1</code> are in development or pre-releases</strong>, hence the <code>DESCRIPTION</code> file defaults to <code>0.0.0.9000</code>.</p>
+<hr>
+</section>
+<section id="authors" class="level3">
+<h3 class="anchored" data-anchor-id="authors">Authors</h3>
+<p>Next let’s <strong>specify the author of the compendium</strong>. Edit with <strong>your own details</strong>.</p>
+<p>Note that I changed the authors format to correct some bugs that I’ve run across.</p>
+<pre><code>Authors:
+    person(given = "Greg",
+           family = "Chism", "gchism@arizona.edu", 
+           role = c("aut", "cre"))</code></pre>
+<p>The roles are important and can be assigned to several authors - see <code>?person</code> for more details.</p>
+<hr>
+</section>
+<section id="description" class="level3">
+<h3 class="anchored" data-anchor-id="description">Description</h3>
+<p>Let’s <strong>add a bit more detail about the contents of the compendium</strong> in the Description.</p>
+<pre><code>Description: This repository contains a template research compendium from the Workshop titled Reproducible Research Compendium using GitHub and RStudio</code></pre>
+<hr>
+</section>
+<section id="license" class="level3">
+<h3 class="anchored" data-anchor-id="license">License</h3>
+<p>Finally, let’s <strong>add a license for the material we create</strong>. We’ll use an <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3 License</a>, which can be used for all components of a compendium. We can do this with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> usethis<span class="sc">::</span><span class="fu">use_gpl3_license</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>✔ Setting active project to '/cloud/project'
+✔ Setting License field in DESCRIPTION to 'GPL (&gt;= 3)'
+✔ Writing 'LICENSE.md'
+✔ Adding '^LICENSE\\.md$' to '.Rbuildignore'</code></pre>
+<p>This creates a <code>LICENSE.md</code> file and updates the <code>DESCRIPTION</code> file with details of the license.</p>
+<pre><code>License: GPL (&gt;= 3)</code></pre>
+<hr>
+</section>
+<section id="recap" class="level3">
+<h3 class="anchored" data-anchor-id="recap">Recap</h3>
+<p>We’ve finished updating our <code>DESCRIPTION</code> file! 🎉</p>
+<p>It should look a bit like this:</p>
+<pre><code>Package: rrcompendium
+Title: Title: Reproducible Research Compendium using GitHub and RStudio
+Version: 0.0.0.9000
+Authors:
+    person(given = "Greg",
+           family = "Chism", "gchism@arizona.edu", 
+           role = c("aut", "cre"))
+Description: This repository contains a template research compendium from the Workshop titled Reproducible Research Compendium using GitHub and RStudio
+License: GPL (&gt;= 3)
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true</code></pre>
+<p>and your project folder should contain:</p>
+<pre><code>.
+├── DESCRIPTION
+├── LICENSE
+├── LICENSE.md
+├── NAMESPACE
+└── rrcompendium.Rproj</code></pre>
+<p>Let’s <strong>commit our work</strong> and move on to preparing our compendium for sharing on GitHub.</p>
+<hr>
+</section>
+</section>
+<section id="create-readme" class="level2">
+<h2 class="anchored" data-anchor-id="create-readme">Create README</h2>
+<p>Every GitHub repository needs a <code>README</code> landing page.</p>
+<p>We can <strong>create an <code>rrtoolsREADME</code> template</strong> using:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rrtools<span class="sc">::</span><span class="fu">use_readme_rmd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>✔ Creating 'README.Rmd' from template.
+✔ Adding 'README.Rmd' to `.Rbuildignore`.
+● Modify 'README.Rmd'
+✔ Rendering README.Rmd to README.md for GitHub.
+✔ Adding code of conduct.
+✔ Creating 'CONDUCT.md' from template.
+✔ Adding 'CONDUCT.md' to `.Rbuildignore`.
+✔ Adding instructions to contributors.
+✔ Creating 'CONTRIBUTING.md' from template.
+✔ Adding 'CONTRIBUTING.md' to `.Rbuildignore`.</code></pre>
+<p>This <strong>generates <a href="README.Rmd">README.Rmd</a> and renders it to <a href="README.md">README.md</a></strong>, ready to display on GitHub. It contains:</p>
+<ul>
+<li>A <strong>template citation</strong> to show others how to cite your project.</li>
+<li><strong>License information for the text, figures, code and data</strong> in your compendium</li>
+</ul>
+<!-- -->
+<pre><code>---
+output: github_document
+---
+
+&lt;!-- README.md is generated from README.Rmd. Please edit that file --&gt;
+
+``{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#&gt;",
+  fig.path = "README-"
+)
+``
+
+# rrcompendium
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Gchism94/rrcompendium/master?urlpath=rstudio)
+
+This repository contains the data and code for our paper:
+
+&gt; Authors, (YYYY). _Title of paper_. Name of journal/book &lt;https://doi.org/xxx/xxx&gt;
+
+Our pre-print is online here:
+
+&gt; Authors, (YYYY). _Title of paper_. Name of journal/book, Accessed 03 May 2019. Online at &lt;https://doi.org/xxx/xxx&gt;
+
+
+### How to cite
+
+Please cite this compendium as:
+
+&gt; Authors, (2019). _Compendium of R code and data for 'Title of paper'_. Accessed 03 May 2019. Online at &lt;https://doi.org/xxx/xxx&gt;
+
+### How to download or install
+
+You can download the compendium as a zip from from this URL: &lt;/archive/master.zip&gt;
+
+Or you can install this compendium as an R package, rrcompendium, from GitHub with:
+### Licenses
+
+**Text and figures :**  [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/)
+
+**Code :** See the [DESCRIPTION](DESCRIPTION) file
+
+**Data :** [CC-0](http://creativecommons.org/publicdomain/zero/1.0/) attribution requested in reuse
+
+### Contributions
+
+We welcome contributions from everyone. Before you get started, please see our [contributor guidelines](CONTRIBUTING.md). Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.</code></pre>
+<hr>
+<p>The call also adds two other markdown files:</p>
+<ul>
+<li><code>CONDUCT.md</code>: a <strong>code of conduct for users</strong></li>
+<li><code>CONTRIBUTING.md</code>:: basic <strong>instructions for people who want to contribute</strong> to our compendium</li>
+</ul>
+<hr>
+<section id="render-readme.md-commit-and-push-to-github" class="level3">
+<h3 class="anchored" data-anchor-id="render-readme.md-commit-and-push-to-github">Render README.md, commit and push to GitHub</h3>
+<section id="weve-now-completed-our-rrtools-readme.rmd" class="level4">
+<h4 class="anchored" data-anchor-id="weve-now-completed-our-rrtools-readme.rmd">We’ve now completed our <code>rrtools</code> <code>README.Rmd</code>! 🎉</h4>
+<ul>
+<li><p>Render it to update the <code>README.md</code> file which is displayed on GitHub</p></li>
+<li><p><strong>Commit</strong> and <strong>push</strong> to GitHub.</p></li>
+</ul>
+</section>
+<section id="your-project-folder-should-contain" class="level4">
+<h4 class="anchored" data-anchor-id="your-project-folder-should-contain">Your project folder should contain:</h4>
+<pre><code>.
+├── CONDUCT.md
+├── CONTRIBUTING.md
+├── DESCRIPTION
+├── LICENSE.md
+├── NAMESPACE
+├── README.Rmd
+├── README.md
+└── rrcompendium.Rproj</code></pre>
+<hr>
+</section>
+</section>
+</section>
+<section id="setting-up-the-analysis-folder" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-analysis-folder">Setting up the analysis folder</h2>
+<section id="create-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="create-analysis">Create <code>analysis</code></h3>
+<p>We now need an <strong>analysis folder to contain our analyses and paper</strong>. We can do this using function <code>rrtools::use_analysis()</code></p>
+<p>The function has three <code>location =</code> options:</p>
+<ul>
+<li><p><code>top_level</code> to create a top-level <code>analysis/</code> directory</p></li>
+<li><p><code>inst</code> to create an <code>inst/</code> directory (so that all the sub-directories are available after the package is installed)</p></li>
+<li><p><code>vignettes</code> to create a <code>vignettes/</code> directory (and automatically update the <code>DESCRIPTION</code>).</p></li>
+</ul>
+<p>The default is a top-level <code>analysis/</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>rrtools<span class="sc">::</span><span class="fu">use_analysis</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>✔ Adding bookdown to Imports
+✔ Creating 'analysis' directory and contents
+✔ Creating 'analysis'
+✔ Creating 'analysis/paper'
+✔ Creating 'analysis/figures'
+✔ Creating 'analysis/templates'
+✔ Creating 'analysis/data'
+✔ Creating 'analysis/data/raw_data'
+✔ Creating 'analysis/data/derived_data'
+✔ Creating 'references.bib' from template.
+✔ Creating 'paper.Rmd' from template.
+
+Next, you need to:  ↓ ↓ ↓ ↓ 
+● Write your article/report/thesis, start at the paper.Rmd file
+● Add the citation style library file (csl) to replace the default provided here, see https://github.com/citation-style-language/
+● Add bibliographic details of cited items to the 'references.bib' file
+● For adding captions &amp; cross-referencing in an Rmd, see https://bookdown.org/yihui/bookdown/
+● For adding citations &amp; reference lists in an Rmd, see http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+
+Note that:
+⚠ Your data files are tracked by Git and will be pushed to GitHub</code></pre>
+<p>Regardless for <code>location</code> option, the contents of the created sub-directories are the same:</p>
+<pre><code>    analysis/
+    |
+    ├── paper/
+    │   ├── paper.Rmd       # this is the main document to edit
+    │   └── references.bib  # this contains the reference list information
+    
+    ├── figures/            # location of the figures produced by the Rmd
+    |
+    ├── data/
+    │   ├── DO-NOT-EDIT-ANY-FILES-IN-HERE-BY-HAND
+    │   ├── raw_data/       # data obtained from elsewhere
+    │   └── derived_data/   # data generated during the analysis
+    |
+    └── templates
+        ├── journal-of-archaeological-science.csl
+        |                   # this sets the style of citations &amp; references 
+        ├── template.docx   # used to style the output of the paper.Rmd
+        └── template.Rmd</code></pre>
+<p>Let’s inspect</p>
+<section id="paper.rmd" class="level4">
+<h4 class="anchored" data-anchor-id="paper.rmd"><code>paper.Rmd</code></h4>
+<p><code>paper.Rmd</code> is ready to write in and render with bookdown. It includes:</p>
+<ul>
+<li><p>a YAML header that identifies the <code>references.bib</code> file and the supplied <code>csl</code> file (Citation Style Language) to style the reference list)</p></li>
+<li><p>a <strong>colophon</strong> that <strong>adds some git commit details to the end of the document</strong>. This means that the output file (HTML/PDF/Word) is always traceable to a specific state of the code.</p></li>
+</ul>
+</section>
+<section id="references.bib" class="level4">
+<h4 class="anchored" data-anchor-id="references.bib"><code>references.bib</code></h4>
+<p>The <code>references.bib</code> file has just one item to demonstrate the format. It is ready to insert more reference details.</p>
+<p>We can replace the supplied <code>csl</code> file with a different citation style from <a href="https://github.com/citation-style-language/" class="uri">https://github.com/citation-style-language/</a></p>
+<hr>
+</section>
+</section>
+</section>
+<section id="commit-and-push-to-github" class="level2">
+<h2 class="anchored" data-anchor-id="commit-and-push-to-github">Commit and push to GitHub</h2>
+<p>You now have a template <strong>reproducible Research Compendium</strong> using <strong><code>rrtools</code></strong>!🎉</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./manage-as-package.html" class="pagination-link">
+        <span class="nav-page-text">Manage functionality as a package</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

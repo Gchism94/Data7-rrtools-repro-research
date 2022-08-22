@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr.&nbsp;Greg Chism">
+<meta name="dcterms.date" content="2022-08-22">
+
+<title>Reproducible Research with GitHub and rrtools</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./intro.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Reproducible Research with GitHub and rrtools</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reproducible Research with GitHub and rrtools</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">Reproducible Research in R with <code>rrtools</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./create-compendium.html" class="sidebar-item-text sidebar-link">Create a Research Compendium</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manage-as-package.html" class="sidebar-item-text sidebar-link">Manage functionality as a package</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reproduce-distill-paper.html" class="sidebar-item-text sidebar-link">Reproduce a paper with Distill</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#reproducible-research-in-r-with-rrtools" id="toc-reproducible-research-in-r-with-rrtools" class="nav-link active" data-scroll-target="#reproducible-research-in-r-with-rrtools">Reproducible Research in R with <code>rrtools</code></a></li>
+  <li><a href="#workshop-outline" id="toc-workshop-outline" class="nav-link" data-scroll-target="#workshop-outline">Workshop Outline:</a>
+  <ul class="collapse">
+  <li><a href="#welcome" id="toc-welcome" class="nav-link" data-scroll-target="#welcome"><span><strong>Welcome</strong></span></a></li>
+  <li><a href="#create-a-research-compendium" id="toc-create-a-research-compendium" class="nav-link" data-scroll-target="#create-a-research-compendium"><span><strong>Create a Research Compendium</strong></span></a></li>
+  <li><a href="#manage-functionality-as-a-package" id="toc-manage-functionality-as-a-package" class="nav-link" data-scroll-target="#manage-functionality-as-a-package"><span><strong>Manage functionality as a package</strong></span></a></li>
+  <li><a href="#reproduce-a-paper-in-rmd" id="toc-reproduce-a-paper-in-rmd" class="nav-link" data-scroll-target="#reproduce-a-paper-in-rmd"><span><strong>Reproduce a paper in Rmd</strong></span></a>
+  <ul class="collapse">
+  <li><a href="#level" id="toc-level" class="nav-link" data-scroll-target="#level">Level</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites:</a></li>
+  <li><a href="#system-requirements" id="toc-system-requirements" class="nav-link" data-scroll-target="#system-requirements">System Requirements:</a></li>
+  <li><a href="#disclaimer" id="toc-disclaimer" class="nav-link" data-scroll-target="#disclaimer">Disclaimer</a></li>
+  <li><a href="#original-workshop-based-on" id="toc-original-workshop-based-on" class="nav-link" data-scroll-target="#original-workshop-based-on">Original workshop based on:</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Reproducible Research with GitHub and rrtools</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr.&nbsp;Greg Chism </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 22, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="reproducible-research-in-r-with-rrtools" class="level1 unnumbered">
+<h1 class="unnumbered">Reproducible Research in R with <code>rrtools</code></h1>
+<hr>
+</section>
+<section id="workshop-outline" class="level1">
+<h1>Workshop Outline:</h1>
+<section id="welcome" class="level2">
+<h2 class="anchored" data-anchor-id="welcome"><a href="https://annakrystalli.me/rrtools-repro-research/intro.html"><strong>Welcome</strong></a></h2>
+<p>Introduction to the workshop and what you can expect to take away</p>
+<hr>
+</section>
+<section id="create-a-research-compendium" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-research-compendium"><a href="https://annakrystalli.me/rrtools-repro-research/create-compendium.html"><strong>Create a Research Compendium</strong></a></h2>
+<p>Create a template Research Compendium from <strong><code>rrtools</code></strong></p>
+<hr>
+</section>
+<section id="manage-functionality-as-a-package" class="level2">
+<h2 class="anchored" data-anchor-id="manage-functionality-as-a-package"><a href="https://annakrystalli.me/rrtools-repro-research/package.html"><strong>Manage functionality as a package</strong></a></h2>
+<p>Make your Compendium an R Package to ensure reproducibility</p>
+<hr>
+</section>
+<section id="reproduce-a-paper-in-rmd" class="level2">
+<h2 class="anchored" data-anchor-id="reproduce-a-paper-in-rmd"><a href="https://annakrystalli.me/rrtools-repro-research/paper.html"><strong>Reproduce a paper in Rmd</strong></a></h2>
+<p>Produce a Distill R Markdown version of a paper</p>
+<hr>
+<section id="level" class="level3">
+<h3 class="anchored" data-anchor-id="level">Level</h3>
+<p>Intermediate</p>
+</section>
+<section id="prerequisites" class="level3">
+<h3 class="anchored" data-anchor-id="prerequisites">Prerequisites:</h3>
+<p>Familiarity with Version Control through RStudio and R Markdown.</p>
+</section>
+<section id="system-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="system-requirements">System Requirements:</h3>
+<section id="pandoc-1.17.2" class="level4">
+<h4 class="anchored" data-anchor-id="pandoc-1.17.2">Pandoc (&gt;= 1.17.2)</h4>
+</section>
+<section id="latex" class="level4">
+<h4 class="anchored" data-anchor-id="latex">LaTeX</h4>
+<p>If you don’t have LaTeX installed, consider installing <code>TinyTeX</code>, a custom LaTeX distribution based on TeX Live that is small in size but functions well in most cases, especially for R users.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'tinytex'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Check <a href="https://yihui.name/tinytex/">docs</a> before before installing.</p>
+</section>
+<section id="devtools-requirements" class="level4">
+<h4 class="anchored" data-anchor-id="devtools-requirements"><code>devtools</code> requirements</h4>
+<p>You might also need a set of <strong>development tools</strong> to install and run <code>devtools</code>. On <strong>Windows</strong>, download and install <a href="https://cran.r-project.org/bin/windows/Rtools/"><strong>Rtools</strong></a>, and <code>devtools</code> takes care of the rest. On <strong>Mac</strong>, install the <a href="https://developer.apple.com/xcode/"><strong>Xcode</strong></a> command line tools. On <strong>Linux</strong>, install the <strong>R development package</strong>, usually called <strong><code>r-devel</code></strong> or <strong><code>r-base-dev</code></strong>.</p>
+<hr>
+</section>
+</section>
+<section id="disclaimer" class="level3">
+<h3 class="anchored" data-anchor-id="disclaimer">Disclaimer</h3>
+<p>These workshop materials are derived from materials authored by <a href="https://github.com/annakrystalli/rrtools-repro-research">Anna Krystalli</a>, and <span class="citation" data-cites="rrtools">(<a href="references.html#ref-rrtools" role="doc-biblioref">Marwick 2019</a>)</span>. The materials here have been updated to current best practices and for a condensed length. Additionally, the <code>gillespie.csv</code> dataset was replaced with the open source <code>diabetes.csv</code> Pima County Native American Diabetes dataset.</p>
+<p>The original materials are licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+<p><img src="https://i.creativecommons.org/l/by/4.0/88x31.png" width="100" height="33"> <a href="http://creativecommons.org/licenses/by/4.0/">CC BY</a></p>
+<hr>
+</section>
+<section id="original-workshop-based-on" class="level3">
+<h3 class="anchored" data-anchor-id="original-workshop-based-on">Original workshop based on:</h3>
+<ul>
+<li><p>Research compendium <em>cboettig/noise-phenomena: Supplement to: “From noise to knowledge: how randomness generates novel phenomena and reveals information”</em> by <a href="https://github.com/cboettig">Carl Boettiger</a> licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://doi.org/10.5281/zenodo.1219780"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1219780.svg" class="img-fluid" alt="DOI"></a></p></li>
+<li><p>Marwick, B., Boettiger, C. &amp; L. Mullen (2017). <em>Packaging data analytical work reproducibly using R (and friends)</em>. <em>PeerJ Preprints</em> 5:e3192v1 <a href="https://doi.org/10.7287/peerj.preprints.3192v1" class="uri">https://doi.org/10.7287/peerj.preprints.3192v1</a></p></li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-rrtools" class="csl-entry" role="doc-biblioentry">
+Marwick, Ben. 2019. <span>“Rrtools: Creates a Reproducible Research Compendium.”</span> <a href="https://github.com/benmarwick/rrtools">https://github.com/benmarwick/rrtools</a>.
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./intro.html" class="pagination-link">
+        <span class="nav-page-text">Introduction</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

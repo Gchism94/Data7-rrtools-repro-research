@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Reproducible Research with GitHub and rrtools - Introduction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./create-compendium.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Introduction</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reproducible Research with GitHub and rrtools</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Reproducible Research in R with <code>rrtools</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link active">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./create-compendium.html" class="sidebar-item-text sidebar-link">Create a Research Compendium</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manage-as-package.html" class="sidebar-item-text sidebar-link">Manage functionality as a package</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reproduce-distill-paper.html" class="sidebar-item-text sidebar-link">Reproduce a paper with Distill</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#research-is-increasingly-computational" id="toc-research-is-increasingly-computational" class="nav-link active" data-scroll-target="#research-is-increasingly-computational">Research is increasingly computational</a></li>
+  <li><a href="#enter-the-research-compendium" id="toc-enter-the-research-compendium" class="nav-link" data-scroll-target="#enter-the-research-compendium">Enter the Research Compendium</a>
+  <ul class="collapse">
+  <li><a href="#three-generic-principles" id="toc-three-generic-principles" class="nav-link" data-scroll-target="#three-generic-principles">Three Generic Principles</a></li>
+  </ul></li>
+  <li><a href="#r-community-response" id="toc-r-community-response" class="nav-link" data-scroll-target="#r-community-response">R community response</a></li>
+  <li><a href="#enter-rrtools" id="toc-enter-rrtools" class="nav-link" data-scroll-target="#enter-rrtools">Enter <code>rrtools</code></a></li>
+  <li><a href="#workshop-approach" id="toc-workshop-approach" class="nav-link" data-scroll-target="#workshop-approach">Workshop approach</a>
+  <ul class="collapse">
+  <li><a href="#live-coding" id="toc-live-coding" class="nav-link" data-scroll-target="#live-coding">Live coding</a></li>
+  </ul></li>
+  <li><a href="#workshop-materials" id="toc-workshop-materials" class="nav-link" data-scroll-target="#workshop-materials">Workshop materials</a></li>
+  <li><a href="#workshop-aims-and-objectives" id="toc-workshop-aims-and-objectives" class="nav-link" data-scroll-target="#workshop-aims-and-objectives">Workshop aims and objectives</a>
+  <ul class="collapse">
+  <li><a href="#level" id="toc-level" class="nav-link" data-scroll-target="#level">Level</a></li>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites:</a></li>
+  <li><a href="#system-requirements" id="toc-system-requirements" class="nav-link" data-scroll-target="#system-requirements">System Requirements:</a></li>
+  <li><a href="#lets-dive-in" id="toc-lets-dive-in" class="nav-link" data-scroll-target="#lets-dive-in">Let’s dive in!</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Introduction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://doi.org/10.1038/533452a"><img src="https://blog.ml.cmu.edu/wp-content/uploads/2019/11/2.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<hr>
+<section id="research-is-increasingly-computational" class="level2">
+<h2 class="anchored" data-anchor-id="research-is-increasingly-computational">Research is increasingly computational</h2>
+<ul>
+<li><p><strong>Code and data are important research outputs</strong></p>
+<ul>
+<li>Yet, we mainly on publishing papers.</li>
+</ul></li>
+<li><p><strong>Calls for openness</strong></p>
+<ul>
+<li>Stick: we have a reproducibility crisis</li>
+<li>Carrot: open science promotes equity and collaboration</li>
+</ul></li>
+</ul>
+<section id="we-however-lack-the-means-for-such-openness." class="level4">
+<h4 class="anchored" data-anchor-id="we-however-lack-the-means-for-such-openness.">We however lack the means for such openness.</h4>
+<hr>
+</section>
+</section>
+<section id="enter-the-research-compendium" class="level2">
+<h2 class="anchored" data-anchor-id="enter-the-research-compendium">Enter the Research Compendium</h2>
+<blockquote class="blockquote">
+<p>The goal of a research compendium is to provide a <strong>standard</strong> and easily recognizable way for <strong>organizing the digital materials</strong> of a project to enable others to <strong>inspect, reproduce, and extend the research</strong>.</p>
+</blockquote>
+<section id="three-generic-principles" class="level3">
+<h3 class="anchored" data-anchor-id="three-generic-principles">Three Generic Principles</h3>
+<ol type="1">
+<li><p><strong>Organize files according to best practices</strong></p>
+<ul>
+<li>Help others understand the structure of your project.</li>
+<li>Supports tool building which takes advantage of the shared structure.</li>
+</ul></li>
+<li><p><strong>Separate of data, method, and output</strong>, while making the relationship between them clear.</p></li>
+<li><p><strong>Specify the computational environment</strong> that was used for the original analysis.</p></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="r-community-response" class="level2">
+<h2 class="anchored" data-anchor-id="r-community-response">R community response</h2>
+<blockquote class="blockquote">
+<p>R packages can be used as a research compendium for organizing and sharing files!</p>
+</blockquote>
+<ol type="1">
+<li><p>_Wickham, H. (2017) <a href="https://docs.google.com/document/d/1LzZKS44y4OEJa4Azg5reGToNAZL0e0HSUwxamNY7E-Y/edit#heading=h.blggi16hdosp">Research compendia. Note prepared for the 2017 rOpenSci Unconf</a></p></li>
+<li><p>Ben Marwick, Carl Boettiger &amp; Lincoln Mullen (2018) <a href="https://www.tandfonline.com/doi/abs/10.1080/00031305.2017.1375986?journalCode=utas20"><em>Packaging Data Analytical Work Reproducibly Using R (and Friends)</em></a>, The American Statistician, 72:1, 80-88, DOI: &lt;10.1080/00031305.2017.1375986&gt;</p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://annakrystalli.me/rrtools-repro-research/assets/marw_f3.jpeg" class="img-fluid figure-img" width="330"></p>
+<p></p><figcaption class="figure-caption"><em>Example use of the R package structure for a research compendium</em> <span class="citation" data-cites="marwick2018">(<a href="references.html#ref-marwick2018" role="doc-biblioref">Marwick, Boettiger, and Mullen 2018</a>)</span></figcaption><p></p>
+</figure>
+</div>
+<hr>
+</section>
+<section id="enter-rrtools" class="level2">
+<h2 class="anchored" data-anchor-id="enter-rrtools">Enter <code>rrtools</code></h2>
+<blockquote class="blockquote">
+<p>The goal of <strong><code>rrtools</code></strong> is to provide <strong>instructions, templates, and functions</strong> for making a <strong>template compendium</strong> suitable for producing <strong>reproducible research with R</strong>.</p>
+</blockquote>
+<p><strong><code>rrtools</code> build on tools &amp; best practices for R package development to</strong></p>
+<ul>
+<li>Organize files</li>
+<li>Manage dependencies</li>
+<li>Share code</li>
+<li>Document code</li>
+<li>Check and test code <em>where applicable</em></li>
+</ul>
+<p><strong><code>rrtools</code> extends and works with a number of R packages:</strong></p>
+<ul>
+<li><p><a href="https://cran.r-project.org/package=devtools"><code>devtools</code></a>: functions for package development</p></li>
+<li><p><a href="https://www.tidyverse.org/articles/2017/11/usethis-1.0.0/"><code>usethis</code></a>: automates repetitive tasks that arise during project setup and development</p></li>
+<li><p><a href="https://bookdown.org/"><code>bookdown</code></a>: facilitates writing books and long-form articles/reports with R Markdown</p></li>
+</ul>
+<hr>
+</section>
+<section id="workshop-approach" class="level1">
+<h1>Workshop approach</h1>
+<section id="live-coding" class="level2">
+<h2 class="anchored" data-anchor-id="live-coding">Live coding</h2>
+<p>I practice <strong>live coding</strong> 😨 during my workshops so that you can follow along and have your version of the R scripts.</p>
+<p>However, the materials in this book will help you along the way!</p>
+<hr>
+</section>
+</section>
+<section id="workshop-materials" class="level1">
+<h1>Workshop materials</h1>
+<section id="on-github-httpsgithub.comgchismrrtools-wkshp-materials" class="level4">
+<h4 class="anchored" data-anchor-id="on-github-httpsgithub.comgchismrrtools-wkshp-materials">On github: <a href="https://github.com/Gchism94/rrtools-repro-research" class="uri">https://github.com/gchism/rrtools-wkshp-materials/</a></h4>
+<ul>
+<li><p>Click on <strong>Fork</strong></p></li>
+<li><p>Click on <strong>Clone</strong> within the new repository</p></li>
+<li><p>Copy the <strong>HTTPS URL</strong></p></li>
+<li><p>Start a new <strong>RStudio Project</strong> in RStudio Cloud using <strong>Version control</strong></p></li>
+<li><p>Paste the <strong>Link</strong></p></li>
+<li><p>Click <strong>Start Project</strong></p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="workshop-aims-and-objectives" class="level1">
+<h1>Workshop aims and objectives</h1>
+<p>In these workshops we’ll <strong>create a template research compendium</strong> that you can use for your own research project (text, data, code).</p>
+<hr>
+<p>By the end of the workshop, you should be able to:</p>
+<ul>
+<li><p>Be able to <strong>Create a Research Compendium</strong> to manage and share resources associated with an academic publication.</p></li>
+<li><p>Be able to <strong>produce a reproducible manuscript from a single Rmarkdown document</strong>.</p></li>
+<li><p>(<strong>If there’s interest</strong>) Understand the basics of <strong>managing code as an R package</strong>.</p></li>
+<li><p>Appreciate the power of convention!</p></li>
+</ul>
+<hr>
+<blockquote class="blockquote">
+<p>It’s like agreeing that we will all drive on the left or the right. A hallmark of civilization is following conventions that constrain your behavior a little, in the name of public safety.</p>
+</blockquote>
+<p><strong>Jenny Bryan</strong> on <a href="https://www.tidyverse.org/articles/2017/12/workflow-vs-script/">Project-oriented workflows</a></p>
+<hr>
+<section id="level" class="level3">
+<h3 class="anchored" data-anchor-id="level">Level</h3>
+<p>Intermediate</p>
+</section>
+<section id="prerequisites" class="level3">
+<h3 class="anchored" data-anchor-id="prerequisites">Prerequisites:</h3>
+<p>Familiarity with Version Control through RStudio and rmarkdown.</p>
+</section>
+<section id="system-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="system-requirements">System Requirements:</h3>
+<p>Pandoc (&gt;= 1.17.2) LaTeX</p>
+<p>If you don’t have LaTeX installed, consider installing <code>TinyTeX</code>, a custom LaTeX distribution based on TeX Live that is small in size but functions well in most cases, especially for R users.</p>
+<div class="cell">
+
+</div>
+<p>Check <a href="https://yihui.name/tinytex/">docs</a> before before installing.</p>
+</section>
+<section id="lets-dive-in" class="level2">
+<h2 class="anchored" data-anchor-id="lets-dive-in">Let’s dive in!</h2>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-marwick2018" class="csl-entry" role="doc-biblioentry">
+Marwick, Ben, Carl Boettiger, and Lincoln Mullen. 2018. <span>“Packaging Data Analytical Work Reproducibly Using R (and Friends).”</span> <em>The American Statistician</em> 72 (1): 80–88. <a href="https://doi.org/10.1080/00031305.2017.1375986">https://doi.org/10.1080/00031305.2017.1375986</a>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Reproducible Research in R with <code>rrtools</code></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./create-compendium.html" class="pagination-link">
+        <span class="nav-page-text">Create a Research Compendium</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
