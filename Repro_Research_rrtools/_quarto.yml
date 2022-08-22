@@ -2,8 +2,8 @@ project:
   type: book
 
 book:
-  title: "Reproducible Research with GitHub and rrtools"
-  author: "Dr. Greg Chism"
+  title: "Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book"
+  author: "Greg Chism"
   date: "8/22/2022"
   chapters:
     - index.qmd
