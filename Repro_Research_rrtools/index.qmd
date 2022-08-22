@@ -8,25 +8,25 @@ bibliography: references.bib
 
 # Workshop Outline:
 
-## [**Welcome**](https://annakrystalli.me/rrtools-repro-research/intro.html)
+## [Introduction](https://gchism94.github.io/rrtools-repro-research/intro.html)
 
 Introduction to the workshop and what you can expect to take away
 
 ------------------------------------------------------------------------
 
-## [**Create a Research Compendium**](https://annakrystalli.me/rrtools-repro-research/create-compendium.html)
+## [**Create a Research Compendium**](https://gchism94.github.io/rrtools-repro-research/create-compendium.html)
 
 Create a template Research Compendium from **`rrtools`**
 
 ------------------------------------------------------------------------
 
-## [**Manage functionality as a package**](https://annakrystalli.me/rrtools-repro-research/package.html)
+## [**Manage functionality as a package**](https://gchism94.github.io/rrtools-repro-research/manage-as-package.html)
 
 Make your Compendium an R Package to ensure reproducibility
 
 ------------------------------------------------------------------------
 
-## [**Reproduce a paper in Rmd**](https://annakrystalli.me/rrtools-repro-research/paper.html)
+## [Reproduce a paper with Distill](https://gchism94.github.io/rrtools-repro-research/reproduce-distill-paper.html)
 
 Produce a Distill R Markdown version of a paper
 

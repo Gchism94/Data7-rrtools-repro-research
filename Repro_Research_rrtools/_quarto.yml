@@ -4,7 +4,7 @@ project:
 book:
   title: "Reproducible Research with GitHub and rrtools"
   author: "Dr. Greg Chism"
-  date: "8/11/2022"
+  date: "8/22/2022"
   chapters:
     - index.qmd
     - intro.qmd
@@ -18,8 +18,6 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
 
 
 
