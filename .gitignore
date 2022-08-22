@@ -1,0 +1,15 @@
+README.html
+libs/
+docs/assets/*.pdf
+docs/css
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+assets/*
+analysis/*html
+analysis/data
+analysis/outline.Rmd
+analysis/pack*
+code
+.DS_*

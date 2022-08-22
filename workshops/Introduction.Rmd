@@ -1,0 +1,161 @@
+---
+title: "Reproducible research compendium through GitHub and RStudio"
+author: "Greg Chism"
+email: "gchism@arizona.edu"
+date: "2022/Aug/22"
+output: 
+  html_document: 
+    theme: readable
+    toc: yes
+---
+
+# Introduction {.unnumbered}
+
+[![](https://blog.ml.cmu.edu/wp-content/uploads/2019/11/2.png)](https://doi.org/10.1038/533452a)
+
+------------------------------------------------------------------------
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE) 
+```
+
+## Research is increasingly computational
+
+-   **Code and data are important research outputs**
+
+    -   Yet, we mainly on publishing papers.
+
+-   **Calls for openness**
+
+    -   Stick: we have a reproducibility crisis
+    -   Carrot: open science promotes equity and collaboration
+
+#### We however lack the means for such openness.
+
+------------------------------------------------------------------------
+
+## Enter the Research Compendium
+
+> The goal of a research compendium is to provide a **standard** and easily recognizable way for **organizing the digital materials** of a project to enable others to **inspect, reproduce, and extend the research**.
+
+### Three Generic Principles
+
+1.  **Organize files according to best practices**
+
+    -   Help others understand the structure of your project.
+    -   Supports tool building which takes advantage of the shared structure.
+
+2.  **Separate of data, method, and output**, while making the relationship between them clear.
+
+3.  **Specify the computational environment** that was used for the original analysis.
+
+------------------------------------------------------------------------
+
+## R community response
+
+> R packages can be used as a research compendium for organizing and sharing files!
+
+1.  \_Wickham, H. (2017) [Research compendia. Note prepared for the 2017 rOpenSci Unconf](https://docs.google.com/document/d/1LzZKS44y4OEJa4Azg5reGToNAZL0e0HSUwxamNY7E-Y/edit#heading=h.blggi16hdosp)
+
+2.  Ben Marwick, Carl Boettiger & Lincoln Mullen (2018) [*Packaging Data Analytical Work Reproducibly Using R (and Friends)*](https://www.tandfonline.com/doi/abs/10.1080/00031305.2017.1375986?journalCode=utas20), The American Statistician, 72:1, 80-88, DOI: \<10.1080/00031305.2017.1375986\>
+
+![*Example use of the R package structure for a research compendium* [@marwick2018]](https://annakrystalli.me/rrtools-repro-research/assets/marw_f3.jpeg){width="330"}
+
+------------------------------------------------------------------------
+
+## Enter `rrtools`
+
+> The goal of **`rrtools`** is to provide **instructions, templates, and functions** for making a **template compendium** suitable for producing **reproducible research with R**.
+
+**`rrtools` build on tools & best practices for R package development to**
+
+-   Organize files
+-   Manage dependencies
+-   Share code
+-   Document code
+-   Check and test code *where applicable*
+
+**`rrtools` extends and works with a number of R packages:**
+
+-   [`devtools`](https://cran.r-project.org/package=devtools): functions for package development
+
+-   [`usethis`](https://www.tidyverse.org/articles/2017/11/usethis-1.0.0/): automates repetitive tasks that arise during project setup and development
+
+-   [`bookdown`](https://bookdown.org/): facilitates writing books and long-form articles/reports with R Markdown
+
+------------------------------------------------------------------------
+
+# Workshop approach
+
+## Live coding
+
+I practice **live coding** `r emo::ji("fearful")` during my workshops so that you can follow along and have your version of the R scripts.
+
+However, the materials in this book will help you along the way!
+
+------------------------------------------------------------------------
+
+# Workshop materials
+
+#### On github: [https://github.com/gchism/rrtools-wkshp-materials/](https://github.com/Gchism94/rrtools-repro-research){.uri}
+
+-   Click on **Fork**
+
+-   Click on **Clone** within the new repository
+
+-   Copy the **HTTPS URL**
+
+-   Start a new **RStudio Project** in RStudio Cloud using **Version control**
+
+-   Paste the **Link**
+
+-   Click **Start Project**
+
+------------------------------------------------------------------------
+
+# Workshop aims and objectives
+
+In these workshops we'll **create a template research compendium** that you can use for your own research project (text, data, code).
+
+------------------------------------------------------------------------
+
+By the end of the workshop, you should be able to:
+
+-   Be able to **Create a Research Compendium** to manage and share resources associated with an academic publication.
+
+-   Be able to **produce a reproducible manuscript from a single Rmarkdown document**.
+
+-   (**If there's interest**) Understand the basics of **managing code as an R package**.
+
+-   Appreciate the power of convention!
+
+------------------------------------------------------------------------
+
+> It's like agreeing that we will all drive on the left or the right. A hallmark of civilization is following conventions that constrain your behavior a little, in the name of public safety.
+
+**Jenny Bryan** on [Project-oriented workflows](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/)
+
+------------------------------------------------------------------------
+
+### Level
+
+Intermediate
+
+### Prerequisites:
+
+Familiarity with Version Control through RStudio and rmarkdown.
+
+### System Requirements:
+
+Pandoc (\>= 1.17.2) LaTeX
+
+If you don't have LaTeX installed, consider installing `TinyTeX`, a custom LaTeX distribution based on TeX Live that is small in size but functions well in most cases, especially for R users.
+
+```{r, eval=FALSE}
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+
+Check [docs](https://yihui.name/tinytex/) before before installing.
+
+## Let's dive in!
