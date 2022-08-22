@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Reproducible Research with GitHub and rrtools - Reproduce a paper with Distill</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./manage-as-package.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Reproduce a paper with Distill</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Reproducible Research with GitHub and rrtools</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Reproducible Research in R with <code>rrtools</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./create-compendium.html" class="sidebar-item-text sidebar-link">Create a Research Compendium</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./manage-as-package.html" class="sidebar-item-text sidebar-link">Manage functionality as a package</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reproduce-distill-paper.html" class="sidebar-item-text sidebar-link active">Reproduce a paper with Distill</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#r-markdown-for-paper-reproduction" id="toc-r-markdown-for-paper-reproduction" class="nav-link active" data-scroll-target="#r-markdown-for-paper-reproduction">R Markdown for paper reproduction</a>
+  <ul class="collapse">
+  <li><a href="#why-r-markdown" id="toc-why-r-markdown" class="nav-link" data-scroll-target="#why-r-markdown">Why R Markdown?</a></li>
+  <li><a href="#why-distill" id="toc-why-distill" class="nav-link" data-scroll-target="#why-distill">Why <span><code>distill</code></span>?</a></li>
+  </ul></li>
+  <li><a href="#workshop-setup" id="toc-workshop-setup" class="nav-link" data-scroll-target="#workshop-setup">Workshop setup</a>
+  <ul class="collapse">
+  <li><a href="#install-distill-and-other-packages" id="toc-install-distill-and-other-packages" class="nav-link" data-scroll-target="#install-distill-and-other-packages">Install <code>distill</code> and other packages</a></li>
+  </ul></li>
+  <li><a href="#creating-an-article" id="toc-creating-an-article" class="nav-link" data-scroll-target="#creating-an-article">Creating an article</a></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures">Figures</a></li>
+  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables">Tables</a></li>
+  <li><a href="#equations" id="toc-equations" class="nav-link" data-scroll-target="#equations">Equations</a></li>
+  <li><a href="#citations" id="toc-citations" class="nav-link" data-scroll-target="#citations">Citations</a></li>
+  <li><a href="#footnotes-and-asides" id="toc-footnotes-and-asides" class="nav-link" data-scroll-target="#footnotes-and-asides">Footnotes and asides</a></li>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of contents</a></li>
+  <li><a href="#code-blocks" id="toc-code-blocks" class="nav-link" data-scroll-target="#code-blocks">Code blocks</a></li>
+  <li><a href="#code-folding" id="toc-code-folding" class="nav-link" data-scroll-target="#code-folding">Code folding</a></li>
+  <li><a href="#syntax-highlighting" id="toc-syntax-highlighting" class="nav-link" data-scroll-target="#syntax-highlighting">Syntax highlighting</a></li>
+  <li><a href="#appendices" id="toc-appendices" class="nav-link" data-scroll-target="#appendices">Appendices</a></li>
+  <li><a href="#theming" id="toc-theming" class="nav-link" data-scroll-target="#theming">Theming</a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  <li><a href="#sec-disclaimer-" id="toc-sec-disclaimer-" class="nav-link" data-scroll-target="#sec-disclaimer-">Disclaimer</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Reproduce a paper with Distill</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="r-markdown-for-paper-reproduction" class="level2">
+<h2 class="anchored" data-anchor-id="r-markdown-for-paper-reproduction">R Markdown for paper reproduction</h2>
+<p>Scientific and technical writing is generally written using Word, or Google Docs. Think about whether you could reproduce these formats without copy and paste. You could always use LaTeX, but you’d have to learn the syntax.</p>
+<hr>
+<section id="why-r-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="why-r-markdown">Why R Markdown?</h3>
+<ul>
+<li><p><strong>Reproducibility</strong>!</p></li>
+<li><p>Avoiding errors</p></li>
+<li><p>Several output options: PDF, HTML, Word, LaTeX</p></li>
+<li><p>Citation formatting made easy</p></li>
+<li><p>Collaboration</p></li>
+<li><p>Your documents will be prettier than most!</p></li>
+</ul>
+<hr>
+</section>
+<section id="why-distill" class="level3">
+<h3 class="anchored" data-anchor-id="why-distill">Why <a href="https://www.rstudio.com/blog/distill/https://rstudio.github.io/distill/"><code>distill</code></a>?</h3>
+<p>There are several R Markdown templates to produce papers, such as those in <a href="https://github.com/rstudio/rticles"><code>rticles</code></a> and <a href="https://bookdown.org/yihui/bookdown/"><code>bookdown</code></a> These are basically all made to have a journal print format, which though is nice, <strong>they aren’t always the best for electronic reading</strong>.</p>
+<p>Enter <code>distill</code>, a package that’s best known for designing websites using R Markdown. <strong>You can however also write papers</strong>! The output format is <strong>very clean and readable</strong>. Note that you can take all of your R Markdown script and paste it into another template if you wish.</p>
+<p>Specific benefits:</p>
+<ul>
+<li><p>Reader-friendly that adapts to mobile devices</p></li>
+<li><p>Compatible with <a href="https://rstudio.github.io/distill/#equations">LaTeX math</a>, <a href="https://rstudio.github.io/distill/#citations">citations</a>, and <a href="https://rstudio.github.io/distill/#footnotes-and-asides">footnotes</a></p></li>
+<li><p>Flexible <a href="https://rstudio.github.io/distill/figures.html">figure layout</a> (larger width than article text)</p></li>
+<li><p>Attractively rendered <a href="https://rstudio.github.io/distill/tables.html">tables</a></p></li>
+<li><p>Support for <a href="https://rstudio.github.io/distill/diagrams.html">diagramming tools</a></p></li>
+<li><p><a href="https://rstudio.github.io/distill/interactivity.html">Interactive visualizations</a> through JavaScript and D3</p></li>
+<li><p>A variety of ways to <a href="https://rstudio.github.io/distill/publish_article.html">publish articles</a>, including sets of articles as a <a href="https://rstudio.github.io/distill/website.html">Distill website</a> or as a <a href="https://rstudio.github.io/distill/blog.html">Distill blog</a></p></li>
+</ul>
+<p>All of these features <strong>help scientists communicate their work more efficiently through the web and R</strong>.</p>
+<hr>
+</section>
+</section>
+<section id="workshop-setup" class="level2">
+<h2 class="anchored" data-anchor-id="workshop-setup">Workshop setup</h2>
+<section id="install-distill-and-other-packages" class="level3">
+<h3 class="anchored" data-anchor-id="install-distill-and-other-packages">Install <code>distill</code> and other packages</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install pacman to install and load all others</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install &amp; load all other packages</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(distill,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>               ggpubr,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>               ggthemes,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>               here,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>               kableExtra,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>               rmarkdown,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>               tidyverse)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Set global ggplot() theme</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_pubclean</span>(<span class="at">base_size =</span> <span class="dv">16</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove legend</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift axes title to their relative right</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">1</span>))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove axes ticks</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">axis.ticks =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Colorblind friendly palette</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>cbp1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#999999"</span>, <span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>          <span class="st">"#F0E442"</span>, <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#CC79A7"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="creating-an-article" class="level2">
+<h2 class="anchored" data-anchor-id="creating-an-article">Creating an article</h2>
+<p>Start by clicking <code>File &gt; New File &gt; R Markdown &gt; From Template &gt; Distill Article</code></p>
+<p><img src="https://rstudio.github.io/distill/images/new_distill_article.png" class="img-fluid"></p>
+<p>Alternatively, you can create a Distill article in the console</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>distill<span class="sc">::</span><span class="fu">create_article</span>(<span class="st">"article.Rmd"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Distill articles include a title, description, data, author/affiliation, and bibliography in their YAML:</p>
+<pre><code>---
+title: "Reproduce a paper with Distill"
+description: |
+  Example Distill R Markdown paper to use as a template for reproducible scientific and technical writing
+author:
+  - name: Greg Chism 
+    url: https://gregtchism.netlify.app/
+    affiliation: Data Science Institiute, University of Arizona, Tucson AZ, USA
+    affiliation_url: https://datascience.arizona.edu/
+    orchid_id: 0000-0002-5478-2445
+date: "2022-08-22"
+output: distill::distill_article:
+---</code></pre>
+<section id="author-fields" class="level4">
+<h4 class="anchored" data-anchor-id="author-fields">Author fields</h4>
+<ul>
+<li><p><strong>Author names</strong> - <em>required</em>, <code>first_name</code> and <code>last_name</code>, or a single <code>name</code> field (as above)</p></li>
+<li><p><strong>Author URL</strong> - <em>required</em>, can be a GitHub, a personal website, departmental page, etc, specifid using <code>url</code></p></li>
+<li><p><strong>Author affiliation</strong> - <em>optional</em>, what entity are they affiliated with (university, company, agency, etc.), specified using <code>affiliation</code>.</p></li>
+<li><p><a href="https://orcid.org/"><strong>Orcid ID</strong></a> - <em>optional</em>, researcher Orchid ID (e.g., Greg Chism: 0000-0002-5478-2445), specified using <code>orchid_id</code></p></li>
+</ul>
+</section>
+<section id="date" class="level4">
+<h4 class="anchored" data-anchor-id="date">Date</h4>
+<p>The <code>date</code> field is denoted as month, day, year or as year, month, day (various notations are supported but only in these orders)</p>
+</section>
+<section id="bibliography" class="level4">
+<h4 class="anchored" data-anchor-id="bibliography">Bibliography</h4>
+<p>Denoded with the <code>bibliography</code> field, this refers to a Bibtex file that contains all sources cited in the article. See the <a href="https://rstudio.github.io/distill/#citations">citations</a> resource for more information.</p>
+<hr>
+</section>
+</section>
+<section id="figures" class="level2">
+<h2 class="anchored" data-anchor-id="figures">Figures</h2>
+<p>Distill makes integrating figures into your article straightforward, where the default is the width of the article.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"Repro_Research_rrtools"</span>, <span class="st">"data"</span>, <span class="st">"diabetes.csv"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Age_group =</span> <span class="fu">ifelse</span>(Age <span class="sc">&gt;=</span> <span class="dv">21</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="st">"Young"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(Age <span class="sc">&gt;</span> <span class="dv">30</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">50</span>, <span class="st">"Middle"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Elderly"</span>)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Glucose vs. Age group</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Glucose, <span class="at">y =</span> <span class="fu">fct_rev</span>(Age_group), <span class="at">fill =</span> Age_group)) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">"Glucose (mg/dl)"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cbp1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="reproduce-distill-paper_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>You can also add additional horizontal space if needed, which can be accomplished through the <code>layout</code> chunk.</p>
+<p>For example, let’s make a faceted plot a outside the bounds of the article text, with the <code>l-body-outset</code> layout in the <code>layout</code> chunk.</p>
+<pre><code>{r layout="l-body-outset", fig.width=6, fig.height=2}</code></pre>
+<div class="cell">
+
+</div>
+<p>Note that when specifying a <code>layout</code> you should also specify an appropriate <code>fig.width</code> and <code>fig.height</code> for that layout. These values don’t determine the absolute size of the figure (that’s dynamic based on the layout) but they do determine the aspect ratio of the figure.</p>
+<p>See the documentation on <a href="https://rstudio.github.io/distill/figures.html">figure layout</a> for details on additional layout options.</p>
+<hr>
+</section>
+<section id="tables" class="level2">
+<h2 class="anchored" data-anchor-id="tables">Tables</h2>
+<p>Distill articles can render several HTML options for displaying data frames. For example, <code>pages_table()</code> displays a page-able view of our <code>data</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    rmarkdown<span class="sc">::</span><span class="fu">paged_table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["Pregnancies"],"name":[1],"type":["int"],"align":["right"]},{"label":["Glucose"],"name":[2],"type":["int"],"align":["right"]},{"label":["BloodPressure"],"name":[3],"type":["int"],"align":["right"]},{"label":["SkinThickness"],"name":[4],"type":["int"],"align":["right"]},{"label":["Insulin"],"name":[5],"type":["int"],"align":["right"]},{"label":["BMI"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["DiabetesPedigreeFunction"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Age"],"name":[8],"type":["int"],"align":["right"]},{"label":["Outcome"],"name":[9],"type":["int"],"align":["right"]},{"label":["Age_group"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"6","2":"148","3":"72","4":"35","5":"0","6":"33.6","7":"0.627","8":"50","9":"1","10":"Middle"},{"1":"1","2":"85","3":"66","4":"29","5":"0","6":"26.6","7":"0.351","8":"31","9":"0","10":"Middle"},{"1":"8","2":"183","3":"64","4":"0","5":"0","6":"23.3","7":"0.672","8":"32","9":"1","10":"Middle"},{"1":"1","2":"89","3":"66","4":"23","5":"94","6":"28.1","7":"0.167","8":"21","9":"0","10":"Young"},{"1":"0","2":"137","3":"40","4":"35","5":"168","6":"43.1","7":"2.288","8":"33","9":"1","10":"Middle"},{"1":"5","2":"116","3":"74","4":"0","5":"0","6":"25.6","7":"0.201","8":"30","9":"0","10":"Young"},{"1":"3","2":"78","3":"50","4":"32","5":"88","6":"31.0","7":"0.248","8":"26","9":"1","10":"Young"},{"1":"10","2":"115","3":"0","4":"0","5":"0","6":"35.3","7":"0.134","8":"29","9":"0","10":"Young"},{"1":"2","2":"197","3":"70","4":"45","5":"543","6":"30.5","7":"0.158","8":"53","9":"1","10":"Elderly"},{"1":"8","2":"125","3":"96","4":"0","5":"0","6":"0.0","7":"0.232","8":"54","9":"1","10":"Elderly"},{"1":"4","2":"110","3":"92","4":"0","5":"0","6":"37.6","7":"0.191","8":"30","9":"0","10":"Young"},{"1":"10","2":"168","3":"74","4":"0","5":"0","6":"38.0","7":"0.537","8":"34","9":"1","10":"Middle"},{"1":"10","2":"139","3":"80","4":"0","5":"0","6":"27.1","7":"1.441","8":"57","9":"0","10":"Elderly"},{"1":"1","2":"189","3":"60","4":"23","5":"846","6":"30.1","7":"0.398","8":"59","9":"1","10":"Elderly"},{"1":"5","2":"166","3":"72","4":"19","5":"175","6":"25.8","7":"0.587","8":"51","9":"1","10":"Elderly"},{"1":"7","2":"100","3":"0","4":"0","5":"0","6":"30.0","7":"0.484","8":"32","9":"1","10":"Middle"},{"1":"0","2":"118","3":"84","4":"47","5":"230","6":"45.8","7":"0.551","8":"31","9":"1","10":"Middle"},{"1":"7","2":"107","3":"74","4":"0","5":"0","6":"29.6","7":"0.254","8":"31","9":"1","10":"Middle"},{"1":"1","2":"103","3":"30","4":"38","5":"83","6":"43.3","7":"0.183","8":"33","9":"0","10":"Middle"},{"1":"1","2":"115","3":"70","4":"30","5":"96","6":"34.6","7":"0.529","8":"32","9":"1","10":"Middle"},{"1":"3","2":"126","3":"88","4":"41","5":"235","6":"39.3","7":"0.704","8":"27","9":"0","10":"Young"},{"1":"8","2":"99","3":"84","4":"0","5":"0","6":"35.4","7":"0.388","8":"50","9":"0","10":"Middle"},{"1":"7","2":"196","3":"90","4":"0","5":"0","6":"39.8","7":"0.451","8":"41","9":"1","10":"Middle"},{"1":"9","2":"119","3":"80","4":"35","5":"0","6":"29.0","7":"0.263","8":"29","9":"1","10":"Young"},{"1":"11","2":"143","3":"94","4":"33","5":"146","6":"36.6","7":"0.254","8":"51","9":"1","10":"Elderly"},{"1":"10","2":"125","3":"70","4":"26","5":"115","6":"31.1","7":"0.205","8":"41","9":"1","10":"Middle"},{"1":"7","2":"147","3":"76","4":"0","5":"0","6":"39.4","7":"0.257","8":"43","9":"1","10":"Middle"},{"1":"1","2":"97","3":"66","4":"15","5":"140","6":"23.2","7":"0.487","8":"22","9":"0","10":"Young"},{"1":"13","2":"145","3":"82","4":"19","5":"110","6":"22.2","7":"0.245","8":"57","9":"0","10":"Elderly"},{"1":"5","2":"117","3":"92","4":"0","5":"0","6":"34.1","7":"0.337","8":"38","9":"0","10":"Middle"},{"1":"5","2":"109","3":"75","4":"26","5":"0","6":"36.0","7":"0.546","8":"60","9":"0","10":"Elderly"},{"1":"3","2":"158","3":"76","4":"36","5":"245","6":"31.6","7":"0.851","8":"28","9":"1","10":"Young"},{"1":"3","2":"88","3":"58","4":"11","5":"54","6":"24.8","7":"0.267","8":"22","9":"0","10":"Young"},{"1":"6","2":"92","3":"92","4":"0","5":"0","6":"19.9","7":"0.188","8":"28","9":"0","10":"Young"},{"1":"10","2":"122","3":"78","4":"31","5":"0","6":"27.6","7":"0.512","8":"45","9":"0","10":"Middle"},{"1":"4","2":"103","3":"60","4":"33","5":"192","6":"24.0","7":"0.966","8":"33","9":"0","10":"Middle"},{"1":"11","2":"138","3":"76","4":"0","5":"0","6":"33.2","7":"0.420","8":"35","9":"0","10":"Middle"},{"1":"9","2":"102","3":"76","4":"37","5":"0","6":"32.9","7":"0.665","8":"46","9":"1","10":"Middle"},{"1":"2","2":"90","3":"68","4":"42","5":"0","6":"38.2","7":"0.503","8":"27","9":"1","10":"Young"},{"1":"4","2":"111","3":"72","4":"47","5":"207","6":"37.1","7":"1.390","8":"56","9":"1","10":"Elderly"},{"1":"3","2":"180","3":"64","4":"25","5":"70","6":"34.0","7":"0.271","8":"26","9":"0","10":"Young"},{"1":"7","2":"133","3":"84","4":"0","5":"0","6":"40.2","7":"0.696","8":"37","9":"0","10":"Middle"},{"1":"7","2":"106","3":"92","4":"18","5":"0","6":"22.7","7":"0.235","8":"48","9":"0","10":"Middle"},{"1":"9","2":"171","3":"110","4":"24","5":"240","6":"45.4","7":"0.721","8":"54","9":"1","10":"Elderly"},{"1":"7","2":"159","3":"64","4":"0","5":"0","6":"27.4","7":"0.294","8":"40","9":"0","10":"Middle"},{"1":"0","2":"180","3":"66","4":"39","5":"0","6":"42.0","7":"1.893","8":"25","9":"1","10":"Young"},{"1":"1","2":"146","3":"56","4":"0","5":"0","6":"29.7","7":"0.564","8":"29","9":"0","10":"Young"},{"1":"2","2":"71","3":"70","4":"27","5":"0","6":"28.0","7":"0.586","8":"22","9":"0","10":"Young"},{"1":"7","2":"103","3":"66","4":"32","5":"0","6":"39.1","7":"0.344","8":"31","9":"1","10":"Middle"},{"1":"7","2":"105","3":"0","4":"0","5":"0","6":"0.0","7":"0.305","8":"24","9":"0","10":"Young"},{"1":"1","2":"103","3":"80","4":"11","5":"82","6":"19.4","7":"0.491","8":"22","9":"0","10":"Young"},{"1":"1","2":"101","3":"50","4":"15","5":"36","6":"24.2","7":"0.526","8":"26","9":"0","10":"Young"},{"1":"5","2":"88","3":"66","4":"21","5":"23","6":"24.4","7":"0.342","8":"30","9":"0","10":"Young"},{"1":"8","2":"176","3":"90","4":"34","5":"300","6":"33.7","7":"0.467","8":"58","9":"1","10":"Elderly"},{"1":"7","2":"150","3":"66","4":"42","5":"342","6":"34.7","7":"0.718","8":"42","9":"0","10":"Middle"},{"1":"1","2":"73","3":"50","4":"10","5":"0","6":"23.0","7":"0.248","8":"21","9":"0","10":"Young"},{"1":"7","2":"187","3":"68","4":"39","5":"304","6":"37.7","7":"0.254","8":"41","9":"1","10":"Middle"},{"1":"0","2":"100","3":"88","4":"60","5":"110","6":"46.8","7":"0.962","8":"31","9":"0","10":"Middle"},{"1":"0","2":"146","3":"82","4":"0","5":"0","6":"40.5","7":"1.781","8":"44","9":"0","10":"Middle"},{"1":"0","2":"105","3":"64","4":"41","5":"142","6":"41.5","7":"0.173","8":"22","9":"0","10":"Young"},{"1":"2","2":"84","3":"0","4":"0","5":"0","6":"0.0","7":"0.304","8":"21","9":"0","10":"Young"},{"1":"8","2":"133","3":"72","4":"0","5":"0","6":"32.9","7":"0.270","8":"39","9":"1","10":"Middle"},{"1":"5","2":"44","3":"62","4":"0","5":"0","6":"25.0","7":"0.587","8":"36","9":"0","10":"Middle"},{"1":"2","2":"141","3":"58","4":"34","5":"128","6":"25.4","7":"0.699","8":"24","9":"0","10":"Young"},{"1":"7","2":"114","3":"66","4":"0","5":"0","6":"32.8","7":"0.258","8":"42","9":"1","10":"Middle"},{"1":"5","2":"99","3":"74","4":"27","5":"0","6":"29.0","7":"0.203","8":"32","9":"0","10":"Middle"},{"1":"0","2":"109","3":"88","4":"30","5":"0","6":"32.5","7":"0.855","8":"38","9":"1","10":"Middle"},{"1":"2","2":"109","3":"92","4":"0","5":"0","6":"42.7","7":"0.845","8":"54","9":"0","10":"Elderly"},{"1":"1","2":"95","3":"66","4":"13","5":"38","6":"19.6","7":"0.334","8":"25","9":"0","10":"Young"},{"1":"4","2":"146","3":"85","4":"27","5":"100","6":"28.9","7":"0.189","8":"27","9":"0","10":"Young"},{"1":"2","2":"100","3":"66","4":"20","5":"90","6":"32.9","7":"0.867","8":"28","9":"1","10":"Young"},{"1":"5","2":"139","3":"64","4":"35","5":"140","6":"28.6","7":"0.411","8":"26","9":"0","10":"Young"},{"1":"13","2":"126","3":"90","4":"0","5":"0","6":"43.4","7":"0.583","8":"42","9":"1","10":"Middle"},{"1":"4","2":"129","3":"86","4":"20","5":"270","6":"35.1","7":"0.231","8":"23","9":"0","10":"Young"},{"1":"1","2":"79","3":"75","4":"30","5":"0","6":"32.0","7":"0.396","8":"22","9":"0","10":"Young"},{"1":"1","2":"0","3":"48","4":"20","5":"0","6":"24.7","7":"0.140","8":"22","9":"0","10":"Young"},{"1":"7","2":"62","3":"78","4":"0","5":"0","6":"32.6","7":"0.391","8":"41","9":"0","10":"Middle"},{"1":"5","2":"95","3":"72","4":"33","5":"0","6":"37.7","7":"0.370","8":"27","9":"0","10":"Young"},{"1":"0","2":"131","3":"0","4":"0","5":"0","6":"43.2","7":"0.270","8":"26","9":"1","10":"Young"},{"1":"2","2":"112","3":"66","4":"22","5":"0","6":"25.0","7":"0.307","8":"24","9":"0","10":"Young"},{"1":"3","2":"113","3":"44","4":"13","5":"0","6":"22.4","7":"0.140","8":"22","9":"0","10":"Young"},{"1":"2","2":"74","3":"0","4":"0","5":"0","6":"0.0","7":"0.102","8":"22","9":"0","10":"Young"},{"1":"7","2":"83","3":"78","4":"26","5":"71","6":"29.3","7":"0.767","8":"36","9":"0","10":"Middle"},{"1":"0","2":"101","3":"65","4":"28","5":"0","6":"24.6","7":"0.237","8":"22","9":"0","10":"Young"},{"1":"5","2":"137","3":"108","4":"0","5":"0","6":"48.8","7":"0.227","8":"37","9":"1","10":"Middle"},{"1":"2","2":"110","3":"74","4":"29","5":"125","6":"32.4","7":"0.698","8":"27","9":"0","10":"Young"},{"1":"13","2":"106","3":"72","4":"54","5":"0","6":"36.6","7":"0.178","8":"45","9":"0","10":"Middle"},{"1":"2","2":"100","3":"68","4":"25","5":"71","6":"38.5","7":"0.324","8":"26","9":"0","10":"Young"},{"1":"15","2":"136","3":"70","4":"32","5":"110","6":"37.1","7":"0.153","8":"43","9":"1","10":"Middle"},{"1":"1","2":"107","3":"68","4":"19","5":"0","6":"26.5","7":"0.165","8":"24","9":"0","10":"Young"},{"1":"1","2":"80","3":"55","4":"0","5":"0","6":"19.1","7":"0.258","8":"21","9":"0","10":"Young"},{"1":"4","2":"123","3":"80","4":"15","5":"176","6":"32.0","7":"0.443","8":"34","9":"0","10":"Middle"},{"1":"7","2":"81","3":"78","4":"40","5":"48","6":"46.7","7":"0.261","8":"42","9":"0","10":"Middle"},{"1":"4","2":"134","3":"72","4":"0","5":"0","6":"23.8","7":"0.277","8":"60","9":"1","10":"Elderly"},{"1":"2","2":"142","3":"82","4":"18","5":"64","6":"24.7","7":"0.761","8":"21","9":"0","10":"Young"},{"1":"6","2":"144","3":"72","4":"27","5":"228","6":"33.9","7":"0.255","8":"40","9":"0","10":"Middle"},{"1":"2","2":"92","3":"62","4":"28","5":"0","6":"31.6","7":"0.130","8":"24","9":"0","10":"Young"},{"1":"1","2":"71","3":"48","4":"18","5":"76","6":"20.4","7":"0.323","8":"22","9":"0","10":"Young"},{"1":"6","2":"93","3":"50","4":"30","5":"64","6":"28.7","7":"0.356","8":"23","9":"0","10":"Young"},{"1":"1","2":"122","3":"90","4":"51","5":"220","6":"49.7","7":"0.325","8":"31","9":"1","10":"Middle"},{"1":"1","2":"163","3":"72","4":"0","5":"0","6":"39.0","7":"1.222","8":"33","9":"1","10":"Middle"},{"1":"1","2":"151","3":"60","4":"0","5":"0","6":"26.1","7":"0.179","8":"22","9":"0","10":"Young"},{"1":"0","2":"125","3":"96","4":"0","5":"0","6":"22.5","7":"0.262","8":"21","9":"0","10":"Young"},{"1":"1","2":"81","3":"72","4":"18","5":"40","6":"26.6","7":"0.283","8":"24","9":"0","10":"Young"},{"1":"2","2":"85","3":"65","4":"0","5":"0","6":"39.6","7":"0.930","8":"27","9":"0","10":"Young"},{"1":"1","2":"126","3":"56","4":"29","5":"152","6":"28.7","7":"0.801","8":"21","9":"0","10":"Young"},{"1":"1","2":"96","3":"122","4":"0","5":"0","6":"22.4","7":"0.207","8":"27","9":"0","10":"Young"},{"1":"4","2":"144","3":"58","4":"28","5":"140","6":"29.5","7":"0.287","8":"37","9":"0","10":"Middle"},{"1":"3","2":"83","3":"58","4":"31","5":"18","6":"34.3","7":"0.336","8":"25","9":"0","10":"Young"},{"1":"0","2":"95","3":"85","4":"25","5":"36","6":"37.4","7":"0.247","8":"24","9":"1","10":"Young"},{"1":"3","2":"171","3":"72","4":"33","5":"135","6":"33.3","7":"0.199","8":"24","9":"1","10":"Young"},{"1":"8","2":"155","3":"62","4":"26","5":"495","6":"34.0","7":"0.543","8":"46","9":"1","10":"Middle"},{"1":"1","2":"89","3":"76","4":"34","5":"37","6":"31.2","7":"0.192","8":"23","9":"0","10":"Young"},{"1":"4","2":"76","3":"62","4":"0","5":"0","6":"34.0","7":"0.391","8":"25","9":"0","10":"Young"},{"1":"7","2":"160","3":"54","4":"32","5":"175","6":"30.5","7":"0.588","8":"39","9":"1","10":"Middle"},{"1":"4","2":"146","3":"92","4":"0","5":"0","6":"31.2","7":"0.539","8":"61","9":"1","10":"Elderly"},{"1":"5","2":"124","3":"74","4":"0","5":"0","6":"34.0","7":"0.220","8":"38","9":"1","10":"Middle"},{"1":"5","2":"78","3":"48","4":"0","5":"0","6":"33.7","7":"0.654","8":"25","9":"0","10":"Young"},{"1":"4","2":"97","3":"60","4":"23","5":"0","6":"28.2","7":"0.443","8":"22","9":"0","10":"Young"},{"1":"4","2":"99","3":"76","4":"15","5":"51","6":"23.2","7":"0.223","8":"21","9":"0","10":"Young"},{"1":"0","2":"162","3":"76","4":"56","5":"100","6":"53.2","7":"0.759","8":"25","9":"1","10":"Young"},{"1":"6","2":"111","3":"64","4":"39","5":"0","6":"34.2","7":"0.260","8":"24","9":"0","10":"Young"},{"1":"2","2":"107","3":"74","4":"30","5":"100","6":"33.6","7":"0.404","8":"23","9":"0","10":"Young"},{"1":"5","2":"132","3":"80","4":"0","5":"0","6":"26.8","7":"0.186","8":"69","9":"0","10":"Elderly"},{"1":"0","2":"113","3":"76","4":"0","5":"0","6":"33.3","7":"0.278","8":"23","9":"1","10":"Young"},{"1":"1","2":"88","3":"30","4":"42","5":"99","6":"55.0","7":"0.496","8":"26","9":"1","10":"Young"},{"1":"3","2":"120","3":"70","4":"30","5":"135","6":"42.9","7":"0.452","8":"30","9":"0","10":"Young"},{"1":"1","2":"118","3":"58","4":"36","5":"94","6":"33.3","7":"0.261","8":"23","9":"0","10":"Young"},{"1":"1","2":"117","3":"88","4":"24","5":"145","6":"34.5","7":"0.403","8":"40","9":"1","10":"Middle"},{"1":"0","2":"105","3":"84","4":"0","5":"0","6":"27.9","7":"0.741","8":"62","9":"1","10":"Elderly"},{"1":"4","2":"173","3":"70","4":"14","5":"168","6":"29.7","7":"0.361","8":"33","9":"1","10":"Middle"},{"1":"9","2":"122","3":"56","4":"0","5":"0","6":"33.3","7":"1.114","8":"33","9":"1","10":"Middle"},{"1":"3","2":"170","3":"64","4":"37","5":"225","6":"34.5","7":"0.356","8":"30","9":"1","10":"Young"},{"1":"8","2":"84","3":"74","4":"31","5":"0","6":"38.3","7":"0.457","8":"39","9":"0","10":"Middle"},{"1":"2","2":"96","3":"68","4":"13","5":"49","6":"21.1","7":"0.647","8":"26","9":"0","10":"Young"},{"1":"2","2":"125","3":"60","4":"20","5":"140","6":"33.8","7":"0.088","8":"31","9":"0","10":"Middle"},{"1":"0","2":"100","3":"70","4":"26","5":"50","6":"30.8","7":"0.597","8":"21","9":"0","10":"Young"},{"1":"0","2":"93","3":"60","4":"25","5":"92","6":"28.7","7":"0.532","8":"22","9":"0","10":"Young"},{"1":"0","2":"129","3":"80","4":"0","5":"0","6":"31.2","7":"0.703","8":"29","9":"0","10":"Young"},{"1":"5","2":"105","3":"72","4":"29","5":"325","6":"36.9","7":"0.159","8":"28","9":"0","10":"Young"},{"1":"3","2":"128","3":"78","4":"0","5":"0","6":"21.1","7":"0.268","8":"55","9":"0","10":"Elderly"},{"1":"5","2":"106","3":"82","4":"30","5":"0","6":"39.5","7":"0.286","8":"38","9":"0","10":"Middle"},{"1":"2","2":"108","3":"52","4":"26","5":"63","6":"32.5","7":"0.318","8":"22","9":"0","10":"Young"},{"1":"10","2":"108","3":"66","4":"0","5":"0","6":"32.4","7":"0.272","8":"42","9":"1","10":"Middle"},{"1":"4","2":"154","3":"62","4":"31","5":"284","6":"32.8","7":"0.237","8":"23","9":"0","10":"Young"},{"1":"0","2":"102","3":"75","4":"23","5":"0","6":"0.0","7":"0.572","8":"21","9":"0","10":"Young"},{"1":"9","2":"57","3":"80","4":"37","5":"0","6":"32.8","7":"0.096","8":"41","9":"0","10":"Middle"},{"1":"2","2":"106","3":"64","4":"35","5":"119","6":"30.5","7":"1.400","8":"34","9":"0","10":"Middle"},{"1":"5","2":"147","3":"78","4":"0","5":"0","6":"33.7","7":"0.218","8":"65","9":"0","10":"Elderly"},{"1":"2","2":"90","3":"70","4":"17","5":"0","6":"27.3","7":"0.085","8":"22","9":"0","10":"Young"},{"1":"1","2":"136","3":"74","4":"50","5":"204","6":"37.4","7":"0.399","8":"24","9":"0","10":"Young"},{"1":"4","2":"114","3":"65","4":"0","5":"0","6":"21.9","7":"0.432","8":"37","9":"0","10":"Middle"},{"1":"9","2":"156","3":"86","4":"28","5":"155","6":"34.3","7":"1.189","8":"42","9":"1","10":"Middle"},{"1":"1","2":"153","3":"82","4":"42","5":"485","6":"40.6","7":"0.687","8":"23","9":"0","10":"Young"},{"1":"8","2":"188","3":"78","4":"0","5":"0","6":"47.9","7":"0.137","8":"43","9":"1","10":"Middle"},{"1":"7","2":"152","3":"88","4":"44","5":"0","6":"50.0","7":"0.337","8":"36","9":"1","10":"Middle"},{"1":"2","2":"99","3":"52","4":"15","5":"94","6":"24.6","7":"0.637","8":"21","9":"0","10":"Young"},{"1":"1","2":"109","3":"56","4":"21","5":"135","6":"25.2","7":"0.833","8":"23","9":"0","10":"Young"},{"1":"2","2":"88","3":"74","4":"19","5":"53","6":"29.0","7":"0.229","8":"22","9":"0","10":"Young"},{"1":"17","2":"163","3":"72","4":"41","5":"114","6":"40.9","7":"0.817","8":"47","9":"1","10":"Middle"},{"1":"4","2":"151","3":"90","4":"38","5":"0","6":"29.7","7":"0.294","8":"36","9":"0","10":"Middle"},{"1":"7","2":"102","3":"74","4":"40","5":"105","6":"37.2","7":"0.204","8":"45","9":"0","10":"Middle"},{"1":"0","2":"114","3":"80","4":"34","5":"285","6":"44.2","7":"0.167","8":"27","9":"0","10":"Young"},{"1":"2","2":"100","3":"64","4":"23","5":"0","6":"29.7","7":"0.368","8":"21","9":"0","10":"Young"},{"1":"0","2":"131","3":"88","4":"0","5":"0","6":"31.6","7":"0.743","8":"32","9":"1","10":"Middle"},{"1":"6","2":"104","3":"74","4":"18","5":"156","6":"29.9","7":"0.722","8":"41","9":"1","10":"Middle"},{"1":"3","2":"148","3":"66","4":"25","5":"0","6":"32.5","7":"0.256","8":"22","9":"0","10":"Young"},{"1":"4","2":"120","3":"68","4":"0","5":"0","6":"29.6","7":"0.709","8":"34","9":"0","10":"Middle"},{"1":"4","2":"110","3":"66","4":"0","5":"0","6":"31.9","7":"0.471","8":"29","9":"0","10":"Young"},{"1":"3","2":"111","3":"90","4":"12","5":"78","6":"28.4","7":"0.495","8":"29","9":"0","10":"Young"},{"1":"6","2":"102","3":"82","4":"0","5":"0","6":"30.8","7":"0.180","8":"36","9":"1","10":"Middle"},{"1":"6","2":"134","3":"70","4":"23","5":"130","6":"35.4","7":"0.542","8":"29","9":"1","10":"Young"},{"1":"2","2":"87","3":"0","4":"23","5":"0","6":"28.9","7":"0.773","8":"25","9":"0","10":"Young"},{"1":"1","2":"79","3":"60","4":"42","5":"48","6":"43.5","7":"0.678","8":"23","9":"0","10":"Young"},{"1":"2","2":"75","3":"64","4":"24","5":"55","6":"29.7","7":"0.370","8":"33","9":"0","10":"Middle"},{"1":"8","2":"179","3":"72","4":"42","5":"130","6":"32.7","7":"0.719","8":"36","9":"1","10":"Middle"},{"1":"6","2":"85","3":"78","4":"0","5":"0","6":"31.2","7":"0.382","8":"42","9":"0","10":"Middle"},{"1":"0","2":"129","3":"110","4":"46","5":"130","6":"67.1","7":"0.319","8":"26","9":"1","10":"Young"},{"1":"5","2":"143","3":"78","4":"0","5":"0","6":"45.0","7":"0.190","8":"47","9":"0","10":"Middle"},{"1":"5","2":"130","3":"82","4":"0","5":"0","6":"39.1","7":"0.956","8":"37","9":"1","10":"Middle"},{"1":"6","2":"87","3":"80","4":"0","5":"0","6":"23.2","7":"0.084","8":"32","9":"0","10":"Middle"},{"1":"0","2":"119","3":"64","4":"18","5":"92","6":"34.9","7":"0.725","8":"23","9":"0","10":"Young"},{"1":"1","2":"0","3":"74","4":"20","5":"23","6":"27.7","7":"0.299","8":"21","9":"0","10":"Young"},{"1":"5","2":"73","3":"60","4":"0","5":"0","6":"26.8","7":"0.268","8":"27","9":"0","10":"Young"},{"1":"4","2":"141","3":"74","4":"0","5":"0","6":"27.6","7":"0.244","8":"40","9":"0","10":"Middle"},{"1":"7","2":"194","3":"68","4":"28","5":"0","6":"35.9","7":"0.745","8":"41","9":"1","10":"Middle"},{"1":"8","2":"181","3":"68","4":"36","5":"495","6":"30.1","7":"0.615","8":"60","9":"1","10":"Elderly"},{"1":"1","2":"128","3":"98","4":"41","5":"58","6":"32.0","7":"1.321","8":"33","9":"1","10":"Middle"},{"1":"8","2":"109","3":"76","4":"39","5":"114","6":"27.9","7":"0.640","8":"31","9":"1","10":"Middle"},{"1":"5","2":"139","3":"80","4":"35","5":"160","6":"31.6","7":"0.361","8":"25","9":"1","10":"Young"},{"1":"3","2":"111","3":"62","4":"0","5":"0","6":"22.6","7":"0.142","8":"21","9":"0","10":"Young"},{"1":"9","2":"123","3":"70","4":"44","5":"94","6":"33.1","7":"0.374","8":"40","9":"0","10":"Middle"},{"1":"7","2":"159","3":"66","4":"0","5":"0","6":"30.4","7":"0.383","8":"36","9":"1","10":"Middle"},{"1":"11","2":"135","3":"0","4":"0","5":"0","6":"52.3","7":"0.578","8":"40","9":"1","10":"Middle"},{"1":"8","2":"85","3":"55","4":"20","5":"0","6":"24.4","7":"0.136","8":"42","9":"0","10":"Middle"},{"1":"5","2":"158","3":"84","4":"41","5":"210","6":"39.4","7":"0.395","8":"29","9":"1","10":"Young"},{"1":"1","2":"105","3":"58","4":"0","5":"0","6":"24.3","7":"0.187","8":"21","9":"0","10":"Young"},{"1":"3","2":"107","3":"62","4":"13","5":"48","6":"22.9","7":"0.678","8":"23","9":"1","10":"Young"},{"1":"4","2":"109","3":"64","4":"44","5":"99","6":"34.8","7":"0.905","8":"26","9":"1","10":"Young"},{"1":"4","2":"148","3":"60","4":"27","5":"318","6":"30.9","7":"0.150","8":"29","9":"1","10":"Young"},{"1":"0","2":"113","3":"80","4":"16","5":"0","6":"31.0","7":"0.874","8":"21","9":"0","10":"Young"},{"1":"1","2":"138","3":"82","4":"0","5":"0","6":"40.1","7":"0.236","8":"28","9":"0","10":"Young"},{"1":"0","2":"108","3":"68","4":"20","5":"0","6":"27.3","7":"0.787","8":"32","9":"0","10":"Middle"},{"1":"2","2":"99","3":"70","4":"16","5":"44","6":"20.4","7":"0.235","8":"27","9":"0","10":"Young"},{"1":"6","2":"103","3":"72","4":"32","5":"190","6":"37.7","7":"0.324","8":"55","9":"0","10":"Elderly"},{"1":"5","2":"111","3":"72","4":"28","5":"0","6":"23.9","7":"0.407","8":"27","9":"0","10":"Young"},{"1":"8","2":"196","3":"76","4":"29","5":"280","6":"37.5","7":"0.605","8":"57","9":"1","10":"Elderly"},{"1":"5","2":"162","3":"104","4":"0","5":"0","6":"37.7","7":"0.151","8":"52","9":"1","10":"Elderly"},{"1":"1","2":"96","3":"64","4":"27","5":"87","6":"33.2","7":"0.289","8":"21","9":"0","10":"Young"},{"1":"7","2":"184","3":"84","4":"33","5":"0","6":"35.5","7":"0.355","8":"41","9":"1","10":"Middle"},{"1":"2","2":"81","3":"60","4":"22","5":"0","6":"27.7","7":"0.290","8":"25","9":"0","10":"Young"},{"1":"0","2":"147","3":"85","4":"54","5":"0","6":"42.8","7":"0.375","8":"24","9":"0","10":"Young"},{"1":"7","2":"179","3":"95","4":"31","5":"0","6":"34.2","7":"0.164","8":"60","9":"0","10":"Elderly"},{"1":"0","2":"140","3":"65","4":"26","5":"130","6":"42.6","7":"0.431","8":"24","9":"1","10":"Young"},{"1":"9","2":"112","3":"82","4":"32","5":"175","6":"34.2","7":"0.260","8":"36","9":"1","10":"Middle"},{"1":"12","2":"151","3":"70","4":"40","5":"271","6":"41.8","7":"0.742","8":"38","9":"1","10":"Middle"},{"1":"5","2":"109","3":"62","4":"41","5":"129","6":"35.8","7":"0.514","8":"25","9":"1","10":"Young"},{"1":"6","2":"125","3":"68","4":"30","5":"120","6":"30.0","7":"0.464","8":"32","9":"0","10":"Middle"},{"1":"5","2":"85","3":"74","4":"22","5":"0","6":"29.0","7":"1.224","8":"32","9":"1","10":"Middle"},{"1":"5","2":"112","3":"66","4":"0","5":"0","6":"37.8","7":"0.261","8":"41","9":"1","10":"Middle"},{"1":"0","2":"177","3":"60","4":"29","5":"478","6":"34.6","7":"1.072","8":"21","9":"1","10":"Young"},{"1":"2","2":"158","3":"90","4":"0","5":"0","6":"31.6","7":"0.805","8":"66","9":"1","10":"Elderly"},{"1":"7","2":"119","3":"0","4":"0","5":"0","6":"25.2","7":"0.209","8":"37","9":"0","10":"Middle"},{"1":"7","2":"142","3":"60","4":"33","5":"190","6":"28.8","7":"0.687","8":"61","9":"0","10":"Elderly"},{"1":"1","2":"100","3":"66","4":"15","5":"56","6":"23.6","7":"0.666","8":"26","9":"0","10":"Young"},{"1":"1","2":"87","3":"78","4":"27","5":"32","6":"34.6","7":"0.101","8":"22","9":"0","10":"Young"},{"1":"0","2":"101","3":"76","4":"0","5":"0","6":"35.7","7":"0.198","8":"26","9":"0","10":"Young"},{"1":"3","2":"162","3":"52","4":"38","5":"0","6":"37.2","7":"0.652","8":"24","9":"1","10":"Young"},{"1":"4","2":"197","3":"70","4":"39","5":"744","6":"36.7","7":"2.329","8":"31","9":"0","10":"Middle"},{"1":"0","2":"117","3":"80","4":"31","5":"53","6":"45.2","7":"0.089","8":"24","9":"0","10":"Young"},{"1":"4","2":"142","3":"86","4":"0","5":"0","6":"44.0","7":"0.645","8":"22","9":"1","10":"Young"},{"1":"6","2":"134","3":"80","4":"37","5":"370","6":"46.2","7":"0.238","8":"46","9":"1","10":"Middle"},{"1":"1","2":"79","3":"80","4":"25","5":"37","6":"25.4","7":"0.583","8":"22","9":"0","10":"Young"},{"1":"4","2":"122","3":"68","4":"0","5":"0","6":"35.0","7":"0.394","8":"29","9":"0","10":"Young"},{"1":"3","2":"74","3":"68","4":"28","5":"45","6":"29.7","7":"0.293","8":"23","9":"0","10":"Young"},{"1":"4","2":"171","3":"72","4":"0","5":"0","6":"43.6","7":"0.479","8":"26","9":"1","10":"Young"},{"1":"7","2":"181","3":"84","4":"21","5":"192","6":"35.9","7":"0.586","8":"51","9":"1","10":"Elderly"},{"1":"0","2":"179","3":"90","4":"27","5":"0","6":"44.1","7":"0.686","8":"23","9":"1","10":"Young"},{"1":"9","2":"164","3":"84","4":"21","5":"0","6":"30.8","7":"0.831","8":"32","9":"1","10":"Middle"},{"1":"0","2":"104","3":"76","4":"0","5":"0","6":"18.4","7":"0.582","8":"27","9":"0","10":"Young"},{"1":"1","2":"91","3":"64","4":"24","5":"0","6":"29.2","7":"0.192","8":"21","9":"0","10":"Young"},{"1":"4","2":"91","3":"70","4":"32","5":"88","6":"33.1","7":"0.446","8":"22","9":"0","10":"Young"},{"1":"3","2":"139","3":"54","4":"0","5":"0","6":"25.6","7":"0.402","8":"22","9":"1","10":"Young"},{"1":"6","2":"119","3":"50","4":"22","5":"176","6":"27.1","7":"1.318","8":"33","9":"1","10":"Middle"},{"1":"2","2":"146","3":"76","4":"35","5":"194","6":"38.2","7":"0.329","8":"29","9":"0","10":"Young"},{"1":"9","2":"184","3":"85","4":"15","5":"0","6":"30.0","7":"1.213","8":"49","9":"1","10":"Middle"},{"1":"10","2":"122","3":"68","4":"0","5":"0","6":"31.2","7":"0.258","8":"41","9":"0","10":"Middle"},{"1":"0","2":"165","3":"90","4":"33","5":"680","6":"52.3","7":"0.427","8":"23","9":"0","10":"Young"},{"1":"9","2":"124","3":"70","4":"33","5":"402","6":"35.4","7":"0.282","8":"34","9":"0","10":"Middle"},{"1":"1","2":"111","3":"86","4":"19","5":"0","6":"30.1","7":"0.143","8":"23","9":"0","10":"Young"},{"1":"9","2":"106","3":"52","4":"0","5":"0","6":"31.2","7":"0.380","8":"42","9":"0","10":"Middle"},{"1":"2","2":"129","3":"84","4":"0","5":"0","6":"28.0","7":"0.284","8":"27","9":"0","10":"Young"},{"1":"2","2":"90","3":"80","4":"14","5":"55","6":"24.4","7":"0.249","8":"24","9":"0","10":"Young"},{"1":"0","2":"86","3":"68","4":"32","5":"0","6":"35.8","7":"0.238","8":"25","9":"0","10":"Young"},{"1":"12","2":"92","3":"62","4":"7","5":"258","6":"27.6","7":"0.926","8":"44","9":"1","10":"Middle"},{"1":"1","2":"113","3":"64","4":"35","5":"0","6":"33.6","7":"0.543","8":"21","9":"1","10":"Young"},{"1":"3","2":"111","3":"56","4":"39","5":"0","6":"30.1","7":"0.557","8":"30","9":"0","10":"Young"},{"1":"2","2":"114","3":"68","4":"22","5":"0","6":"28.7","7":"0.092","8":"25","9":"0","10":"Young"},{"1":"1","2":"193","3":"50","4":"16","5":"375","6":"25.9","7":"0.655","8":"24","9":"0","10":"Young"},{"1":"11","2":"155","3":"76","4":"28","5":"150","6":"33.3","7":"1.353","8":"51","9":"1","10":"Elderly"},{"1":"3","2":"191","3":"68","4":"15","5":"130","6":"30.9","7":"0.299","8":"34","9":"0","10":"Middle"},{"1":"3","2":"141","3":"0","4":"0","5":"0","6":"30.0","7":"0.761","8":"27","9":"1","10":"Young"},{"1":"4","2":"95","3":"70","4":"32","5":"0","6":"32.1","7":"0.612","8":"24","9":"0","10":"Young"},{"1":"3","2":"142","3":"80","4":"15","5":"0","6":"32.4","7":"0.200","8":"63","9":"0","10":"Elderly"},{"1":"4","2":"123","3":"62","4":"0","5":"0","6":"32.0","7":"0.226","8":"35","9":"1","10":"Middle"},{"1":"5","2":"96","3":"74","4":"18","5":"67","6":"33.6","7":"0.997","8":"43","9":"0","10":"Middle"},{"1":"0","2":"138","3":"0","4":"0","5":"0","6":"36.3","7":"0.933","8":"25","9":"1","10":"Young"},{"1":"2","2":"128","3":"64","4":"42","5":"0","6":"40.0","7":"1.101","8":"24","9":"0","10":"Young"},{"1":"0","2":"102","3":"52","4":"0","5":"0","6":"25.1","7":"0.078","8":"21","9":"0","10":"Young"},{"1":"2","2":"146","3":"0","4":"0","5":"0","6":"27.5","7":"0.240","8":"28","9":"1","10":"Young"},{"1":"10","2":"101","3":"86","4":"37","5":"0","6":"45.6","7":"1.136","8":"38","9":"1","10":"Middle"},{"1":"2","2":"108","3":"62","4":"32","5":"56","6":"25.2","7":"0.128","8":"21","9":"0","10":"Young"},{"1":"3","2":"122","3":"78","4":"0","5":"0","6":"23.0","7":"0.254","8":"40","9":"0","10":"Middle"},{"1":"1","2":"71","3":"78","4":"50","5":"45","6":"33.2","7":"0.422","8":"21","9":"0","10":"Young"},{"1":"13","2":"106","3":"70","4":"0","5":"0","6":"34.2","7":"0.251","8":"52","9":"0","10":"Elderly"},{"1":"2","2":"100","3":"70","4":"52","5":"57","6":"40.5","7":"0.677","8":"25","9":"0","10":"Young"},{"1":"7","2":"106","3":"60","4":"24","5":"0","6":"26.5","7":"0.296","8":"29","9":"1","10":"Young"},{"1":"0","2":"104","3":"64","4":"23","5":"116","6":"27.8","7":"0.454","8":"23","9":"0","10":"Young"},{"1":"5","2":"114","3":"74","4":"0","5":"0","6":"24.9","7":"0.744","8":"57","9":"0","10":"Elderly"},{"1":"2","2":"108","3":"62","4":"10","5":"278","6":"25.3","7":"0.881","8":"22","9":"0","10":"Young"},{"1":"0","2":"146","3":"70","4":"0","5":"0","6":"37.9","7":"0.334","8":"28","9":"1","10":"Young"},{"1":"10","2":"129","3":"76","4":"28","5":"122","6":"35.9","7":"0.280","8":"39","9":"0","10":"Middle"},{"1":"7","2":"133","3":"88","4":"15","5":"155","6":"32.4","7":"0.262","8":"37","9":"0","10":"Middle"},{"1":"7","2":"161","3":"86","4":"0","5":"0","6":"30.4","7":"0.165","8":"47","9":"1","10":"Middle"},{"1":"2","2":"108","3":"80","4":"0","5":"0","6":"27.0","7":"0.259","8":"52","9":"1","10":"Elderly"},{"1":"7","2":"136","3":"74","4":"26","5":"135","6":"26.0","7":"0.647","8":"51","9":"0","10":"Elderly"},{"1":"5","2":"155","3":"84","4":"44","5":"545","6":"38.7","7":"0.619","8":"34","9":"0","10":"Middle"},{"1":"1","2":"119","3":"86","4":"39","5":"220","6":"45.6","7":"0.808","8":"29","9":"1","10":"Young"},{"1":"4","2":"96","3":"56","4":"17","5":"49","6":"20.8","7":"0.340","8":"26","9":"0","10":"Young"},{"1":"5","2":"108","3":"72","4":"43","5":"75","6":"36.1","7":"0.263","8":"33","9":"0","10":"Middle"},{"1":"0","2":"78","3":"88","4":"29","5":"40","6":"36.9","7":"0.434","8":"21","9":"0","10":"Young"},{"1":"0","2":"107","3":"62","4":"30","5":"74","6":"36.6","7":"0.757","8":"25","9":"1","10":"Young"},{"1":"2","2":"128","3":"78","4":"37","5":"182","6":"43.3","7":"1.224","8":"31","9":"1","10":"Middle"},{"1":"1","2":"128","3":"48","4":"45","5":"194","6":"40.5","7":"0.613","8":"24","9":"1","10":"Young"},{"1":"0","2":"161","3":"50","4":"0","5":"0","6":"21.9","7":"0.254","8":"65","9":"0","10":"Elderly"},{"1":"6","2":"151","3":"62","4":"31","5":"120","6":"35.5","7":"0.692","8":"28","9":"0","10":"Young"},{"1":"2","2":"146","3":"70","4":"38","5":"360","6":"28.0","7":"0.337","8":"29","9":"1","10":"Young"},{"1":"0","2":"126","3":"84","4":"29","5":"215","6":"30.7","7":"0.520","8":"24","9":"0","10":"Young"},{"1":"14","2":"100","3":"78","4":"25","5":"184","6":"36.6","7":"0.412","8":"46","9":"1","10":"Middle"},{"1":"8","2":"112","3":"72","4":"0","5":"0","6":"23.6","7":"0.840","8":"58","9":"0","10":"Elderly"},{"1":"0","2":"167","3":"0","4":"0","5":"0","6":"32.3","7":"0.839","8":"30","9":"1","10":"Young"},{"1":"2","2":"144","3":"58","4":"33","5":"135","6":"31.6","7":"0.422","8":"25","9":"1","10":"Young"},{"1":"5","2":"77","3":"82","4":"41","5":"42","6":"35.8","7":"0.156","8":"35","9":"0","10":"Middle"},{"1":"5","2":"115","3":"98","4":"0","5":"0","6":"52.9","7":"0.209","8":"28","9":"1","10":"Young"},{"1":"3","2":"150","3":"76","4":"0","5":"0","6":"21.0","7":"0.207","8":"37","9":"0","10":"Middle"},{"1":"2","2":"120","3":"76","4":"37","5":"105","6":"39.7","7":"0.215","8":"29","9":"0","10":"Young"},{"1":"10","2":"161","3":"68","4":"23","5":"132","6":"25.5","7":"0.326","8":"47","9":"1","10":"Middle"},{"1":"0","2":"137","3":"68","4":"14","5":"148","6":"24.8","7":"0.143","8":"21","9":"0","10":"Young"},{"1":"0","2":"128","3":"68","4":"19","5":"180","6":"30.5","7":"1.391","8":"25","9":"1","10":"Young"},{"1":"2","2":"124","3":"68","4":"28","5":"205","6":"32.9","7":"0.875","8":"30","9":"1","10":"Young"},{"1":"6","2":"80","3":"66","4":"30","5":"0","6":"26.2","7":"0.313","8":"41","9":"0","10":"Middle"},{"1":"0","2":"106","3":"70","4":"37","5":"148","6":"39.4","7":"0.605","8":"22","9":"0","10":"Young"},{"1":"2","2":"155","3":"74","4":"17","5":"96","6":"26.6","7":"0.433","8":"27","9":"1","10":"Young"},{"1":"3","2":"113","3":"50","4":"10","5":"85","6":"29.5","7":"0.626","8":"25","9":"0","10":"Young"},{"1":"7","2":"109","3":"80","4":"31","5":"0","6":"35.9","7":"1.127","8":"43","9":"1","10":"Middle"},{"1":"2","2":"112","3":"68","4":"22","5":"94","6":"34.1","7":"0.315","8":"26","9":"0","10":"Young"},{"1":"3","2":"99","3":"80","4":"11","5":"64","6":"19.3","7":"0.284","8":"30","9":"0","10":"Young"},{"1":"3","2":"182","3":"74","4":"0","5":"0","6":"30.5","7":"0.345","8":"29","9":"1","10":"Young"},{"1":"3","2":"115","3":"66","4":"39","5":"140","6":"38.1","7":"0.150","8":"28","9":"0","10":"Young"},{"1":"6","2":"194","3":"78","4":"0","5":"0","6":"23.5","7":"0.129","8":"59","9":"1","10":"Elderly"},{"1":"4","2":"129","3":"60","4":"12","5":"231","6":"27.5","7":"0.527","8":"31","9":"0","10":"Middle"},{"1":"3","2":"112","3":"74","4":"30","5":"0","6":"31.6","7":"0.197","8":"25","9":"1","10":"Young"},{"1":"0","2":"124","3":"70","4":"20","5":"0","6":"27.4","7":"0.254","8":"36","9":"1","10":"Middle"},{"1":"13","2":"152","3":"90","4":"33","5":"29","6":"26.8","7":"0.731","8":"43","9":"1","10":"Middle"},{"1":"2","2":"112","3":"75","4":"32","5":"0","6":"35.7","7":"0.148","8":"21","9":"0","10":"Young"},{"1":"1","2":"157","3":"72","4":"21","5":"168","6":"25.6","7":"0.123","8":"24","9":"0","10":"Young"},{"1":"1","2":"122","3":"64","4":"32","5":"156","6":"35.1","7":"0.692","8":"30","9":"1","10":"Young"},{"1":"10","2":"179","3":"70","4":"0","5":"0","6":"35.1","7":"0.200","8":"37","9":"0","10":"Middle"},{"1":"2","2":"102","3":"86","4":"36","5":"120","6":"45.5","7":"0.127","8":"23","9":"1","10":"Young"},{"1":"6","2":"105","3":"70","4":"32","5":"68","6":"30.8","7":"0.122","8":"37","9":"0","10":"Middle"},{"1":"8","2":"118","3":"72","4":"19","5":"0","6":"23.1","7":"1.476","8":"46","9":"0","10":"Middle"},{"1":"2","2":"87","3":"58","4":"16","5":"52","6":"32.7","7":"0.166","8":"25","9":"0","10":"Young"},{"1":"1","2":"180","3":"0","4":"0","5":"0","6":"43.3","7":"0.282","8":"41","9":"1","10":"Middle"},{"1":"12","2":"106","3":"80","4":"0","5":"0","6":"23.6","7":"0.137","8":"44","9":"0","10":"Middle"},{"1":"1","2":"95","3":"60","4":"18","5":"58","6":"23.9","7":"0.260","8":"22","9":"0","10":"Young"},{"1":"0","2":"165","3":"76","4":"43","5":"255","6":"47.9","7":"0.259","8":"26","9":"0","10":"Young"},{"1":"0","2":"117","3":"0","4":"0","5":"0","6":"33.8","7":"0.932","8":"44","9":"0","10":"Middle"},{"1":"5","2":"115","3":"76","4":"0","5":"0","6":"31.2","7":"0.343","8":"44","9":"1","10":"Middle"},{"1":"9","2":"152","3":"78","4":"34","5":"171","6":"34.2","7":"0.893","8":"33","9":"1","10":"Middle"},{"1":"7","2":"178","3":"84","4":"0","5":"0","6":"39.9","7":"0.331","8":"41","9":"1","10":"Middle"},{"1":"1","2":"130","3":"70","4":"13","5":"105","6":"25.9","7":"0.472","8":"22","9":"0","10":"Young"},{"1":"1","2":"95","3":"74","4":"21","5":"73","6":"25.9","7":"0.673","8":"36","9":"0","10":"Middle"},{"1":"1","2":"0","3":"68","4":"35","5":"0","6":"32.0","7":"0.389","8":"22","9":"0","10":"Young"},{"1":"5","2":"122","3":"86","4":"0","5":"0","6":"34.7","7":"0.290","8":"33","9":"0","10":"Middle"},{"1":"8","2":"95","3":"72","4":"0","5":"0","6":"36.8","7":"0.485","8":"57","9":"0","10":"Elderly"},{"1":"8","2":"126","3":"88","4":"36","5":"108","6":"38.5","7":"0.349","8":"49","9":"0","10":"Middle"},{"1":"1","2":"139","3":"46","4":"19","5":"83","6":"28.7","7":"0.654","8":"22","9":"0","10":"Young"},{"1":"3","2":"116","3":"0","4":"0","5":"0","6":"23.5","7":"0.187","8":"23","9":"0","10":"Young"},{"1":"3","2":"99","3":"62","4":"19","5":"74","6":"21.8","7":"0.279","8":"26","9":"0","10":"Young"},{"1":"5","2":"0","3":"80","4":"32","5":"0","6":"41.0","7":"0.346","8":"37","9":"1","10":"Middle"},{"1":"4","2":"92","3":"80","4":"0","5":"0","6":"42.2","7":"0.237","8":"29","9":"0","10":"Young"},{"1":"4","2":"137","3":"84","4":"0","5":"0","6":"31.2","7":"0.252","8":"30","9":"0","10":"Young"},{"1":"3","2":"61","3":"82","4":"28","5":"0","6":"34.4","7":"0.243","8":"46","9":"0","10":"Middle"},{"1":"1","2":"90","3":"62","4":"12","5":"43","6":"27.2","7":"0.580","8":"24","9":"0","10":"Young"},{"1":"3","2":"90","3":"78","4":"0","5":"0","6":"42.7","7":"0.559","8":"21","9":"0","10":"Young"},{"1":"9","2":"165","3":"88","4":"0","5":"0","6":"30.4","7":"0.302","8":"49","9":"1","10":"Middle"},{"1":"1","2":"125","3":"50","4":"40","5":"167","6":"33.3","7":"0.962","8":"28","9":"1","10":"Young"},{"1":"13","2":"129","3":"0","4":"30","5":"0","6":"39.9","7":"0.569","8":"44","9":"1","10":"Middle"},{"1":"12","2":"88","3":"74","4":"40","5":"54","6":"35.3","7":"0.378","8":"48","9":"0","10":"Middle"},{"1":"1","2":"196","3":"76","4":"36","5":"249","6":"36.5","7":"0.875","8":"29","9":"1","10":"Young"},{"1":"5","2":"189","3":"64","4":"33","5":"325","6":"31.2","7":"0.583","8":"29","9":"1","10":"Young"},{"1":"5","2":"158","3":"70","4":"0","5":"0","6":"29.8","7":"0.207","8":"63","9":"0","10":"Elderly"},{"1":"5","2":"103","3":"108","4":"37","5":"0","6":"39.2","7":"0.305","8":"65","9":"0","10":"Elderly"},{"1":"4","2":"146","3":"78","4":"0","5":"0","6":"38.5","7":"0.520","8":"67","9":"1","10":"Elderly"},{"1":"4","2":"147","3":"74","4":"25","5":"293","6":"34.9","7":"0.385","8":"30","9":"0","10":"Young"},{"1":"5","2":"99","3":"54","4":"28","5":"83","6":"34.0","7":"0.499","8":"30","9":"0","10":"Young"},{"1":"6","2":"124","3":"72","4":"0","5":"0","6":"27.6","7":"0.368","8":"29","9":"1","10":"Young"},{"1":"0","2":"101","3":"64","4":"17","5":"0","6":"21.0","7":"0.252","8":"21","9":"0","10":"Young"},{"1":"3","2":"81","3":"86","4":"16","5":"66","6":"27.5","7":"0.306","8":"22","9":"0","10":"Young"},{"1":"1","2":"133","3":"102","4":"28","5":"140","6":"32.8","7":"0.234","8":"45","9":"1","10":"Middle"},{"1":"3","2":"173","3":"82","4":"48","5":"465","6":"38.4","7":"2.137","8":"25","9":"1","10":"Young"},{"1":"0","2":"118","3":"64","4":"23","5":"89","6":"0.0","7":"1.731","8":"21","9":"0","10":"Young"},{"1":"0","2":"84","3":"64","4":"22","5":"66","6":"35.8","7":"0.545","8":"21","9":"0","10":"Young"},{"1":"2","2":"105","3":"58","4":"40","5":"94","6":"34.9","7":"0.225","8":"25","9":"0","10":"Young"},{"1":"2","2":"122","3":"52","4":"43","5":"158","6":"36.2","7":"0.816","8":"28","9":"0","10":"Young"},{"1":"12","2":"140","3":"82","4":"43","5":"325","6":"39.2","7":"0.528","8":"58","9":"1","10":"Elderly"},{"1":"0","2":"98","3":"82","4":"15","5":"84","6":"25.2","7":"0.299","8":"22","9":"0","10":"Young"},{"1":"1","2":"87","3":"60","4":"37","5":"75","6":"37.2","7":"0.509","8":"22","9":"0","10":"Young"},{"1":"4","2":"156","3":"75","4":"0","5":"0","6":"48.3","7":"0.238","8":"32","9":"1","10":"Middle"},{"1":"0","2":"93","3":"100","4":"39","5":"72","6":"43.4","7":"1.021","8":"35","9":"0","10":"Middle"},{"1":"1","2":"107","3":"72","4":"30","5":"82","6":"30.8","7":"0.821","8":"24","9":"0","10":"Young"},{"1":"0","2":"105","3":"68","4":"22","5":"0","6":"20.0","7":"0.236","8":"22","9":"0","10":"Young"},{"1":"1","2":"109","3":"60","4":"8","5":"182","6":"25.4","7":"0.947","8":"21","9":"0","10":"Young"},{"1":"1","2":"90","3":"62","4":"18","5":"59","6":"25.1","7":"1.268","8":"25","9":"0","10":"Young"},{"1":"1","2":"125","3":"70","4":"24","5":"110","6":"24.3","7":"0.221","8":"25","9":"0","10":"Young"},{"1":"1","2":"119","3":"54","4":"13","5":"50","6":"22.3","7":"0.205","8":"24","9":"0","10":"Young"},{"1":"5","2":"116","3":"74","4":"29","5":"0","6":"32.3","7":"0.660","8":"35","9":"1","10":"Middle"},{"1":"8","2":"105","3":"100","4":"36","5":"0","6":"43.3","7":"0.239","8":"45","9":"1","10":"Middle"},{"1":"5","2":"144","3":"82","4":"26","5":"285","6":"32.0","7":"0.452","8":"58","9":"1","10":"Elderly"},{"1":"3","2":"100","3":"68","4":"23","5":"81","6":"31.6","7":"0.949","8":"28","9":"0","10":"Young"},{"1":"1","2":"100","3":"66","4":"29","5":"196","6":"32.0","7":"0.444","8":"42","9":"0","10":"Middle"},{"1":"5","2":"166","3":"76","4":"0","5":"0","6":"45.7","7":"0.340","8":"27","9":"1","10":"Young"},{"1":"1","2":"131","3":"64","4":"14","5":"415","6":"23.7","7":"0.389","8":"21","9":"0","10":"Young"},{"1":"4","2":"116","3":"72","4":"12","5":"87","6":"22.1","7":"0.463","8":"37","9":"0","10":"Middle"},{"1":"4","2":"158","3":"78","4":"0","5":"0","6":"32.9","7":"0.803","8":"31","9":"1","10":"Middle"},{"1":"2","2":"127","3":"58","4":"24","5":"275","6":"27.7","7":"1.600","8":"25","9":"0","10":"Young"},{"1":"3","2":"96","3":"56","4":"34","5":"115","6":"24.7","7":"0.944","8":"39","9":"0","10":"Middle"},{"1":"0","2":"131","3":"66","4":"40","5":"0","6":"34.3","7":"0.196","8":"22","9":"1","10":"Young"},{"1":"3","2":"82","3":"70","4":"0","5":"0","6":"21.1","7":"0.389","8":"25","9":"0","10":"Young"},{"1":"3","2":"193","3":"70","4":"31","5":"0","6":"34.9","7":"0.241","8":"25","9":"1","10":"Young"},{"1":"4","2":"95","3":"64","4":"0","5":"0","6":"32.0","7":"0.161","8":"31","9":"1","10":"Middle"},{"1":"6","2":"137","3":"61","4":"0","5":"0","6":"24.2","7":"0.151","8":"55","9":"0","10":"Elderly"},{"1":"5","2":"136","3":"84","4":"41","5":"88","6":"35.0","7":"0.286","8":"35","9":"1","10":"Middle"},{"1":"9","2":"72","3":"78","4":"25","5":"0","6":"31.6","7":"0.280","8":"38","9":"0","10":"Middle"},{"1":"5","2":"168","3":"64","4":"0","5":"0","6":"32.9","7":"0.135","8":"41","9":"1","10":"Middle"},{"1":"2","2":"123","3":"48","4":"32","5":"165","6":"42.1","7":"0.520","8":"26","9":"0","10":"Young"},{"1":"4","2":"115","3":"72","4":"0","5":"0","6":"28.9","7":"0.376","8":"46","9":"1","10":"Middle"},{"1":"0","2":"101","3":"62","4":"0","5":"0","6":"21.9","7":"0.336","8":"25","9":"0","10":"Young"},{"1":"8","2":"197","3":"74","4":"0","5":"0","6":"25.9","7":"1.191","8":"39","9":"1","10":"Middle"},{"1":"1","2":"172","3":"68","4":"49","5":"579","6":"42.4","7":"0.702","8":"28","9":"1","10":"Young"},{"1":"6","2":"102","3":"90","4":"39","5":"0","6":"35.7","7":"0.674","8":"28","9":"0","10":"Young"},{"1":"1","2":"112","3":"72","4":"30","5":"176","6":"34.4","7":"0.528","8":"25","9":"0","10":"Young"},{"1":"1","2":"143","3":"84","4":"23","5":"310","6":"42.4","7":"1.076","8":"22","9":"0","10":"Young"},{"1":"1","2":"143","3":"74","4":"22","5":"61","6":"26.2","7":"0.256","8":"21","9":"0","10":"Young"},{"1":"0","2":"138","3":"60","4":"35","5":"167","6":"34.6","7":"0.534","8":"21","9":"1","10":"Young"},{"1":"3","2":"173","3":"84","4":"33","5":"474","6":"35.7","7":"0.258","8":"22","9":"1","10":"Young"},{"1":"1","2":"97","3":"68","4":"21","5":"0","6":"27.2","7":"1.095","8":"22","9":"0","10":"Young"},{"1":"4","2":"144","3":"82","4":"32","5":"0","6":"38.5","7":"0.554","8":"37","9":"1","10":"Middle"},{"1":"1","2":"83","3":"68","4":"0","5":"0","6":"18.2","7":"0.624","8":"27","9":"0","10":"Young"},{"1":"3","2":"129","3":"64","4":"29","5":"115","6":"26.4","7":"0.219","8":"28","9":"1","10":"Young"},{"1":"1","2":"119","3":"88","4":"41","5":"170","6":"45.3","7":"0.507","8":"26","9":"0","10":"Young"},{"1":"2","2":"94","3":"68","4":"18","5":"76","6":"26.0","7":"0.561","8":"21","9":"0","10":"Young"},{"1":"0","2":"102","3":"64","4":"46","5":"78","6":"40.6","7":"0.496","8":"21","9":"0","10":"Young"},{"1":"2","2":"115","3":"64","4":"22","5":"0","6":"30.8","7":"0.421","8":"21","9":"0","10":"Young"},{"1":"8","2":"151","3":"78","4":"32","5":"210","6":"42.9","7":"0.516","8":"36","9":"1","10":"Middle"},{"1":"4","2":"184","3":"78","4":"39","5":"277","6":"37.0","7":"0.264","8":"31","9":"1","10":"Middle"},{"1":"0","2":"94","3":"0","4":"0","5":"0","6":"0.0","7":"0.256","8":"25","9":"0","10":"Young"},{"1":"1","2":"181","3":"64","4":"30","5":"180","6":"34.1","7":"0.328","8":"38","9":"1","10":"Middle"},{"1":"0","2":"135","3":"94","4":"46","5":"145","6":"40.6","7":"0.284","8":"26","9":"0","10":"Young"},{"1":"1","2":"95","3":"82","4":"25","5":"180","6":"35.0","7":"0.233","8":"43","9":"1","10":"Middle"},{"1":"2","2":"99","3":"0","4":"0","5":"0","6":"22.2","7":"0.108","8":"23","9":"0","10":"Young"},{"1":"3","2":"89","3":"74","4":"16","5":"85","6":"30.4","7":"0.551","8":"38","9":"0","10":"Middle"},{"1":"1","2":"80","3":"74","4":"11","5":"60","6":"30.0","7":"0.527","8":"22","9":"0","10":"Young"},{"1":"2","2":"139","3":"75","4":"0","5":"0","6":"25.6","7":"0.167","8":"29","9":"0","10":"Young"},{"1":"1","2":"90","3":"68","4":"8","5":"0","6":"24.5","7":"1.138","8":"36","9":"0","10":"Middle"},{"1":"0","2":"141","3":"0","4":"0","5":"0","6":"42.4","7":"0.205","8":"29","9":"1","10":"Young"},{"1":"12","2":"140","3":"85","4":"33","5":"0","6":"37.4","7":"0.244","8":"41","9":"0","10":"Middle"},{"1":"5","2":"147","3":"75","4":"0","5":"0","6":"29.9","7":"0.434","8":"28","9":"0","10":"Young"},{"1":"1","2":"97","3":"70","4":"15","5":"0","6":"18.2","7":"0.147","8":"21","9":"0","10":"Young"},{"1":"6","2":"107","3":"88","4":"0","5":"0","6":"36.8","7":"0.727","8":"31","9":"0","10":"Middle"},{"1":"0","2":"189","3":"104","4":"25","5":"0","6":"34.3","7":"0.435","8":"41","9":"1","10":"Middle"},{"1":"2","2":"83","3":"66","4":"23","5":"50","6":"32.2","7":"0.497","8":"22","9":"0","10":"Young"},{"1":"4","2":"117","3":"64","4":"27","5":"120","6":"33.2","7":"0.230","8":"24","9":"0","10":"Young"},{"1":"8","2":"108","3":"70","4":"0","5":"0","6":"30.5","7":"0.955","8":"33","9":"1","10":"Middle"},{"1":"4","2":"117","3":"62","4":"12","5":"0","6":"29.7","7":"0.380","8":"30","9":"1","10":"Young"},{"1":"0","2":"180","3":"78","4":"63","5":"14","6":"59.4","7":"2.420","8":"25","9":"1","10":"Young"},{"1":"1","2":"100","3":"72","4":"12","5":"70","6":"25.3","7":"0.658","8":"28","9":"0","10":"Young"},{"1":"0","2":"95","3":"80","4":"45","5":"92","6":"36.5","7":"0.330","8":"26","9":"0","10":"Young"},{"1":"0","2":"104","3":"64","4":"37","5":"64","6":"33.6","7":"0.510","8":"22","9":"1","10":"Young"},{"1":"0","2":"120","3":"74","4":"18","5":"63","6":"30.5","7":"0.285","8":"26","9":"0","10":"Young"},{"1":"1","2":"82","3":"64","4":"13","5":"95","6":"21.2","7":"0.415","8":"23","9":"0","10":"Young"},{"1":"2","2":"134","3":"70","4":"0","5":"0","6":"28.9","7":"0.542","8":"23","9":"1","10":"Young"},{"1":"0","2":"91","3":"68","4":"32","5":"210","6":"39.9","7":"0.381","8":"25","9":"0","10":"Young"},{"1":"2","2":"119","3":"0","4":"0","5":"0","6":"19.6","7":"0.832","8":"72","9":"0","10":"Elderly"},{"1":"2","2":"100","3":"54","4":"28","5":"105","6":"37.8","7":"0.498","8":"24","9":"0","10":"Young"},{"1":"14","2":"175","3":"62","4":"30","5":"0","6":"33.6","7":"0.212","8":"38","9":"1","10":"Middle"},{"1":"1","2":"135","3":"54","4":"0","5":"0","6":"26.7","7":"0.687","8":"62","9":"0","10":"Elderly"},{"1":"5","2":"86","3":"68","4":"28","5":"71","6":"30.2","7":"0.364","8":"24","9":"0","10":"Young"},{"1":"10","2":"148","3":"84","4":"48","5":"237","6":"37.6","7":"1.001","8":"51","9":"1","10":"Elderly"},{"1":"9","2":"134","3":"74","4":"33","5":"60","6":"25.9","7":"0.460","8":"81","9":"0","10":"Elderly"},{"1":"9","2":"120","3":"72","4":"22","5":"56","6":"20.8","7":"0.733","8":"48","9":"0","10":"Middle"},{"1":"1","2":"71","3":"62","4":"0","5":"0","6":"21.8","7":"0.416","8":"26","9":"0","10":"Young"},{"1":"8","2":"74","3":"70","4":"40","5":"49","6":"35.3","7":"0.705","8":"39","9":"0","10":"Middle"},{"1":"5","2":"88","3":"78","4":"30","5":"0","6":"27.6","7":"0.258","8":"37","9":"0","10":"Middle"},{"1":"10","2":"115","3":"98","4":"0","5":"0","6":"24.0","7":"1.022","8":"34","9":"0","10":"Middle"},{"1":"0","2":"124","3":"56","4":"13","5":"105","6":"21.8","7":"0.452","8":"21","9":"0","10":"Young"},{"1":"0","2":"74","3":"52","4":"10","5":"36","6":"27.8","7":"0.269","8":"22","9":"0","10":"Young"},{"1":"0","2":"97","3":"64","4":"36","5":"100","6":"36.8","7":"0.600","8":"25","9":"0","10":"Young"},{"1":"8","2":"120","3":"0","4":"0","5":"0","6":"30.0","7":"0.183","8":"38","9":"1","10":"Middle"},{"1":"6","2":"154","3":"78","4":"41","5":"140","6":"46.1","7":"0.571","8":"27","9":"0","10":"Young"},{"1":"1","2":"144","3":"82","4":"40","5":"0","6":"41.3","7":"0.607","8":"28","9":"0","10":"Young"},{"1":"0","2":"137","3":"70","4":"38","5":"0","6":"33.2","7":"0.170","8":"22","9":"0","10":"Young"},{"1":"0","2":"119","3":"66","4":"27","5":"0","6":"38.8","7":"0.259","8":"22","9":"0","10":"Young"},{"1":"7","2":"136","3":"90","4":"0","5":"0","6":"29.9","7":"0.210","8":"50","9":"0","10":"Middle"},{"1":"4","2":"114","3":"64","4":"0","5":"0","6":"28.9","7":"0.126","8":"24","9":"0","10":"Young"},{"1":"0","2":"137","3":"84","4":"27","5":"0","6":"27.3","7":"0.231","8":"59","9":"0","10":"Elderly"},{"1":"2","2":"105","3":"80","4":"45","5":"191","6":"33.7","7":"0.711","8":"29","9":"1","10":"Young"},{"1":"7","2":"114","3":"76","4":"17","5":"110","6":"23.8","7":"0.466","8":"31","9":"0","10":"Middle"},{"1":"8","2":"126","3":"74","4":"38","5":"75","6":"25.9","7":"0.162","8":"39","9":"0","10":"Middle"},{"1":"4","2":"132","3":"86","4":"31","5":"0","6":"28.0","7":"0.419","8":"63","9":"0","10":"Elderly"},{"1":"3","2":"158","3":"70","4":"30","5":"328","6":"35.5","7":"0.344","8":"35","9":"1","10":"Middle"},{"1":"0","2":"123","3":"88","4":"37","5":"0","6":"35.2","7":"0.197","8":"29","9":"0","10":"Young"},{"1":"4","2":"85","3":"58","4":"22","5":"49","6":"27.8","7":"0.306","8":"28","9":"0","10":"Young"},{"1":"0","2":"84","3":"82","4":"31","5":"125","6":"38.2","7":"0.233","8":"23","9":"0","10":"Young"},{"1":"0","2":"145","3":"0","4":"0","5":"0","6":"44.2","7":"0.630","8":"31","9":"1","10":"Middle"},{"1":"0","2":"135","3":"68","4":"42","5":"250","6":"42.3","7":"0.365","8":"24","9":"1","10":"Young"},{"1":"1","2":"139","3":"62","4":"41","5":"480","6":"40.7","7":"0.536","8":"21","9":"0","10":"Young"},{"1":"0","2":"173","3":"78","4":"32","5":"265","6":"46.5","7":"1.159","8":"58","9":"0","10":"Elderly"},{"1":"4","2":"99","3":"72","4":"17","5":"0","6":"25.6","7":"0.294","8":"28","9":"0","10":"Young"},{"1":"8","2":"194","3":"80","4":"0","5":"0","6":"26.1","7":"0.551","8":"67","9":"0","10":"Elderly"},{"1":"2","2":"83","3":"65","4":"28","5":"66","6":"36.8","7":"0.629","8":"24","9":"0","10":"Young"},{"1":"2","2":"89","3":"90","4":"30","5":"0","6":"33.5","7":"0.292","8":"42","9":"0","10":"Middle"},{"1":"4","2":"99","3":"68","4":"38","5":"0","6":"32.8","7":"0.145","8":"33","9":"0","10":"Middle"},{"1":"4","2":"125","3":"70","4":"18","5":"122","6":"28.9","7":"1.144","8":"45","9":"1","10":"Middle"},{"1":"3","2":"80","3":"0","4":"0","5":"0","6":"0.0","7":"0.174","8":"22","9":"0","10":"Young"},{"1":"6","2":"166","3":"74","4":"0","5":"0","6":"26.6","7":"0.304","8":"66","9":"0","10":"Elderly"},{"1":"5","2":"110","3":"68","4":"0","5":"0","6":"26.0","7":"0.292","8":"30","9":"0","10":"Young"},{"1":"2","2":"81","3":"72","4":"15","5":"76","6":"30.1","7":"0.547","8":"25","9":"0","10":"Young"},{"1":"7","2":"195","3":"70","4":"33","5":"145","6":"25.1","7":"0.163","8":"55","9":"1","10":"Elderly"},{"1":"6","2":"154","3":"74","4":"32","5":"193","6":"29.3","7":"0.839","8":"39","9":"0","10":"Middle"},{"1":"2","2":"117","3":"90","4":"19","5":"71","6":"25.2","7":"0.313","8":"21","9":"0","10":"Young"},{"1":"3","2":"84","3":"72","4":"32","5":"0","6":"37.2","7":"0.267","8":"28","9":"0","10":"Young"},{"1":"6","2":"0","3":"68","4":"41","5":"0","6":"39.0","7":"0.727","8":"41","9":"1","10":"Middle"},{"1":"7","2":"94","3":"64","4":"25","5":"79","6":"33.3","7":"0.738","8":"41","9":"0","10":"Middle"},{"1":"3","2":"96","3":"78","4":"39","5":"0","6":"37.3","7":"0.238","8":"40","9":"0","10":"Middle"},{"1":"10","2":"75","3":"82","4":"0","5":"0","6":"33.3","7":"0.263","8":"38","9":"0","10":"Middle"},{"1":"0","2":"180","3":"90","4":"26","5":"90","6":"36.5","7":"0.314","8":"35","9":"1","10":"Middle"},{"1":"1","2":"130","3":"60","4":"23","5":"170","6":"28.6","7":"0.692","8":"21","9":"0","10":"Young"},{"1":"2","2":"84","3":"50","4":"23","5":"76","6":"30.4","7":"0.968","8":"21","9":"0","10":"Young"},{"1":"8","2":"120","3":"78","4":"0","5":"0","6":"25.0","7":"0.409","8":"64","9":"0","10":"Elderly"},{"1":"12","2":"84","3":"72","4":"31","5":"0","6":"29.7","7":"0.297","8":"46","9":"1","10":"Middle"},{"1":"0","2":"139","3":"62","4":"17","5":"210","6":"22.1","7":"0.207","8":"21","9":"0","10":"Young"},{"1":"9","2":"91","3":"68","4":"0","5":"0","6":"24.2","7":"0.200","8":"58","9":"0","10":"Elderly"},{"1":"2","2":"91","3":"62","4":"0","5":"0","6":"27.3","7":"0.525","8":"22","9":"0","10":"Young"},{"1":"3","2":"99","3":"54","4":"19","5":"86","6":"25.6","7":"0.154","8":"24","9":"0","10":"Young"},{"1":"3","2":"163","3":"70","4":"18","5":"105","6":"31.6","7":"0.268","8":"28","9":"1","10":"Young"},{"1":"9","2":"145","3":"88","4":"34","5":"165","6":"30.3","7":"0.771","8":"53","9":"1","10":"Elderly"},{"1":"7","2":"125","3":"86","4":"0","5":"0","6":"37.6","7":"0.304","8":"51","9":"0","10":"Elderly"},{"1":"13","2":"76","3":"60","4":"0","5":"0","6":"32.8","7":"0.180","8":"41","9":"0","10":"Middle"},{"1":"6","2":"129","3":"90","4":"7","5":"326","6":"19.6","7":"0.582","8":"60","9":"0","10":"Elderly"},{"1":"2","2":"68","3":"70","4":"32","5":"66","6":"25.0","7":"0.187","8":"25","9":"0","10":"Young"},{"1":"3","2":"124","3":"80","4":"33","5":"130","6":"33.2","7":"0.305","8":"26","9":"0","10":"Young"},{"1":"6","2":"114","3":"0","4":"0","5":"0","6":"0.0","7":"0.189","8":"26","9":"0","10":"Young"},{"1":"9","2":"130","3":"70","4":"0","5":"0","6":"34.2","7":"0.652","8":"45","9":"1","10":"Middle"},{"1":"3","2":"125","3":"58","4":"0","5":"0","6":"31.6","7":"0.151","8":"24","9":"0","10":"Young"},{"1":"3","2":"87","3":"60","4":"18","5":"0","6":"21.8","7":"0.444","8":"21","9":"0","10":"Young"},{"1":"1","2":"97","3":"64","4":"19","5":"82","6":"18.2","7":"0.299","8":"21","9":"0","10":"Young"},{"1":"3","2":"116","3":"74","4":"15","5":"105","6":"26.3","7":"0.107","8":"24","9":"0","10":"Young"},{"1":"0","2":"117","3":"66","4":"31","5":"188","6":"30.8","7":"0.493","8":"22","9":"0","10":"Young"},{"1":"0","2":"111","3":"65","4":"0","5":"0","6":"24.6","7":"0.660","8":"31","9":"0","10":"Middle"},{"1":"2","2":"122","3":"60","4":"18","5":"106","6":"29.8","7":"0.717","8":"22","9":"0","10":"Young"},{"1":"0","2":"107","3":"76","4":"0","5":"0","6":"45.3","7":"0.686","8":"24","9":"0","10":"Young"},{"1":"1","2":"86","3":"66","4":"52","5":"65","6":"41.3","7":"0.917","8":"29","9":"0","10":"Young"},{"1":"6","2":"91","3":"0","4":"0","5":"0","6":"29.8","7":"0.501","8":"31","9":"0","10":"Middle"},{"1":"1","2":"77","3":"56","4":"30","5":"56","6":"33.3","7":"1.251","8":"24","9":"0","10":"Young"},{"1":"4","2":"132","3":"0","4":"0","5":"0","6":"32.9","7":"0.302","8":"23","9":"1","10":"Young"},{"1":"0","2":"105","3":"90","4":"0","5":"0","6":"29.6","7":"0.197","8":"46","9":"0","10":"Middle"},{"1":"0","2":"57","3":"60","4":"0","5":"0","6":"21.7","7":"0.735","8":"67","9":"0","10":"Elderly"},{"1":"0","2":"127","3":"80","4":"37","5":"210","6":"36.3","7":"0.804","8":"23","9":"0","10":"Young"},{"1":"3","2":"129","3":"92","4":"49","5":"155","6":"36.4","7":"0.968","8":"32","9":"1","10":"Middle"},{"1":"8","2":"100","3":"74","4":"40","5":"215","6":"39.4","7":"0.661","8":"43","9":"1","10":"Middle"},{"1":"3","2":"128","3":"72","4":"25","5":"190","6":"32.4","7":"0.549","8":"27","9":"1","10":"Young"},{"1":"10","2":"90","3":"85","4":"32","5":"0","6":"34.9","7":"0.825","8":"56","9":"1","10":"Elderly"},{"1":"4","2":"84","3":"90","4":"23","5":"56","6":"39.5","7":"0.159","8":"25","9":"0","10":"Young"},{"1":"1","2":"88","3":"78","4":"29","5":"76","6":"32.0","7":"0.365","8":"29","9":"0","10":"Young"},{"1":"8","2":"186","3":"90","4":"35","5":"225","6":"34.5","7":"0.423","8":"37","9":"1","10":"Middle"},{"1":"5","2":"187","3":"76","4":"27","5":"207","6":"43.6","7":"1.034","8":"53","9":"1","10":"Elderly"},{"1":"4","2":"131","3":"68","4":"21","5":"166","6":"33.1","7":"0.160","8":"28","9":"0","10":"Young"},{"1":"1","2":"164","3":"82","4":"43","5":"67","6":"32.8","7":"0.341","8":"50","9":"0","10":"Middle"},{"1":"4","2":"189","3":"110","4":"31","5":"0","6":"28.5","7":"0.680","8":"37","9":"0","10":"Middle"},{"1":"1","2":"116","3":"70","4":"28","5":"0","6":"27.4","7":"0.204","8":"21","9":"0","10":"Young"},{"1":"3","2":"84","3":"68","4":"30","5":"106","6":"31.9","7":"0.591","8":"25","9":"0","10":"Young"},{"1":"6","2":"114","3":"88","4":"0","5":"0","6":"27.8","7":"0.247","8":"66","9":"0","10":"Elderly"},{"1":"1","2":"88","3":"62","4":"24","5":"44","6":"29.9","7":"0.422","8":"23","9":"0","10":"Young"},{"1":"1","2":"84","3":"64","4":"23","5":"115","6":"36.9","7":"0.471","8":"28","9":"0","10":"Young"},{"1":"7","2":"124","3":"70","4":"33","5":"215","6":"25.5","7":"0.161","8":"37","9":"0","10":"Middle"},{"1":"1","2":"97","3":"70","4":"40","5":"0","6":"38.1","7":"0.218","8":"30","9":"0","10":"Young"},{"1":"8","2":"110","3":"76","4":"0","5":"0","6":"27.8","7":"0.237","8":"58","9":"0","10":"Elderly"},{"1":"11","2":"103","3":"68","4":"40","5":"0","6":"46.2","7":"0.126","8":"42","9":"0","10":"Middle"},{"1":"11","2":"85","3":"74","4":"0","5":"0","6":"30.1","7":"0.300","8":"35","9":"0","10":"Middle"},{"1":"6","2":"125","3":"76","4":"0","5":"0","6":"33.8","7":"0.121","8":"54","9":"1","10":"Elderly"},{"1":"0","2":"198","3":"66","4":"32","5":"274","6":"41.3","7":"0.502","8":"28","9":"1","10":"Young"},{"1":"1","2":"87","3":"68","4":"34","5":"77","6":"37.6","7":"0.401","8":"24","9":"0","10":"Young"},{"1":"6","2":"99","3":"60","4":"19","5":"54","6":"26.9","7":"0.497","8":"32","9":"0","10":"Middle"},{"1":"0","2":"91","3":"80","4":"0","5":"0","6":"32.4","7":"0.601","8":"27","9":"0","10":"Young"},{"1":"2","2":"95","3":"54","4":"14","5":"88","6":"26.1","7":"0.748","8":"22","9":"0","10":"Young"},{"1":"1","2":"99","3":"72","4":"30","5":"18","6":"38.6","7":"0.412","8":"21","9":"0","10":"Young"},{"1":"6","2":"92","3":"62","4":"32","5":"126","6":"32.0","7":"0.085","8":"46","9":"0","10":"Middle"},{"1":"4","2":"154","3":"72","4":"29","5":"126","6":"31.3","7":"0.338","8":"37","9":"0","10":"Middle"},{"1":"0","2":"121","3":"66","4":"30","5":"165","6":"34.3","7":"0.203","8":"33","9":"1","10":"Middle"},{"1":"3","2":"78","3":"70","4":"0","5":"0","6":"32.5","7":"0.270","8":"39","9":"0","10":"Middle"},{"1":"2","2":"130","3":"96","4":"0","5":"0","6":"22.6","7":"0.268","8":"21","9":"0","10":"Young"},{"1":"3","2":"111","3":"58","4":"31","5":"44","6":"29.5","7":"0.430","8":"22","9":"0","10":"Young"},{"1":"2","2":"98","3":"60","4":"17","5":"120","6":"34.7","7":"0.198","8":"22","9":"0","10":"Young"},{"1":"1","2":"143","3":"86","4":"30","5":"330","6":"30.1","7":"0.892","8":"23","9":"0","10":"Young"},{"1":"1","2":"119","3":"44","4":"47","5":"63","6":"35.5","7":"0.280","8":"25","9":"0","10":"Young"},{"1":"6","2":"108","3":"44","4":"20","5":"130","6":"24.0","7":"0.813","8":"35","9":"0","10":"Middle"},{"1":"2","2":"118","3":"80","4":"0","5":"0","6":"42.9","7":"0.693","8":"21","9":"1","10":"Young"},{"1":"10","2":"133","3":"68","4":"0","5":"0","6":"27.0","7":"0.245","8":"36","9":"0","10":"Middle"},{"1":"2","2":"197","3":"70","4":"99","5":"0","6":"34.7","7":"0.575","8":"62","9":"1","10":"Elderly"},{"1":"0","2":"151","3":"90","4":"46","5":"0","6":"42.1","7":"0.371","8":"21","9":"1","10":"Young"},{"1":"6","2":"109","3":"60","4":"27","5":"0","6":"25.0","7":"0.206","8":"27","9":"0","10":"Young"},{"1":"12","2":"121","3":"78","4":"17","5":"0","6":"26.5","7":"0.259","8":"62","9":"0","10":"Elderly"},{"1":"8","2":"100","3":"76","4":"0","5":"0","6":"38.7","7":"0.190","8":"42","9":"0","10":"Middle"},{"1":"8","2":"124","3":"76","4":"24","5":"600","6":"28.7","7":"0.687","8":"52","9":"1","10":"Elderly"},{"1":"1","2":"93","3":"56","4":"11","5":"0","6":"22.5","7":"0.417","8":"22","9":"0","10":"Young"},{"1":"8","2":"143","3":"66","4":"0","5":"0","6":"34.9","7":"0.129","8":"41","9":"1","10":"Middle"},{"1":"6","2":"103","3":"66","4":"0","5":"0","6":"24.3","7":"0.249","8":"29","9":"0","10":"Young"},{"1":"3","2":"176","3":"86","4":"27","5":"156","6":"33.3","7":"1.154","8":"52","9":"1","10":"Elderly"},{"1":"0","2":"73","3":"0","4":"0","5":"0","6":"21.1","7":"0.342","8":"25","9":"0","10":"Young"},{"1":"11","2":"111","3":"84","4":"40","5":"0","6":"46.8","7":"0.925","8":"45","9":"1","10":"Middle"},{"1":"2","2":"112","3":"78","4":"50","5":"140","6":"39.4","7":"0.175","8":"24","9":"0","10":"Young"},{"1":"3","2":"132","3":"80","4":"0","5":"0","6":"34.4","7":"0.402","8":"44","9":"1","10":"Middle"},{"1":"2","2":"82","3":"52","4":"22","5":"115","6":"28.5","7":"1.699","8":"25","9":"0","10":"Young"},{"1":"6","2":"123","3":"72","4":"45","5":"230","6":"33.6","7":"0.733","8":"34","9":"0","10":"Middle"},{"1":"0","2":"188","3":"82","4":"14","5":"185","6":"32.0","7":"0.682","8":"22","9":"1","10":"Young"},{"1":"0","2":"67","3":"76","4":"0","5":"0","6":"45.3","7":"0.194","8":"46","9":"0","10":"Middle"},{"1":"1","2":"89","3":"24","4":"19","5":"25","6":"27.8","7":"0.559","8":"21","9":"0","10":"Young"},{"1":"1","2":"173","3":"74","4":"0","5":"0","6":"36.8","7":"0.088","8":"38","9":"1","10":"Middle"},{"1":"1","2":"109","3":"38","4":"18","5":"120","6":"23.1","7":"0.407","8":"26","9":"0","10":"Young"},{"1":"1","2":"108","3":"88","4":"19","5":"0","6":"27.1","7":"0.400","8":"24","9":"0","10":"Young"},{"1":"6","2":"96","3":"0","4":"0","5":"0","6":"23.7","7":"0.190","8":"28","9":"0","10":"Young"},{"1":"1","2":"124","3":"74","4":"36","5":"0","6":"27.8","7":"0.100","8":"30","9":"0","10":"Young"},{"1":"7","2":"150","3":"78","4":"29","5":"126","6":"35.2","7":"0.692","8":"54","9":"1","10":"Elderly"},{"1":"4","2":"183","3":"0","4":"0","5":"0","6":"28.4","7":"0.212","8":"36","9":"1","10":"Middle"},{"1":"1","2":"124","3":"60","4":"32","5":"0","6":"35.8","7":"0.514","8":"21","9":"0","10":"Young"},{"1":"1","2":"181","3":"78","4":"42","5":"293","6":"40.0","7":"1.258","8":"22","9":"1","10":"Young"},{"1":"1","2":"92","3":"62","4":"25","5":"41","6":"19.5","7":"0.482","8":"25","9":"0","10":"Young"},{"1":"0","2":"152","3":"82","4":"39","5":"272","6":"41.5","7":"0.270","8":"27","9":"0","10":"Young"},{"1":"1","2":"111","3":"62","4":"13","5":"182","6":"24.0","7":"0.138","8":"23","9":"0","10":"Young"},{"1":"3","2":"106","3":"54","4":"21","5":"158","6":"30.9","7":"0.292","8":"24","9":"0","10":"Young"},{"1":"3","2":"174","3":"58","4":"22","5":"194","6":"32.9","7":"0.593","8":"36","9":"1","10":"Middle"},{"1":"7","2":"168","3":"88","4":"42","5":"321","6":"38.2","7":"0.787","8":"40","9":"1","10":"Middle"},{"1":"6","2":"105","3":"80","4":"28","5":"0","6":"32.5","7":"0.878","8":"26","9":"0","10":"Young"},{"1":"11","2":"138","3":"74","4":"26","5":"144","6":"36.1","7":"0.557","8":"50","9":"1","10":"Middle"},{"1":"3","2":"106","3":"72","4":"0","5":"0","6":"25.8","7":"0.207","8":"27","9":"0","10":"Young"},{"1":"6","2":"117","3":"96","4":"0","5":"0","6":"28.7","7":"0.157","8":"30","9":"0","10":"Young"},{"1":"2","2":"68","3":"62","4":"13","5":"15","6":"20.1","7":"0.257","8":"23","9":"0","10":"Young"},{"1":"9","2":"112","3":"82","4":"24","5":"0","6":"28.2","7":"1.282","8":"50","9":"1","10":"Middle"},{"1":"0","2":"119","3":"0","4":"0","5":"0","6":"32.4","7":"0.141","8":"24","9":"1","10":"Young"},{"1":"2","2":"112","3":"86","4":"42","5":"160","6":"38.4","7":"0.246","8":"28","9":"0","10":"Young"},{"1":"2","2":"92","3":"76","4":"20","5":"0","6":"24.2","7":"1.698","8":"28","9":"0","10":"Young"},{"1":"6","2":"183","3":"94","4":"0","5":"0","6":"40.8","7":"1.461","8":"45","9":"0","10":"Middle"},{"1":"0","2":"94","3":"70","4":"27","5":"115","6":"43.5","7":"0.347","8":"21","9":"0","10":"Young"},{"1":"2","2":"108","3":"64","4":"0","5":"0","6":"30.8","7":"0.158","8":"21","9":"0","10":"Young"},{"1":"4","2":"90","3":"88","4":"47","5":"54","6":"37.7","7":"0.362","8":"29","9":"0","10":"Young"},{"1":"0","2":"125","3":"68","4":"0","5":"0","6":"24.7","7":"0.206","8":"21","9":"0","10":"Young"},{"1":"0","2":"132","3":"78","4":"0","5":"0","6":"32.4","7":"0.393","8":"21","9":"0","10":"Young"},{"1":"5","2":"128","3":"80","4":"0","5":"0","6":"34.6","7":"0.144","8":"45","9":"0","10":"Middle"},{"1":"4","2":"94","3":"65","4":"22","5":"0","6":"24.7","7":"0.148","8":"21","9":"0","10":"Young"},{"1":"7","2":"114","3":"64","4":"0","5":"0","6":"27.4","7":"0.732","8":"34","9":"1","10":"Middle"},{"1":"0","2":"102","3":"78","4":"40","5":"90","6":"34.5","7":"0.238","8":"24","9":"0","10":"Young"},{"1":"2","2":"111","3":"60","4":"0","5":"0","6":"26.2","7":"0.343","8":"23","9":"0","10":"Young"},{"1":"1","2":"128","3":"82","4":"17","5":"183","6":"27.5","7":"0.115","8":"22","9":"0","10":"Young"},{"1":"10","2":"92","3":"62","4":"0","5":"0","6":"25.9","7":"0.167","8":"31","9":"0","10":"Middle"},{"1":"13","2":"104","3":"72","4":"0","5":"0","6":"31.2","7":"0.465","8":"38","9":"1","10":"Middle"},{"1":"5","2":"104","3":"74","4":"0","5":"0","6":"28.8","7":"0.153","8":"48","9":"0","10":"Middle"},{"1":"2","2":"94","3":"76","4":"18","5":"66","6":"31.6","7":"0.649","8":"23","9":"0","10":"Young"},{"1":"7","2":"97","3":"76","4":"32","5":"91","6":"40.9","7":"0.871","8":"32","9":"1","10":"Middle"},{"1":"1","2":"100","3":"74","4":"12","5":"46","6":"19.5","7":"0.149","8":"28","9":"0","10":"Young"},{"1":"0","2":"102","3":"86","4":"17","5":"105","6":"29.3","7":"0.695","8":"27","9":"0","10":"Young"},{"1":"4","2":"128","3":"70","4":"0","5":"0","6":"34.3","7":"0.303","8":"24","9":"0","10":"Young"},{"1":"6","2":"147","3":"80","4":"0","5":"0","6":"29.5","7":"0.178","8":"50","9":"1","10":"Middle"},{"1":"4","2":"90","3":"0","4":"0","5":"0","6":"28.0","7":"0.610","8":"31","9":"0","10":"Middle"},{"1":"3","2":"103","3":"72","4":"30","5":"152","6":"27.6","7":"0.730","8":"27","9":"0","10":"Young"},{"1":"2","2":"157","3":"74","4":"35","5":"440","6":"39.4","7":"0.134","8":"30","9":"0","10":"Young"},{"1":"1","2":"167","3":"74","4":"17","5":"144","6":"23.4","7":"0.447","8":"33","9":"1","10":"Middle"},{"1":"0","2":"179","3":"50","4":"36","5":"159","6":"37.8","7":"0.455","8":"22","9":"1","10":"Young"},{"1":"11","2":"136","3":"84","4":"35","5":"130","6":"28.3","7":"0.260","8":"42","9":"1","10":"Middle"},{"1":"0","2":"107","3":"60","4":"25","5":"0","6":"26.4","7":"0.133","8":"23","9":"0","10":"Young"},{"1":"1","2":"91","3":"54","4":"25","5":"100","6":"25.2","7":"0.234","8":"23","9":"0","10":"Young"},{"1":"1","2":"117","3":"60","4":"23","5":"106","6":"33.8","7":"0.466","8":"27","9":"0","10":"Young"},{"1":"5","2":"123","3":"74","4":"40","5":"77","6":"34.1","7":"0.269","8":"28","9":"0","10":"Young"},{"1":"2","2":"120","3":"54","4":"0","5":"0","6":"26.8","7":"0.455","8":"27","9":"0","10":"Young"},{"1":"1","2":"106","3":"70","4":"28","5":"135","6":"34.2","7":"0.142","8":"22","9":"0","10":"Young"},{"1":"2","2":"155","3":"52","4":"27","5":"540","6":"38.7","7":"0.240","8":"25","9":"1","10":"Young"},{"1":"2","2":"101","3":"58","4":"35","5":"90","6":"21.8","7":"0.155","8":"22","9":"0","10":"Young"},{"1":"1","2":"120","3":"80","4":"48","5":"200","6":"38.9","7":"1.162","8":"41","9":"0","10":"Middle"},{"1":"11","2":"127","3":"106","4":"0","5":"0","6":"39.0","7":"0.190","8":"51","9":"0","10":"Elderly"},{"1":"3","2":"80","3":"82","4":"31","5":"70","6":"34.2","7":"1.292","8":"27","9":"1","10":"Young"},{"1":"10","2":"162","3":"84","4":"0","5":"0","6":"27.7","7":"0.182","8":"54","9":"0","10":"Elderly"},{"1":"1","2":"199","3":"76","4":"43","5":"0","6":"42.9","7":"1.394","8":"22","9":"1","10":"Young"},{"1":"8","2":"167","3":"106","4":"46","5":"231","6":"37.6","7":"0.165","8":"43","9":"1","10":"Middle"},{"1":"9","2":"145","3":"80","4":"46","5":"130","6":"37.9","7":"0.637","8":"40","9":"1","10":"Middle"},{"1":"6","2":"115","3":"60","4":"39","5":"0","6":"33.7","7":"0.245","8":"40","9":"1","10":"Middle"},{"1":"1","2":"112","3":"80","4":"45","5":"132","6":"34.8","7":"0.217","8":"24","9":"0","10":"Young"},{"1":"4","2":"145","3":"82","4":"18","5":"0","6":"32.5","7":"0.235","8":"70","9":"1","10":"Elderly"},{"1":"10","2":"111","3":"70","4":"27","5":"0","6":"27.5","7":"0.141","8":"40","9":"1","10":"Middle"},{"1":"6","2":"98","3":"58","4":"33","5":"190","6":"34.0","7":"0.430","8":"43","9":"0","10":"Middle"},{"1":"9","2":"154","3":"78","4":"30","5":"100","6":"30.9","7":"0.164","8":"45","9":"0","10":"Middle"},{"1":"6","2":"165","3":"68","4":"26","5":"168","6":"33.6","7":"0.631","8":"49","9":"0","10":"Middle"},{"1":"1","2":"99","3":"58","4":"10","5":"0","6":"25.4","7":"0.551","8":"21","9":"0","10":"Young"},{"1":"10","2":"68","3":"106","4":"23","5":"49","6":"35.5","7":"0.285","8":"47","9":"0","10":"Middle"},{"1":"3","2":"123","3":"100","4":"35","5":"240","6":"57.3","7":"0.880","8":"22","9":"0","10":"Young"},{"1":"8","2":"91","3":"82","4":"0","5":"0","6":"35.6","7":"0.587","8":"68","9":"0","10":"Elderly"},{"1":"6","2":"195","3":"70","4":"0","5":"0","6":"30.9","7":"0.328","8":"31","9":"1","10":"Middle"},{"1":"9","2":"156","3":"86","4":"0","5":"0","6":"24.8","7":"0.230","8":"53","9":"1","10":"Elderly"},{"1":"0","2":"93","3":"60","4":"0","5":"0","6":"35.3","7":"0.263","8":"25","9":"0","10":"Young"},{"1":"3","2":"121","3":"52","4":"0","5":"0","6":"36.0","7":"0.127","8":"25","9":"1","10":"Young"},{"1":"2","2":"101","3":"58","4":"17","5":"265","6":"24.2","7":"0.614","8":"23","9":"0","10":"Young"},{"1":"2","2":"56","3":"56","4":"28","5":"45","6":"24.2","7":"0.332","8":"22","9":"0","10":"Young"},{"1":"0","2":"162","3":"76","4":"36","5":"0","6":"49.6","7":"0.364","8":"26","9":"1","10":"Young"},{"1":"0","2":"95","3":"64","4":"39","5":"105","6":"44.6","7":"0.366","8":"22","9":"0","10":"Young"},{"1":"4","2":"125","3":"80","4":"0","5":"0","6":"32.3","7":"0.536","8":"27","9":"1","10":"Young"},{"1":"5","2":"136","3":"82","4":"0","5":"0","6":"0.0","7":"0.640","8":"69","9":"0","10":"Elderly"},{"1":"2","2":"129","3":"74","4":"26","5":"205","6":"33.2","7":"0.591","8":"25","9":"0","10":"Young"},{"1":"3","2":"130","3":"64","4":"0","5":"0","6":"23.1","7":"0.314","8":"22","9":"0","10":"Young"},{"1":"1","2":"107","3":"50","4":"19","5":"0","6":"28.3","7":"0.181","8":"29","9":"0","10":"Young"},{"1":"1","2":"140","3":"74","4":"26","5":"180","6":"24.1","7":"0.828","8":"23","9":"0","10":"Young"},{"1":"1","2":"144","3":"82","4":"46","5":"180","6":"46.1","7":"0.335","8":"46","9":"1","10":"Middle"},{"1":"8","2":"107","3":"80","4":"0","5":"0","6":"24.6","7":"0.856","8":"34","9":"0","10":"Middle"},{"1":"13","2":"158","3":"114","4":"0","5":"0","6":"42.3","7":"0.257","8":"44","9":"1","10":"Middle"},{"1":"2","2":"121","3":"70","4":"32","5":"95","6":"39.1","7":"0.886","8":"23","9":"0","10":"Young"},{"1":"7","2":"129","3":"68","4":"49","5":"125","6":"38.5","7":"0.439","8":"43","9":"1","10":"Middle"},{"1":"2","2":"90","3":"60","4":"0","5":"0","6":"23.5","7":"0.191","8":"25","9":"0","10":"Young"},{"1":"7","2":"142","3":"90","4":"24","5":"480","6":"30.4","7":"0.128","8":"43","9":"1","10":"Middle"},{"1":"3","2":"169","3":"74","4":"19","5":"125","6":"29.9","7":"0.268","8":"31","9":"1","10":"Middle"},{"1":"0","2":"99","3":"0","4":"0","5":"0","6":"25.0","7":"0.253","8":"22","9":"0","10":"Young"},{"1":"4","2":"127","3":"88","4":"11","5":"155","6":"34.5","7":"0.598","8":"28","9":"0","10":"Young"},{"1":"4","2":"118","3":"70","4":"0","5":"0","6":"44.5","7":"0.904","8":"26","9":"0","10":"Young"},{"1":"2","2":"122","3":"76","4":"27","5":"200","6":"35.9","7":"0.483","8":"26","9":"0","10":"Young"},{"1":"6","2":"125","3":"78","4":"31","5":"0","6":"27.6","7":"0.565","8":"49","9":"1","10":"Middle"},{"1":"1","2":"168","3":"88","4":"29","5":"0","6":"35.0","7":"0.905","8":"52","9":"1","10":"Elderly"},{"1":"2","2":"129","3":"0","4":"0","5":"0","6":"38.5","7":"0.304","8":"41","9":"0","10":"Middle"},{"1":"4","2":"110","3":"76","4":"20","5":"100","6":"28.4","7":"0.118","8":"27","9":"0","10":"Young"},{"1":"6","2":"80","3":"80","4":"36","5":"0","6":"39.8","7":"0.177","8":"28","9":"0","10":"Young"},{"1":"10","2":"115","3":"0","4":"0","5":"0","6":"0.0","7":"0.261","8":"30","9":"1","10":"Young"},{"1":"2","2":"127","3":"46","4":"21","5":"335","6":"34.4","7":"0.176","8":"22","9":"0","10":"Young"},{"1":"9","2":"164","3":"78","4":"0","5":"0","6":"32.8","7":"0.148","8":"45","9":"1","10":"Middle"},{"1":"2","2":"93","3":"64","4":"32","5":"160","6":"38.0","7":"0.674","8":"23","9":"1","10":"Young"},{"1":"3","2":"158","3":"64","4":"13","5":"387","6":"31.2","7":"0.295","8":"24","9":"0","10":"Young"},{"1":"5","2":"126","3":"78","4":"27","5":"22","6":"29.6","7":"0.439","8":"40","9":"0","10":"Middle"},{"1":"10","2":"129","3":"62","4":"36","5":"0","6":"41.2","7":"0.441","8":"38","9":"1","10":"Middle"},{"1":"0","2":"134","3":"58","4":"20","5":"291","6":"26.4","7":"0.352","8":"21","9":"0","10":"Young"},{"1":"3","2":"102","3":"74","4":"0","5":"0","6":"29.5","7":"0.121","8":"32","9":"0","10":"Middle"},{"1":"7","2":"187","3":"50","4":"33","5":"392","6":"33.9","7":"0.826","8":"34","9":"1","10":"Middle"},{"1":"3","2":"173","3":"78","4":"39","5":"185","6":"33.8","7":"0.970","8":"31","9":"1","10":"Middle"},{"1":"10","2":"94","3":"72","4":"18","5":"0","6":"23.1","7":"0.595","8":"56","9":"0","10":"Elderly"},{"1":"1","2":"108","3":"60","4":"46","5":"178","6":"35.5","7":"0.415","8":"24","9":"0","10":"Young"},{"1":"5","2":"97","3":"76","4":"27","5":"0","6":"35.6","7":"0.378","8":"52","9":"1","10":"Elderly"},{"1":"4","2":"83","3":"86","4":"19","5":"0","6":"29.3","7":"0.317","8":"34","9":"0","10":"Middle"},{"1":"1","2":"114","3":"66","4":"36","5":"200","6":"38.1","7":"0.289","8":"21","9":"0","10":"Young"},{"1":"1","2":"149","3":"68","4":"29","5":"127","6":"29.3","7":"0.349","8":"42","9":"1","10":"Middle"},{"1":"5","2":"117","3":"86","4":"30","5":"105","6":"39.1","7":"0.251","8":"42","9":"0","10":"Middle"},{"1":"1","2":"111","3":"94","4":"0","5":"0","6":"32.8","7":"0.265","8":"45","9":"0","10":"Middle"},{"1":"4","2":"112","3":"78","4":"40","5":"0","6":"39.4","7":"0.236","8":"38","9":"0","10":"Middle"},{"1":"1","2":"116","3":"78","4":"29","5":"180","6":"36.1","7":"0.496","8":"25","9":"0","10":"Young"},{"1":"0","2":"141","3":"84","4":"26","5":"0","6":"32.4","7":"0.433","8":"22","9":"0","10":"Young"},{"1":"2","2":"175","3":"88","4":"0","5":"0","6":"22.9","7":"0.326","8":"22","9":"0","10":"Young"},{"1":"2","2":"92","3":"52","4":"0","5":"0","6":"30.1","7":"0.141","8":"22","9":"0","10":"Young"},{"1":"3","2":"130","3":"78","4":"23","5":"79","6":"28.4","7":"0.323","8":"34","9":"1","10":"Middle"},{"1":"8","2":"120","3":"86","4":"0","5":"0","6":"28.4","7":"0.259","8":"22","9":"1","10":"Young"},{"1":"2","2":"174","3":"88","4":"37","5":"120","6":"44.5","7":"0.646","8":"24","9":"1","10":"Young"},{"1":"2","2":"106","3":"56","4":"27","5":"165","6":"29.0","7":"0.426","8":"22","9":"0","10":"Young"},{"1":"2","2":"105","3":"75","4":"0","5":"0","6":"23.3","7":"0.560","8":"53","9":"0","10":"Elderly"},{"1":"4","2":"95","3":"60","4":"32","5":"0","6":"35.4","7":"0.284","8":"28","9":"0","10":"Young"},{"1":"0","2":"126","3":"86","4":"27","5":"120","6":"27.4","7":"0.515","8":"21","9":"0","10":"Young"},{"1":"8","2":"65","3":"72","4":"23","5":"0","6":"32.0","7":"0.600","8":"42","9":"0","10":"Middle"},{"1":"2","2":"99","3":"60","4":"17","5":"160","6":"36.6","7":"0.453","8":"21","9":"0","10":"Young"},{"1":"1","2":"102","3":"74","4":"0","5":"0","6":"39.5","7":"0.293","8":"42","9":"1","10":"Middle"},{"1":"11","2":"120","3":"80","4":"37","5":"150","6":"42.3","7":"0.785","8":"48","9":"1","10":"Middle"},{"1":"3","2":"102","3":"44","4":"20","5":"94","6":"30.8","7":"0.400","8":"26","9":"0","10":"Young"},{"1":"1","2":"109","3":"58","4":"18","5":"116","6":"28.5","7":"0.219","8":"22","9":"0","10":"Young"},{"1":"9","2":"140","3":"94","4":"0","5":"0","6":"32.7","7":"0.734","8":"45","9":"1","10":"Middle"},{"1":"13","2":"153","3":"88","4":"37","5":"140","6":"40.6","7":"1.174","8":"39","9":"0","10":"Middle"},{"1":"12","2":"100","3":"84","4":"33","5":"105","6":"30.0","7":"0.488","8":"46","9":"0","10":"Middle"},{"1":"1","2":"147","3":"94","4":"41","5":"0","6":"49.3","7":"0.358","8":"27","9":"1","10":"Young"},{"1":"1","2":"81","3":"74","4":"41","5":"57","6":"46.3","7":"1.096","8":"32","9":"0","10":"Middle"},{"1":"3","2":"187","3":"70","4":"22","5":"200","6":"36.4","7":"0.408","8":"36","9":"1","10":"Middle"},{"1":"6","2":"162","3":"62","4":"0","5":"0","6":"24.3","7":"0.178","8":"50","9":"1","10":"Middle"},{"1":"4","2":"136","3":"70","4":"0","5":"0","6":"31.2","7":"1.182","8":"22","9":"1","10":"Young"},{"1":"1","2":"121","3":"78","4":"39","5":"74","6":"39.0","7":"0.261","8":"28","9":"0","10":"Young"},{"1":"3","2":"108","3":"62","4":"24","5":"0","6":"26.0","7":"0.223","8":"25","9":"0","10":"Young"},{"1":"0","2":"181","3":"88","4":"44","5":"510","6":"43.3","7":"0.222","8":"26","9":"1","10":"Young"},{"1":"8","2":"154","3":"78","4":"32","5":"0","6":"32.4","7":"0.443","8":"45","9":"1","10":"Middle"},{"1":"1","2":"128","3":"88","4":"39","5":"110","6":"36.5","7":"1.057","8":"37","9":"1","10":"Middle"},{"1":"7","2":"137","3":"90","4":"41","5":"0","6":"32.0","7":"0.391","8":"39","9":"0","10":"Middle"},{"1":"0","2":"123","3":"72","4":"0","5":"0","6":"36.3","7":"0.258","8":"52","9":"1","10":"Elderly"},{"1":"1","2":"106","3":"76","4":"0","5":"0","6":"37.5","7":"0.197","8":"26","9":"0","10":"Young"},{"1":"6","2":"190","3":"92","4":"0","5":"0","6":"35.5","7":"0.278","8":"66","9":"1","10":"Elderly"},{"1":"2","2":"88","3":"58","4":"26","5":"16","6":"28.4","7":"0.766","8":"22","9":"0","10":"Young"},{"1":"9","2":"170","3":"74","4":"31","5":"0","6":"44.0","7":"0.403","8":"43","9":"1","10":"Middle"},{"1":"9","2":"89","3":"62","4":"0","5":"0","6":"22.5","7":"0.142","8":"33","9":"0","10":"Middle"},{"1":"10","2":"101","3":"76","4":"48","5":"180","6":"32.9","7":"0.171","8":"63","9":"0","10":"Elderly"},{"1":"2","2":"122","3":"70","4":"27","5":"0","6":"36.8","7":"0.340","8":"27","9":"0","10":"Young"},{"1":"5","2":"121","3":"72","4":"23","5":"112","6":"26.2","7":"0.245","8":"30","9":"0","10":"Young"},{"1":"1","2":"126","3":"60","4":"0","5":"0","6":"30.1","7":"0.349","8":"47","9":"1","10":"Middle"},{"1":"1","2":"93","3":"70","4":"31","5":"0","6":"30.4","7":"0.315","8":"23","9":"0","10":"Young"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>You can use <code>layout = "l-body-outset"</code> here as with the figure above to occupy more horizontal space than the article text. All of available <a href="https://rstudio.github.io/distill/figures.html">figure layout options</a> work as expected for tables.</p>
+<p>See the documentation on <a href="https://rstudio.github.io/distill/tables.html">table display</a> for details on the various techniques available for rendering tables.</p>
+<hr>
+</section>
+<section id="equations" class="level2">
+<h2 class="anchored" data-anchor-id="equations">Equations</h2>
+<p>Embedded math equations are supported via standard markdown <a href="https://www.mathjax.org/">MathJax</a> syntax. For example, the following <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics">LaTeX math</a>:</p>
+<pre><code>$$
+\sigma = \sqrt{ \frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2}
+$$</code></pre>
+<p><span class="math display">\[
+\sigma = \sqrt{ \frac{1}{N} \sum_{i=1}^N (x_i -\mu)^2}
+\]</span></p>
+<hr>
+</section>
+<section id="citations" class="level2">
+<h2 class="anchored" data-anchor-id="citations">Citations</h2>
+<p>Bibtex is the supported way to make academic citations. To include citations, first create a bibtex file and refer to it from the <code>bibliography</code> field of the YAML front-matter (as <a href="https://rstudio.github.io/distill/#front-matter">illustrated above</a>).</p>
+<p>For example, your bibliography file might contain:</p>
+<pre><code>@Book{xie2015,
+  title = {Dynamic Documents with R and knitr},
+  author = {Yihui Xie},
+  publisher = {Chapman and Hall/CRC},
+  address = {Boca Raton, Florida},
+  year = {2015},
+  edition = {2nd},
+  note = {ISBN 978-1498716963},
+  url = {http://yihui.name/knitr/},
+}</code></pre>
+<p>Citations are made in the article text with R Markdown notation (e.g., <code>@xie2015</code>), which refers to the ID provided in the bibliography. Multiple IDs can be provided, separated by semicolons.</p>
+<p>If you have an appendix, a bibliography is automatically created and populated in it.</p>
+<p>See the article on <a href="https://rstudio.github.io/distill/citations.html">citations</a> for additional details on using citations, including how to provide the metadata required to make your article more easily citable for others.</p>
+<hr>
+</section>
+<section id="footnotes-and-asides" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="footnotes-and-asides">Footnotes and asides</h2>
+<p>Footnotes use Pandoc markdown notation, for example <code>^[This will become a hover-able footnote]</code>. The number of the footnote will be automatically generated. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Notes can also be made in the gutter of the article (to the right of article text), done using the <code>&lt;aside&gt;</code> tag.</p>
+<aside>
+This content will appear in the gutter of the article.
+</aside>
+<p>You can also include figures in the gutter, done by enclosing the code chunk which generates the figure within <code>&lt;aside&gt;</code> tags:</p>
+<aside>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="reproduce-distill-paper_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</aside>
+<hr>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents</h2>
+<p>You can add a table of contents using the <code>toc</code> option and specify the depths of headers that it will occupy using <code>toc_depth</code> option.</p>
+<pre><code>---
+title: "Reproduce a paper with Distill"
+description: |
+  Example Distill R Markdown paper to use as a template for reproducible scientific and technical writing
+output: distill::distill_article:
+    toc: true
+    toc_depth: 2
+---</code></pre>
+<p>The default table of contents depth is 3, so there will be levels 1, 2, and 3 headers included in the table of contents.</p>
+<p>The table of contents automatically floats to the left when the article is displayed at 1000px wide or greater. To show the table of contents on top, specify <code>toc_float: false</code></p>
+<pre><code>output:
+  distill::distill_article:
+    toc: true
+    toc_float: false</code></pre>
+<hr>
+</section>
+<section id="code-blocks" class="level2">
+<h2 class="anchored" data-anchor-id="code-blocks">Code blocks</h2>
+<p>Distill does not show the code for chunks from which an output is produced (<code>knitr</code> option <code>echo = FALSE</code>)</p>
+<p><code>echo = FALSE</code> reflects that Distill articles often present the results of analyses and not the underlying code. By setting <code>echo = TRUE</code>, the code will also be displayed.</p>
+<pre><code>::: {.cell}
+
+```{.r .cell-code}
+1 + 1
+```
+:::</code></pre>
+<p>You can also include code that is only displayed by specifying <code>eval = FALSE</code></p>
+<pre><code>::: {.cell}
+
+```{.r .cell-code}
+1 + 1
+```
+:::</code></pre>
+<p>There are several default values that Distill uses for <code>knitr</code> chunk options (these defaults also reflect the use case of presenting results/output rather than underlying code):</p>
+<table class="table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 27%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Value</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>echo</code></td>
+<td><code>FALSE</code></td>
+<td>Don’t print code by default.</td>
+</tr>
+<tr class="even">
+<td><code>warning</code></td>
+<td><code>FALSE</code></td>
+<td>Don’t print warnings by default.</td>
+</tr>
+<tr class="odd">
+<td><code>message</code></td>
+<td><code>FALSE</code></td>
+<td>Don’t print R messages by default.</td>
+</tr>
+<tr class="even">
+<td><code>comment</code></td>
+<td><code>NA</code></td>
+<td>Don’t preface R output with a comment.</td>
+</tr>
+<tr class="odd">
+<td><code>R.options</code></td>
+<td><code>list(width = 70)</code></td>
+<td>70 character wide console output.</td>
+</tr>
+</tbody>
+</table>
+<p>Keeping R code and output at 70 characters wide (or less) is best for readability across devices and screen sizes.</p>
+<p>The defaults can be overridden for each code chunk, but you can also set global default. <em>Note that a ‘#’ is in place to prevent it from running in the document</em>.</p>
+<pre><code># ```{r setup, include = FALSE} 
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = TRUE,
+  message = TRUE,
+  comment = "##",
+  R.options = list(width = 60)
+)
+```</code></pre>
+<hr>
+</section>
+<section id="code-folding" class="level2">
+<h2 class="anchored" data-anchor-id="code-folding">Code folding</h2>
+<p><code>code_folding</code> can be used to hide code by default but readers can optionally show it.</p>
+<pre><code>---
+title: "Reproduce a paper with Distill"
+description: |
+  Example Distill R Markdown paper to use as a template for reproducible scientific and technical writing
+output: distill::distill_article:
+    code_folding: true
+---</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rstudio.github.io/distill/images/code-folding.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Retrieved from https://rstudio.github.io/distill</em></figcaption><p></p>
+</figure>
+</div>
+<p>You can also make <code>code_folding</code> a per-chunk basis</p>
+<pre><code>::: {.cell code_folding='true'}
+
+```{.r .cell-code}
+1 + 1
+```
+:::</code></pre>
+<p>Provide a string rather than <code>TRUE</code> to customize the caption (the default is “Show code”).</p>
+<hr>
+</section>
+<section id="syntax-highlighting" class="level2">
+<h2 class="anchored" data-anchor-id="syntax-highlighting">Syntax highlighting</h2>
+<p>Syntax highlighting for R code is done via the <a href="https://downlit.r-lib.org/"><code>downlit</code></a> package, which provides automatic linking of R functions to their online documentation. By default, highlighting is done using colors <a href="https://www.a11yproject.com/">optimized for accessibility and color contrast</a>.</p>
+<p>You can customize highlighting behavior using the <code>highlight</code> and <code>highlight_downlit</code> options. For example, to use the Pandoc “haddock” highlighting theme and disable the use of <code>downlit</code>, you would do this:</p>
+<pre><code>---
+title: "Reproduce a paper with Distill"
+description: |
+  Example Distill R Markdown paper to use as a template for reproducible scientific and technical writing
+output: distill::distill_article:
+          highlight: haddock
+          highlight_downlit: false
+---</code></pre>
+<p>Available options for <code>highlight</code> include:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Option(s)</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>default</code></td>
+<td style="text-align: left;">Default (accessible) theme</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>rstudio</code></td>
+<td style="text-align: left;">RStudio editor theme</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>haddock</code>, <code>kate</code>, <code>monochrome</code>, <code>pygments</code>, <code>tango</code></td>
+<td style="text-align: left;">Pandoc highlighting <a href="https://www.garrickadenbuie.com/blog/pandoc-syntax-highlighting-examples/">themes</a>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Path to <code>.theme</code> file</td>
+<td style="text-align: left;">Custom Pandoc <a href="https://pandoc.org/MANUAL.html#syntax-highlighting">theme file</a>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="appendices" class="level2">
+<h2 class="anchored" data-anchor-id="appendices">Appendices</h2>
+<p>Appendices can be added after your article by adding the <code>.appendix</code> class to any level 1 or level 2 header. For example:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>## Acknowledgments {.appendix}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>This is a place to recognize people and institutions. It may also be a good place to acknowledge and cite software that makes your work possible.</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>## Author Contributions {.appendix}</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>We strongly encourage you to include an author contributions statement briefly describing what each author did.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Footnotes and references will be included in the same section, immediately beneath any custom appendices.</p>
+<hr>
+</section>
+<section id="theming" class="level2">
+<h2 class="anchored" data-anchor-id="theming">Theming</h2>
+<p>The appearance of a Distill article can be customized using a <a href="website.html#theming">theme</a> and <a href="website.html#custom-style">CSS</a> just like Distill sites and blogs. You can use the <code>create_theme()</code> function to add a theme CSS file in the current working directory.</p>
+<p>For example:</p>
+<pre><code>create_theme(name = "theme") </code></pre>
+<p>Read more about how to customize a Distill <a href="website.html#create-theme">theme</a>. To apply a custom theme to an article, add a <code>theme</code> key to your article’s YAML front-matter:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"The Sharpe Ratio"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">output</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">  distill:</span><span class="fu">:distill_article</span><span class="kw">:</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> theme.css</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One of the fastest ways to change the default appearance is to use custom Google fonts. To do this, you need to do two things:</p>
+<ol type="1">
+<li><p>Embed the font using the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@import">@import</a> method, and</p></li>
+<li><p>Specify the font in the CSS file.</p></li>
+</ol>
+<p>You can do both of these things inside your <code>theme.css</code> file. For example, here is an article styled with the demo theme detailed <a href="website.html#theming">here</a>.</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Screenshot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">theme.css snippet</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><img src="https://rstudio.github.io/distill/images/article-after.png" class="img-fluid"></p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<pre><code>/* base variables */
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+@import url('https://fonts.googleapis.com/css2?family=Amiri');
+@import url('https://fonts.googleapis.com/css2?family=Bitter');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono');
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    "Amiri", serif;
+  --mono-font:       "DM Mono", monospace;
+  --body-font:       "Bitter", sans-serif;
+  --navbar-font:     "Amiri", serif;
+}
+/* More properties ... */</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="acknowledgments" class="level2 appendix">
+<h2 class="appendix anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
+<p>Taken from the original source</p>
+<p>Distill for R Markdown builds on the work of many individuals and projects. <a href="https://github.com/shancarter">Shan Carter</a>, <a href="https://github.com/ludwigschubert">Ludwig Schubert</a>, and <a href="https://github.com/colah">Christopher Olah</a> created the Distill web framework. <a href="https://github.com/jgm">John MacFarlane</a> created the Pandoc universal markup converter. <a href="https://github.com/dpvc">Davide Cervone</a> and <a href="https://github.com/zorkow">Volker Sorge</a> created the MathJax library for rendering mathematical notation on the web. <a href="https://github.com/mbostock">Mike Bostock</a> created the D3 library for producing dynamic, interactive data visualizations for the web. We are grateful for the spirit of generosity that moved these individuals to create high-quality open source software for the benefit of all.</p>
+</section>
+<section id="sec-disclaimer-" class="level2" data-appendix="">
+<h2 data-appendix="" class="anchored" data-anchor-id="sec-disclaimer-">Disclaimer</h2>
+<p>This content was inspired by and duplicated under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>:</p>
+<pre><code>Allaire, et al. (2018, Sept. 10). Distill for R Markdown. Retrieved from https://rstudio.github.io/distill</code></pre>
+<p>Much of the content was modified either completely or slightly to condense the material and to utilize different data, however some content was duplicated completely.</p>
+
+
+</section>
+<section class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1" role="doc-endnote"><p>This will become a hover-able footnote<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./manage-as-package.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Manage functionality as a package</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

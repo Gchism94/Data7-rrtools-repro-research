@@ -1,0 +1,491 @@
+---
+bibliography: references.bib
+---
+
+# Create a Research Compendium {.unnumbered}
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE, output = FALSE)
+```
+
+## Workshop setup
+
+### Create new GitHub Repository
+
+-   Git into **GitHub**
+
+-   Go you your **Repositories**
+
+-   Click on **New** Repository
+
+-   Name the repository **rrcompendium**
+
+-   Add a **README**
+
+-   Create your **Repository**
+
+-   Click on **Code**
+
+-   Copy the **HTTPS URL**
+
+------------------------------------------------------------------------
+
+### Launch RStudio
+
+-   Click on new **RStudio Project**
+
+-   Select **Version Control**
+
+-   Select **Git**
+
+-   Paste your **URL from above**
+
+-   Start **Project**
+
+------------------------------------------------------------------------
+
+### Install packages
+
+Next, let's **install the packages we'll need, starting with `rrtools`** (if you haven't got devtools installed, you'll need to before you can install `rrtools` from GitHub).
+
+```{r}
+install.packages(c("devtools")) 
+devtools::install_github("benmarwick/rrtools")
+```
+
+Installing `rrtools` **imports many of the packages we'll need today** (e.g., the imports section of the [`DESCRIPTION`](https://github.com/benmarwick/rrtools/blob/master/DESCRIPTION) file).
+
+    Imports: devtools, git2r, whisker, rstudioapi, rmarkdown, curl, RCurl,
+        jsonlite, methods, httr, usethis, clisymbols,
+        crayon, glue, bookdown, here
+
+------------------------------------------------------------------------
+
+## Configure `git`
+
+If your git configuration hasn't been set yet, we need to make sure we do so.
+
+### **Set git token**
+
+```{r}
+usethis::create_github_token()
+```
+
+-   Name your new **personal access token (PAT)**
+
+-   Set **expiration** to whenever (default is 30 days)
+
+-   Click **Generate token**
+
+-   Save your **Token** in a safe place; you will not be able to see it again
+
+-   Copy your **Token** and close the window
+
+------------------------------------------------------------------------
+
+### **Register git token**
+
+Paste the following code from the output above and paste your **Token**
+
+```{r}
+gitcreds::gitcreds_set()
+```
+
+    ? Enter password or token: ghp_##################
+    -> Adding new credentials...
+    -> Removing credetials from cache...
+    -> Done.
+
+**Copy the generated PAT** to **paste into your `.Renviron`** file as system variable **`GITHUB_PAT`**.
+
+You can **open your `.Renviron` file for editing** with:
+
+```{r}
+usethis::edit_r_environ()
+```
+
+**Paste your copied PAT into your `.Renviron`** file as system variable `GITHUB_PAT`, save and close. Now every time R is reloaded, your PAT will be stored in system variable `GITHUB_PAT`.
+
+------------------------------------------------------------------------
+
+## Create compendium
+
+Let's start by **creating a blank research compendium** for us to work in.
+
+### Load library
+
+First we need to load `rrtools`
+
+```{r eval = FALSE}
+library(rrtools) 
+```
+
+This performs a quick check to **confirm you have Git installed and configured**
+
+If you do, you should see the following output in the console.
+
+``` r
+✔ Git is installed on this computer, your username is Greg T. Chism
+```
+
+------------------------------------------------------------------------
+
+### Create Compendium
+
+Now we're ready to **create our compendium**. We use **`rrtools::use_compendium()`** and supply it with a path for our new compendium. The final part of our path becomes the compendium name. Because the function effectively creates a package, only a **single string of lowercase alpha characters is accepted as a name**. Let's use `rrcompendium` as the final part of our path.
+
+**Quick tip**: If you don't know what path you're currently in, you can check with the **`here`** package
+
+```{r}
+here::here()
+```
+
+    [1] "/Users/gregchism/Library/Documents/Desktop/rrtools-repro-research"
+
+A way to short-hand this path is to say `"~/Desktop/rrtools-repro-research"`, in which the `~` (tilde) is a shortcut for your home directory.
+
+To **create `rrcompendium` with a directory into your Desktop you can use:**
+
+```{r}
+rrtools::use_compendium("~/Desktop/rrcompendium")
+```
+
+Go ahead and **create a compendium at a location of your choice**. Use the compendium name `rrcompendium` for ease of following the materials. If the call was successful you should see the following console output:
+
+    ✔ Setting active project to '~/Desktop/rrcompendium'
+    ✔ Creating 'R/'
+    ✔ Creating 'man/'
+    ✔ Writing 'DESCRIPTION'
+    ✔ Writing 'NAMESPACE'
+    ✔ Writing 'rrcompendium.Rproj'
+    ✔ Adding '.Rproj.user' to '.gitignore'
+    ✔ Adding '^rrcompendium\\.Rproj$', '^\\.Rproj\\.user$' to '.Rbuildignore'
+    ✔ Opening new project 'rrcompendium' in RStudio
+    ✔ The package rrcompendium has been created
+    ✔ Opening the new compendium in a new RStudio session...
+
+    Next, you need to:  ↓ ↓ ↓ 
+    ● Edit the DESCRIPTION file
+    ● Use other 'rrtools' functions to add components to the compendium
+
+and a **new Rstudio session** launched for the **compendium**.
+
+Periodically update `Imports:` in the `DESCRIPTION` with packages your compendium needs using `rrtools::add_dependencies_to_description()`
+
+------------------------------------------------------------------------
+
+### Inspect templates
+
+    .
+    ├── DESCRIPTION <- .............................package metadata
+    |                                               dependency management
+    ├── NAMESPACE <- ...............................AUTO-GENERATED on build
+    ├── R <- .......................................folder for functions
+    ├── man <- .....................................AUTO-GENERATED on build
+    └── rrcompendium.Rproj <- ......................rstudio project file
+
+`rrtools::use_compendium()` creates the **bare backbone of infrastructure required for a research compendium**. At this point it provides facilities to store general metadata about our compendium (e.g., bibliographic details to create a citation) and manage dependencies in the `DESCRIPTION` file and store and document functions in the `R/` folder (*note that you will have to create this now*). Together these allow us to **manage, install and share functionality associated with our project**.
+
+------------------------------------------------------------------------
+
+## Update description file
+
+Let's **update some details in the `DESCRIPTION` file**:
+
+    Package: rrcompendium
+    Title: What the Package Does (One Line, Title Case)
+    Version: 0.0.0.9000
+    Authors@R: 
+        person(given = "First",
+               family = "Last",
+               role = c("aut", "cre"),
+               email = "first.last@example.com")
+    Description: What the package does (one paragraph)
+    License: What license it uses
+    ByteCompile: true
+    Encoding: UTF-8
+    LazyData: true
+
+------------------------------------------------------------------------
+
+### Title
+
+Let's **give our compendium a descriptive title**:
+
+    Title: Reproducible Research Compendium using GitHub and RStudio
+
+------------------------------------------------------------------------
+
+### Version
+
+We don't need to change the version now but using [semantic versioning](https://semver.org/) for our compendium is essential to track versions, and can save us a lot of pain from accidental changes. In general, **versions below `0.0.1` are in development or pre-releases**, hence the `DESCRIPTION` file defaults to `0.0.0.9000`.
+
+------------------------------------------------------------------------
+
+### Authors
+
+Next let's **specify the author of the compendium**. Edit with **your own details**.
+
+Note that I changed the authors format to correct some bugs that I've run across.
+
+    Authors:
+        person(given = "Greg",
+               family = "Chism", "gchism@arizona.edu", 
+               role = c("aut", "cre"))
+
+The roles are important and can be assigned to several authors - see `?person` for more details.
+
+------------------------------------------------------------------------
+
+### Description
+
+Let's **add a bit more detail about the contents of the compendium** in the Description.
+
+    Description: This repository contains a template research compendium from the Workshop titled Reproducible Research Compendium using GitHub and RStudio
+
+------------------------------------------------------------------------
+
+### License
+
+Finally, let's **add a license for the material we create**. We'll use an [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html), which can be used for all components of a compendium. We can do this with:
+
+```{r, eval = FALSE}
+ usethis::use_gpl3_license()
+```
+
+    ✔ Setting active project to '/cloud/project'
+    ✔ Setting License field in DESCRIPTION to 'GPL (>= 3)'
+    ✔ Writing 'LICENSE.md'
+    ✔ Adding '^LICENSE\\.md$' to '.Rbuildignore'
+
+This creates a `LICENSE.md` file and updates the `DESCRIPTION` file with details of the license.
+
+    License: GPL (>= 3)
+
+------------------------------------------------------------------------
+
+### Recap
+
+We've finished updating our `DESCRIPTION` file! `r emo::ji("tada")`
+
+It should look a bit like this:
+
+    Package: rrcompendium
+    Title: Title: Reproducible Research Compendium using GitHub and RStudio
+    Version: 0.0.0.9000
+    Authors:
+        person(given = "Greg",
+               family = "Chism", "gchism@arizona.edu", 
+               role = c("aut", "cre"))
+    Description: This repository contains a template research compendium from the Workshop titled Reproducible Research Compendium using GitHub and RStudio
+    License: GPL (>= 3)
+    ByteCompile: true
+    Encoding: UTF-8
+    LazyData: true
+
+and your project folder should contain:
+
+    .
+    ├── DESCRIPTION
+    ├── LICENSE
+    ├── LICENSE.md
+    ├── NAMESPACE
+    └── rrcompendium.Rproj
+
+Let's **commit our work** and move on to preparing our compendium for sharing on GitHub.
+
+------------------------------------------------------------------------
+
+## Create README
+
+Every GitHub repository needs a `README` landing page.
+
+We can **create an `rrtoolsREADME` template** using:
+
+```{r}
+rrtools::use_readme_rmd()
+```
+
+    ✔ Creating 'README.Rmd' from template.
+    ✔ Adding 'README.Rmd' to `.Rbuildignore`.
+    ● Modify 'README.Rmd'
+    ✔ Rendering README.Rmd to README.md for GitHub.
+    ✔ Adding code of conduct.
+    ✔ Creating 'CONDUCT.md' from template.
+    ✔ Adding 'CONDUCT.md' to `.Rbuildignore`.
+    ✔ Adding instructions to contributors.
+    ✔ Creating 'CONTRIBUTING.md' from template.
+    ✔ Adding 'CONTRIBUTING.md' to `.Rbuildignore`.
+
+This **generates [README.Rmd](README.Rmd) and renders it to [README.md](README.md)**, ready to display on GitHub. It contains:
+
+-   A **template citation** to show others how to cite your project.
+-   **License information for the text, figures, code and data** in your compendium
+
+<!-- -->
+
+    ---
+    output: github_document
+    ---
+
+    <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+    ``{r, echo = FALSE}
+    knitr::opts_chunk$set(
+      collapse = TRUE,
+      comment = "#>",
+      fig.path = "README-"
+    )
+    ``
+
+    # rrcompendium
+
+    [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Gchism94/rrcompendium/master?urlpath=rstudio)
+
+    This repository contains the data and code for our paper:
+
+    > Authors, (YYYY). _Title of paper_. Name of journal/book <https://doi.org/xxx/xxx>
+
+    Our pre-print is online here:
+
+    > Authors, (YYYY). _Title of paper_. Name of journal/book, Accessed 03 May 2019. Online at <https://doi.org/xxx/xxx>
+
+
+    ### How to cite
+
+    Please cite this compendium as:
+
+    > Authors, (2019). _Compendium of R code and data for 'Title of paper'_. Accessed 03 May 2019. Online at <https://doi.org/xxx/xxx>
+
+    ### How to download or install
+
+    You can download the compendium as a zip from from this URL: </archive/master.zip>
+
+    Or you can install this compendium as an R package, rrcompendium, from GitHub with:
+    ### Licenses
+
+    **Text and figures :**  [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/)
+
+    **Code :** See the [DESCRIPTION](DESCRIPTION) file
+
+    **Data :** [CC-0](http://creativecommons.org/publicdomain/zero/1.0/) attribution requested in reuse
+
+    ### Contributions
+
+    We welcome contributions from everyone. Before you get started, please see our [contributor guidelines](CONTRIBUTING.md). Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+------------------------------------------------------------------------
+
+The call also adds two other markdown files:
+
+-   `CONDUCT.md`: a **code of conduct for users**
+-   `CONTRIBUTING.md`:: basic **instructions for people who want to contribute** to our compendium
+
+------------------------------------------------------------------------
+
+### Render README.md, commit and push to GitHub
+
+#### We've now completed our `rrtools` `README.Rmd`! `r emo::ji("tada")`
+
+-   Render it to update the `README.md` file which is displayed on GitHub
+
+-   **Commit** and **push** to GitHub.
+
+#### Your project folder should contain:
+
+    .
+    ├── CONDUCT.md
+    ├── CONTRIBUTING.md
+    ├── DESCRIPTION
+    ├── LICENSE.md
+    ├── NAMESPACE
+    ├── README.Rmd
+    ├── README.md
+    └── rrcompendium.Rproj
+
+------------------------------------------------------------------------
+
+## Setting up the analysis folder
+
+### Create `analysis`
+
+We now need an **analysis folder to contain our analyses and paper**. We can do this using function `rrtools::use_analysis()`
+
+The function has three `location =` options:
+
+-   `top_level` to create a top-level `analysis/` directory
+
+-   `inst` to create an `inst/` directory (so that all the sub-directories are available after the package is installed)
+
+-   `vignettes` to create a `vignettes/` directory (and automatically update the `DESCRIPTION`).
+
+The default is a top-level `analysis/`.
+
+```{r}
+rrtools::use_analysis()
+```
+
+    ✔ Adding bookdown to Imports
+    ✔ Creating 'analysis' directory and contents
+    ✔ Creating 'analysis'
+    ✔ Creating 'analysis/paper'
+    ✔ Creating 'analysis/figures'
+    ✔ Creating 'analysis/templates'
+    ✔ Creating 'analysis/data'
+    ✔ Creating 'analysis/data/raw_data'
+    ✔ Creating 'analysis/data/derived_data'
+    ✔ Creating 'references.bib' from template.
+    ✔ Creating 'paper.Rmd' from template.
+
+    Next, you need to:  ↓ ↓ ↓ ↓ 
+    ● Write your article/report/thesis, start at the paper.Rmd file
+    ● Add the citation style library file (csl) to replace the default provided here, see https://github.com/citation-style-language/
+    ● Add bibliographic details of cited items to the 'references.bib' file
+    ● For adding captions & cross-referencing in an Rmd, see https://bookdown.org/yihui/bookdown/
+    ● For adding citations & reference lists in an Rmd, see http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+
+    Note that:
+    ⚠ Your data files are tracked by Git and will be pushed to GitHub
+
+Regardless for `location` option, the contents of the created sub-directories are the same:
+
+        analysis/
+        |
+        ├── paper/
+        │   ├── paper.Rmd       # this is the main document to edit
+        │   └── references.bib  # this contains the reference list information
+        
+        ├── figures/            # location of the figures produced by the Rmd
+        |
+        ├── data/
+        │   ├── DO-NOT-EDIT-ANY-FILES-IN-HERE-BY-HAND
+        │   ├── raw_data/       # data obtained from elsewhere
+        │   └── derived_data/   # data generated during the analysis
+        |
+        └── templates
+            ├── journal-of-archaeological-science.csl
+            |                   # this sets the style of citations & references 
+            ├── template.docx   # used to style the output of the paper.Rmd
+            └── template.Rmd
+
+Let's inspect
+
+#### `paper.Rmd`
+
+`paper.Rmd` is ready to write in and render with bookdown. It includes:
+
+-   a YAML header that identifies the `references.bib` file and the supplied `csl` file (Citation Style Language) to style the reference list)
+
+-   a **colophon** that **adds some git commit details to the end of the document**. This means that the output file (HTML/PDF/Word) is always traceable to a specific state of the code.
+
+#### `references.bib`
+
+The `references.bib` file has just one item to demonstrate the format. It is ready to insert more reference details.
+
+We can replace the supplied `csl` file with a different citation style from <https://github.com/citation-style-language/>
+
+------------------------------------------------------------------------
+
+## Commit and push to GitHub
+
+You now have a template **reproducible Research Compendium** using **`rrtools`**!`r emo::ji("tada")`

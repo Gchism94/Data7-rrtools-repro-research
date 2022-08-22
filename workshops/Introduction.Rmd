@@ -1,5 +1,12 @@
 ---
-bibliography: references.bib
+title: "Reproducible research compendium through GitHub and RStudio"
+author: "Greg Chism"
+email: "gchism@arizona.edu"
+date: "2022/Aug/22"
+output: 
+  html_document: 
+    theme: readable
+    toc: yes
 ---
 
 # Introduction {.unnumbered}

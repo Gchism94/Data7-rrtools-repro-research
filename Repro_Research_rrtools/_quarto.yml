@@ -8,7 +8,9 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - summary.qmd
+    - create-compendium.qmd
+    - manage-as-package.qmd
+    - reproduce-distill-paper.qmd
     - references.qmd
 
 bibliography: references.bib
