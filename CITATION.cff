@@ -5,7 +5,7 @@ authors:
     given-names: "Chism"
     orcid: "https://orcid.org/0000-0002-5478-2445"
 title: "Gchism94/Data7-rrtools-repro-research: Data7 Reproducible Research in GitHub and RStudio Workshop Series"
-version: v1.0.0
+version: v2.0.0
 date-released: 2022-08-23
-doi: 10.5281/zenodo.7015988
+doi: 10.5281/zenodo.7023594
 url: "https://github.com/Gchism94/Data7-rrtools-repro-research/"
