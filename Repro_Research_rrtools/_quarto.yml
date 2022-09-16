@@ -5,6 +5,7 @@ book:
   title: "Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book"
   author: "Greg Chism"
   date: "8/22/2022"
+  repo-url: https://github.com/Gchism94/Data7-rrtools-repro-research
   chapters:
     - index.qmd
     - intro.qmd
@@ -12,14 +13,13 @@ book:
     - manage-as-package.qmd
     - reproduce-distill-paper.qmd
     - references.qmd
-    
-  repo-url: https://github.com/Gchism94/Data7-rrtools-repro-research
 
 bibliography: references.bib
 
 format:
   html:
     theme: cosmo
+    code-copy: true
 
 
 
