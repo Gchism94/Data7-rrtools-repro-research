@@ -12,6 +12,8 @@ book:
     - manage-as-package.qmd
     - reproduce-distill-paper.qmd
     - references.qmd
+    
+  repo-url: https://github.com/Gchism94/Data7-rrtools-repro-research
 
 bibliography: references.bib
 
