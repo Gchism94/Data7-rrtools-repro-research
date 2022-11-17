@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book - Reproduce a paper with Distill</title>
+<title>Data7 Reproducible Research with GitHub and RStudio Book - Reproduce a paper with Distill</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -145,7 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book</a> 
+      <a href="./">Data7 Reproducible Research with GitHub and RStudio Book</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/Gchism94/Data7-rrtools-repro-research" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
 </div>
@@ -160,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">UArizona Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book!</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">UArizona Data7 Reproducible Research with GitHub and RStudio Book!</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -202,7 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#why-r-markdown" id="toc-why-r-markdown" class="nav-link" data-scroll-target="#why-r-markdown">Why R Markdown?</a></li>
   <li><a href="#why-distill" id="toc-why-distill" class="nav-link" data-scroll-target="#why-distill">Why <span><code>distill</code></span>?</a></li>
   </ul></li>
-  <li><a href="#workshop-setup" id="toc-workshop-setup" class="nav-link" data-scroll-target="#workshop-setup">Workshop setup</a>
+  <li><a href="#required-setup" id="toc-required-setup" class="nav-link" data-scroll-target="#required-setup">Required setup</a>
   <ul class="collapse">
   <li><a href="#install-distill-and-other-packages" id="toc-install-distill-and-other-packages" class="nav-link" data-scroll-target="#install-distill-and-other-packages">Install <code>distill</code> and other packages</a></li>
   </ul></li>
@@ -250,7 +250,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <section id="r-markdown-for-paper-reproduction" class="level2">
 <h2 class="anchored" data-anchor-id="r-markdown-for-paper-reproduction">R Markdown for paper reproduction</h2>
-<p>Scientific and technical writing is generally written using Word, or Google Docs. Think about whether you could reproduce these formats without copy and paste. You could always use LaTeX, but you’d have to learn the syntax.</p>
+<p>Scientific and technical writing is generally written using Word, or Google Docs. Think about whether you could reproduce these formats without copy and paste. You could always use LaTeX, but you’d have to learn an entirely new syntax.</p>
 <hr>
 <section id="why-r-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="why-r-markdown">Why R Markdown?</h3>
@@ -282,8 +282,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr>
 </section>
 </section>
-<section id="workshop-setup" class="level2">
-<h2 class="anchored" data-anchor-id="workshop-setup">Workshop setup</h2>
+<section id="required-setup" class="level2">
+<h2 class="anchored" data-anchor-id="required-setup">Required setup</h2>
 <section id="install-distill-and-other-packages" class="level3">
 <h3 class="anchored" data-anchor-id="install-distill-and-other-packages">Install <code>distill</code> and other packages</h3>
 <div class="cell">
@@ -337,7 +337,7 @@ author:
     affiliation: Data Science Institiute, University of Arizona, Tucson AZ, USA
     affiliation_url: https://datascience.arizona.edu/
     orchid_id: 0000-0002-5478-2445
-date: "2022-09-16"
+date: "2022-11-17"
 output: distill::distill_article:
 ---</code></pre>
 <section id="author-fields" class="level4">
@@ -376,7 +376,7 @@ output: distill::distill_article:
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">"Age group"</span>) <span class="sc">+</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cbp1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="reproduce-distill-paper_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="reproduce-distill-paper_files/figure-html/figs-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>You can also add additional horizontal space if needed, which can be accomplished through the <code>layout</code> chunk.</p>
@@ -449,7 +449,7 @@ This content will appear in the gutter of the article.
 <aside>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="reproduce-distill-paper_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="reproduce-distill-paper_files/figure-html/gutter-fig-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </aside>
@@ -478,19 +478,13 @@ output: distill::distill_article:
 <h2 class="anchored" data-anchor-id="code-blocks">Code blocks</h2>
 <p>Distill does not show the code for chunks from which an output is produced (<code>knitr</code> option <code>echo = FALSE</code>)</p>
 <p><code>echo = FALSE</code> reflects that Distill articles often present the results of analyses and not the underlying code. By setting <code>echo = TRUE</code>, the code will also be displayed.</p>
-<pre><code>::: {.cell}
-
-```{.r .cell-code}
-1 + 1
-```
-:::</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>You can also include code that is only displayed by specifying <code>eval = FALSE</code></p>
-<pre><code>::: {.cell}
-
-```{.r .cell-code}
-1 + 1
-```
-:::</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>There are several default values that Distill uses for <code>knitr</code> chunk options (these defaults also reflect the use case of presenting results/output rather than underlying code):</p>
 <table class="table">
 <colgroup>
@@ -563,12 +557,9 @@ output: distill::distill_article:
 </figure>
 </div>
 <p>You can also make <code>code_folding</code> a per-chunk basis</p>
-<pre><code>::: {.cell code_folding='true'}
-
-```{.r .cell-code}
-1 + 1
-```
-:::</code></pre>
+<div class="cell" data-code_folding="true">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Provide a string rather than <code>TRUE</code> to customize the caption (the default is “Show code”).</p>
 <hr>
 </section>
