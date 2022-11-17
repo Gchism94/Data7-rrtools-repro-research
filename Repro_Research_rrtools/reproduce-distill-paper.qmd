@@ -10,7 +10,7 @@ options(repos = list(CRAN = "http://cran.rstudio.com/"))
 
 ## R Markdown for paper reproduction
 
-Scientific and technical writing is generally written using Word, or Google Docs. Think about whether you could reproduce these formats without copy and paste. You could always use LaTeX, but you'd have to learn the syntax.
+Scientific and technical writing is generally written using Word, or Google Docs. Think about whether you could reproduce these formats without copy and paste. You could always use LaTeX, but you'd have to learn an entirely new syntax.
 
 ------------------------------------------------------------------------
 
@@ -56,11 +56,11 @@ All of these features **help scientists communicate their work more efficiently 
 
 ------------------------------------------------------------------------
 
-## Workshop setup
+## Required setup
 
 ### Install `distill` and other packages
 
-```{r echo = TRUE, output = FALSE, eval = TRUE}
+```{r req-setup, echo = TRUE, output = FALSE, eval = TRUE}
 # Install pacman to install and load all others
 install.packages("pacman")
 
@@ -100,7 +100,7 @@ Start by clicking `File > New File > R Markdown > From Template > Distill Articl
 
 Alternatively, you can create a Distill article in the console
 
-```{r, echo = TRUE, eval = FALSE, output = FALSE}
+```{r create-article, echo = TRUE, eval = FALSE, output = FALSE}
 distill::create_article("article.Rmd")
 ```
 
@@ -144,7 +144,7 @@ Denoded with the `bibliography` field, this refers to a Bibtex file that contain
 
 Distill makes integrating figures into your article straightforward, where the default is the width of the article.
 
-```{r eval = TRUE, output = TRUE}
+```{r figs, eval = TRUE, output = TRUE}
 data <- read.csv(here("Repro_Research_rrtools", "data", "diabetes.csv")) |>
     mutate(Age_group = ifelse(Age >= 21 & Age <= 30, "Young",
                             ifelse(Age > 30 & Age <= 50, "Middle",
@@ -165,7 +165,7 @@ For example, let's make a faceted plot a outside the bounds of the article text,
 
     {r layout="l-body-outset", fig.width=6, fig.height=2}
 
-```{r fig.width = 8, fig.height = 4, echo = FALSE}
+```{r figs2, fig.width = 8, fig.height = 4, echo = FALSE}
 # Plot Glucose vs. Insulin across age groups
 data |>
   ggplot(aes(x = Glucose, y = BloodPressure)) +
@@ -186,7 +186,7 @@ See the documentation on [figure layout](https://rstudio.github.io/distill/figur
 
 Distill articles can render several HTML options for displaying data frames. For example, `pages_table()` displays a page-able view of our `data`.
 
-```{r echo = TRUE, eval = TRUE, output = TRUE}
+```{r tables, echo = TRUE, eval = TRUE, output = TRUE}
 data |>
     rmarkdown::paged_table()
 ```
@@ -250,7 +250,7 @@ You can also include figures in the gutter, done by enclosing the code chunk whi
 
 <aside>
 
-```{r echo = FALSE, message = FALSE, eval = TRUE, output = TRUE}
+```{r gutter-fig, echo = FALSE, message = FALSE, eval = TRUE, output = TRUE}
 data |>
     ggplot(aes(Glucose, Age)) + 
         geom_point() +
@@ -292,15 +292,15 @@ Distill does not show the code for chunks from which an output is produced (`kni
 
 `echo = FALSE` reflects that Distill articles often present the results of analyses and not the underlying code. By setting `echo = TRUE`, the code will also be displayed.
 
-    ```{r, echo=TRUE}
-    1 + 1
-    ```
+```{r codechunk-echo, echo=TRUE}
+1 + 1
+```
 
 You can also include code that is only displayed by specifying `eval = FALSE`
 
-    ```{r, eval=FALSE, echo=TRUE}
-    1 + 1
-    ```
+```{r codechunk-no-echo, eval=FALSE, echo=TRUE}
+1 + 1
+```
 
 There are several default values that Distill uses for `knitr` chunk options (these defaults also reflect the use case of presenting results/output rather than underlying code):
 
@@ -344,9 +344,9 @@ The defaults can be overridden for each code chunk, but you can also set global 
 
 You can also make `code_folding` a per-chunk basis
 
-    ```{r, code_folding=TRUE}
-    1 + 1
-    ```
+```{r code-fold-true, code_folding=TRUE}
+1 + 1
+```
 
 Provide a string rather than `TRUE` to customize the caption (the default is "Show code").
 

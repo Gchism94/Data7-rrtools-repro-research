@@ -8,7 +8,7 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = TRUE, eval = FALSE, output = FALSE)
 ```
 
-## Workshop setup
+## Required setup
 
 ### Create new GitHub Repository
 
@@ -48,7 +48,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE, output = FALSE)
 
 Next, let's **install the packages we'll need, starting with `rrtools`** (if you haven't got devtools installed, you'll need to before you can install `rrtools` from GitHub).
 
-```{r}
+```{r req-packages}
 install.packages(c("devtools")) 
 devtools::install_github("benmarwick/rrtools")
 ```
@@ -67,7 +67,7 @@ If your git configuration hasn't been set yet, we need to make sure we do so.
 
 ### **Set git token**
 
-```{r}
+```{r github-token}
 usethis::create_github_token()
 ```
 
@@ -87,7 +87,7 @@ usethis::create_github_token()
 
 Paste the following code from the output above and paste your **Token**
 
-```{r}
+```{r reg-token}
 gitcreds::gitcreds_set()
 ```
 
@@ -100,7 +100,7 @@ gitcreds::gitcreds_set()
 
 You can **open your `.Renviron` file for editing** with:
 
-```{r}
+```{r edit-r-env}
 usethis::edit_r_environ()
 ```
 
@@ -116,7 +116,7 @@ Let's start by **creating a blank research compendium** for us to work in.
 
 First we need to load `rrtools`
 
-```{r eval = FALSE}
+```{r load-rrtools, eval = FALSE}
 library(rrtools) 
 ```
 
@@ -136,7 +136,7 @@ Now we're ready to **create our compendium**. We use **`rrtools::use_compendium(
 
 **Quick tip**: If you don't know what path you're currently in, you can check with the **`here`** package
 
-```{r}
+```{r here-check}
 here::here()
 ```
 
@@ -146,7 +146,7 @@ A way to short-hand this path is to say `"~/Desktop/rrtools-repro-research"`, in
 
 To **create `rrcompendium` with a directory into your Desktop you can use:**
 
-```{r}
+```{r create-compendium}
 rrtools::use_compendium("~/Desktop/rrcompendium")
 ```
 
@@ -249,7 +249,7 @@ Let's **add a bit more detail about the contents of the compendium** in the Desc
 
 Finally, let's **add a license for the material we create**. We'll use an [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html), which can be used for all components of a compendium. We can do this with:
 
-```{r, eval = FALSE}
+```{r gpl3-license, eval = FALSE}
  usethis::use_gpl3_license()
 ```
 
@@ -302,7 +302,7 @@ Every GitHub repository needs a `README` landing page.
 
 We can **create an `rrtoolsREADME` template** using:
 
-```{r}
+```{r readme}
 rrtools::use_readme_rmd()
 ```
 
@@ -348,14 +348,14 @@ This **generates [README.Rmd](README.Rmd) and renders it to [README.md](README.m
 
     Our pre-print is online here:
 
-    > Authors, (YYYY). _Title of paper_. Name of journal/book, Accessed 03 May 2019. Online at <https://doi.org/xxx/xxx>
+    > Authors, (YYYY). _Title of paper_. Name of journal/book, Accessed dd mmm yyyy. Online at <https://doi.org/xxx/xxx>
 
 
     ### How to cite
 
     Please cite this compendium as:
 
-    > Authors, (2019). _Compendium of R code and data for 'Title of paper'_. Accessed 03 May 2019. Online at <https://doi.org/xxx/xxx>
+    > Authors, (2022). _Compendium of R code and data for 'Title of paper'_. Accessed 03 May 2022. Online at <https://doi.org/xxx/xxx>
 
     ### How to download or install
 
@@ -421,7 +421,7 @@ The function has three `location =` options:
 
 The default is a top-level `analysis/`.
 
-```{r}
+```{r analysis}
 rrtools::use_analysis()
 ```
 

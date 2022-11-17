@@ -2,16 +2,16 @@
 bibliography: references.bib
 ---
 
-# UArizona Data7 Reproducible Research with GitHub and RStudio Workshop Companion Book! {.unnumbered}
+# UArizona Data7 Reproducible Research with GitHub and RStudio Book! {.unnumbered}
 
 Here you will find a collection of materials prepared by the staff of the [Data Science Institute](https://datascience.arizona.edu/)
 ------------------------------------------------------------------------
 
-# Workshop Outline:
+# Table of contents:
 
 ## Introduction
 
-Introduction to the workshop and what you can expect to take away
+Introduction to the book and what you can expect to take away
 
 ------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ Produce a Distill R Markdown version of a paper
 
 ------------------------------------------------------------------------
 
-### Level
+### Knowledge Level
 
 Intermediate
 
@@ -64,12 +64,12 @@ You might also need a set of **development tools** to install and run `devtools`
 
 ### Disclaimer
 
-These workshop materials are derived from materials authored by [Anna Krystalli](https://github.com/annakrystalli/rrtools-repro-research), and [@rrtools]. The materials here have been updated to current best practices and for a condensed length. Additionally, the `gillespie.csv` dataset was replaced with the open source `diabetes.csv` Pima County Native American Diabetes dataset.
+This book is derived from materials authored by [Anna Krystalli](https://github.com/annakrystalli/rrtools-repro-research), and [@rrtools]. The abridged materials here have been updated to current best practices. Additionally, the `gillespie.csv` dataset was replaced with the open source `diabetes.csv` Pima County Native American Diabetes dataset.
 
 The original materials are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
 ![](https://i.creativecommons.org/l/by/4.0/88x31.png){width="100" height="33"} [CC BY](http://creativecommons.org/licenses/by/4.0/)
-Created: 8/22/2022 (G. Chism); Last update: 09/16/2022
+Created: 8/22/2022 (G. Chism); Last update: 11/17/2022
 ------------------------------------------------------------------------
 
 ### Original workshop based on:

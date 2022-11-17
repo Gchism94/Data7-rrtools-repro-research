@@ -36,11 +36,11 @@ Next we will **open** **`analysis.R`** in the workshop materials and run the cod
 
 First, its best to **make sure there's a CRAN mirror that will be used to install packages**. If you don't, you could get an error basically saying that CRAN isn't set...
 
-```{r}
+```{r CRAN-set}
 options(repos = list(CRAN = "http://cran.rstudio.com/"))
 ```
 
-```{r}
+```{r req-packages}
 # Install pacman
 install.packages("pacman")
 
@@ -67,7 +67,7 @@ cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
           "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-```{r}
+```{r load-data}
 # load-data
 data <- read_csv(here::here("analysis", "data", "raw_data", "diabetes.csv")) |>
 # Add a categorical group
@@ -78,7 +78,7 @@ data <- read_csv(here::here("analysis", "data", "raw_data", "diabetes.csv")) |>
          Age = as.character(Age))
 ```
 
-```{r}
+```{r boxplot-glucose-age}
 # Plot Glucose vs. Age group
 data |>
   ggplot(aes(x = Glucose, y = fct_rev(Age), fill = Age)) +
@@ -102,7 +102,7 @@ First we **need an `.R` file to write our function in**.
 
 To create or edit `.R` files in the `R/` directory, we can use:
 
-```{r}
+```{r use-r}
 usethis::use_r("process-data") 
 ```
 
@@ -119,7 +119,7 @@ In this file, let's now create the function to group `Age`.
 
 In particular, we can modify the following code from `analysis.R`
 
-```{r}
+```{r agegroup, eval = FALSE}
 # Group data
 data <- read_csv(here::here("analysis", "data", "raw_data", "diabetes.csv")) |>
   mutate(Age = ifelse(Age >= 21 & Age <= 30, "Young",
@@ -131,7 +131,7 @@ data <- read_csv(here::here("analysis", "data", "raw_data", "diabetes.csv")) |>
 
 into a function like so:
 
-```{r}
+```{r age-function}
 group_age <- function(data){
   dplyr::mutate(data,
                 Age = ifelse(Age >= 21 & Age <= 30, "Young",
@@ -264,7 +264,7 @@ The **completed function documentation should look something like this**:
 
 ### Let's take a `renv::snapshot()`!
 
-```{r}
+```{r renv}
 renv::snapshot()
 ```
 
@@ -276,7 +276,7 @@ renv::snapshot()
 
 Now that we've annotated our source code we can **build the documentation** either by clicking on **More \> Document** in the RStudio Build panel or from the **console** using:
 
-```{r}
+```{r documentation}
 devtools::document() 
 ```
 
@@ -354,7 +354,7 @@ We can inspect the resulting documentation for our function using **`?group_age`
 
 ### Another `renv::snapshot()`!
 
-```{r}
+```{r renv-2}
 renv::snapshot()
 ```
 
@@ -392,7 +392,7 @@ Both these run `R CMD check` which **return three types of messages**:
 
 Let's **Check** our package:
 
-```{r}
+```{r check}
 devtools::check()
 ```
 
@@ -442,7 +442,7 @@ We are **using a `dplyr` functions** in our function, `mutate()`. However, we ha
 
 To **specify the namespace of a function** we use the notation **`<package_name>::<function_name>`**, so we need to update this.
 
-```{r}
+```{r age-function-2}
 group_age <- function(data){
   dplyr::mutate(data,
                 Age = ifelse(Age >= 21 & Age <= 30, "Young",
@@ -503,7 +503,7 @@ In this next round of `checks`, the note about undefined global functions `mutat
 
 We can add `dplyr` to `Imports` with:
 
-```{r}
+```{r use-package}
 usethis::use_package("dplyr") 
 ```
 
@@ -537,10 +537,10 @@ Run 🔨 **Install** to ensure the installed package is up to date.
 
 Then let's **read in some data and test out our function**:
 
-```{r}
+```{r load-compendium}
 library(rrcompendium) 
 data <- readr::read_csv(here::here("analysis", "data", 
-                                   "raw_data", "gillespie.csv")) 
+                                   "raw_data", "diabetes.csv")) 
 ```
 
     Rows: 768 Columns: 9                                                                 
@@ -548,8 +548,8 @@ data <- readr::read_csv(here::here("analysis", "data",
     Delimiter: ","
     dbl (9): Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, Diabetes...
 
-```{r}
-data
+```{r head-data}
+data 
 ```
 
     # A tibble: 768 × 9
@@ -568,7 +568,7 @@ data
     # … with 758 more rows, and abbreviated variable name ¹​DiabetesPedigreeFunction
 
 ```{r}
-group_age(data) 
+group_age(data)
 ```
 
     # A tibble: 768 × 9
@@ -612,7 +612,7 @@ Once we have testing framework, the workflow is straightforward:
 
 Similar to `usethis::use_r()` for package source code files, we can use `usethis::use_test()` to create the framework for our tests.
 
-```{r}
+```{r test-funct}
 usethis::use_test(name = "process-data")
 ```
 
@@ -689,7 +689,7 @@ This means that you should generally avoid `inst/build`, `inst/data`, `inst/demo
 
 Let's create **an `inst/` directory and within it a `testdata/` sub-directory** to save our example data.
 
-```{r}
+```{r create-dir}
 dir.create(here::here("inst", "testdata"), recursive = T)
 ```
 
@@ -699,7 +699,7 @@ dir.create(here::here("inst", "testdata"), recursive = T)
 
 Now let's **make a copy of `diabetes.csv` into the `inst/testdata/` directory**:
 
-```{r}
+```{r copy-to-test}
 file.copy(from = here::here("analysis", "data",
                            "raw_data", "diabetes.csv"), 
           to = here::here("inst", "testdata"))
@@ -725,11 +725,11 @@ It uses anything supplied to `…` to build the path to the file, much like `her
 
 So in `test-process-data.R`, we can now write:
 
-```{r}
+```{r test-data}
 context("test-process-data")
 
 data <- readr::read_csv(system.file("testdata",
-                                    "gillespie.csv",
+                                    "diabetes.csv",
                                     package = "rrcompendium"))
 ```
 
@@ -772,7 +772,7 @@ Let's now **write a couple of tests**.
 
 First let's **test that grouping works**, by checking the unique values of `Age` after running `group_age`. Add the following to `test-process-data.R`:
 
-```{r}
+```{r test-grouping}
 test_that("grouping works", {
   expect_equal(unique(group_age(data)$Age),
                c("Young", "Middle", "Elderly"))
@@ -785,7 +785,7 @@ test_that("grouping works", {
 
 Let's also test that the **original dimensions of `data` are preserved** after running our function. Add the following to `test-process-data.R`:
 
-```{r}
+```{r test-dims}
 test_that("data dims preserved", {
     expect_equal(dim(group_age(data)),
                  dim(data))
@@ -794,7 +794,7 @@ test_that("data dims preserved", {
 
 The complete `test-process-data.R` file should look like this:
 
-```{r}
+```{r complete-test}
 data <- readr::read_csv(system.file("testdata",
                                     "diabetes.csv",
                                     package = "rrcompendium"))
@@ -812,7 +812,7 @@ test_that("data dims preserved", {
 
 Since we are using `read_csv` from the `readr` package, if you didn't use `rrtools::add_dependencies_to_description()` above, you will need to add `readr` to the dependencies.
 
-```{r}
+```{r dependencies}
 rrtools::add_dependencies_to_description()
 ```
 
@@ -861,7 +861,7 @@ We can test our package through:
 
 Interesting... There's a weird character order `Failure`. In this case, let's just mirror what the `actual` is as in the `expected`.
 
-```{r}
+```{r fix-error}
 data <- readr::read_csv(system.file("testdata",
                                     "diabetes.csv",
                                     package = "rrcompendium"))
@@ -888,7 +888,7 @@ test_that("data dims preserved", {
 
 ### A final `renv::snapshot()`!
 
-```{r}
+```{r renv-3}
 renv::snapshot()
 ```
 
